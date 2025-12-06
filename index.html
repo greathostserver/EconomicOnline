@@ -4,70 +4,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>داشبور زنده بازارها — GitHub Pages</title>
-  <meta name="description" content="نمایش آنلاین و بروز قیمت ارز، طلا، سکه بهار آزادی، شاخص بورس ایران و جهان، ارزهای دیجیتال و آهن‌آلات." />
+  <meta name="description" content="نمایش آنلاین و به‌روز قیمت ارز، طلا، سکه بهار آزادی، شاخص بورس‌ها، ارزهای دیجیتال و آهن‌آلات." />
   <link rel="preconnect" href="https://api.coingecko.com">
-  <link rel="preconnect" href="https://api.exchangerate.host">
+  <link rel="preconnect" href="https://api.frankfurter.app">
   <style>
     :root {
-      --bg: #0f1115;
-      --panel: #151823;
-      --text: #e7edf2;
-      --muted: #9aa7b0;
-      --accent: #4cc9f0;
-      --up: #2ecc71;
-      --down: #e74c3c;
-      --border: #222636;
-      --card: #12141c;
-      --shadow: 0 8px 20px rgba(0,0,0,0.35);
+      --bg: #0f1115; --panel: #151823; --text: #e7edf2; --muted: #9aa7b0;
+      --accent: #4cc9f0; --up: #2ecc71; --down: #e74c3c; --border: #222636;
+      --card: #12141c; --shadow: 0 8px 20px rgba(0,0,0,0.35);
     }
     [data-theme="light"] {
-      --bg: #f6f7fb;
-      --panel: #ffffff;
-      --text: #18202a;
-      --muted: #536375;
-      --accent: #1f7ae0;
-      --up: #1ea865;
-      --down: #c0392b;
-      --border: #dfe4ea;
-      --card: #ffffff;
-      --shadow: 0 8px 20px rgba(0,0,0,0.08);
+      --bg: #f6f7fb; --panel: #ffffff; --text: #18202a; --muted: #536375;
+      --accent: #1f7ae0; --up: #1ea865; --down: #c0392b; --border: #dfe4ea;
+      --card: #ffffff; --shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
     html, body { height: 100%; }
     body {
       margin: 0; background: var(--bg); color: var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", "Tahoma", Arial;
     }
-    header {
-      position: sticky; top: 0; z-index: 50;
-      backdrop-filter: saturate(1.2) blur(6px);
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(1.2) blur(6px);
       background: color-mix(in oklab, var(--bg) 80%, transparent 20%);
-      border-bottom: 1px solid var(--border);
-    }
+      border-bottom: 1px solid var(--border); }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; }
     .row { display: grid; gap: 14px; grid-template-columns: 1fr; }
     @media (min-width: 760px) { .row { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1100px) { .row { grid-template-columns: repeat(3, 1fr); } }
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+    .card { background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
     .card h3 { margin: 0; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 16px; }
     .card .content { padding: 12px 14px; }
-    .toolbar { display:flex; align-items:center; gap:8px; }
+    .toolbar { display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
     .toolbar button, .toolbar select {
       background: var(--panel); color: var(--text); border: 1px solid var(--border);
       border-radius: 8px; padding: 8px 10px; cursor: pointer;
     }
     .badge { display:inline-flex; gap:8px; align-items:center; font-size: 13px; color: var(--muted); }
     .list { display: grid; gap: 8px; }
-    .item {
-      display:flex; justify-content:space-between; align-items:center;
-      padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel);
-    }
+    .item { display:flex; justify-content:space-between; align-items:center;
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
     .item .left { display:flex; flex-direction:column; gap:3px; }
     .item .right { text-align:right; display:flex; flex-direction:column; gap:3px; }
-    .delta-up { color: var(--up); }
-    .delta-down { color: var(--down); }
+    [dir="ltr"] .item .right { text-align: left; }
+    .delta-up { color: var(--up); } .delta-down { color: var(--down); }
     .small { font-size: 12px; color: var(--muted); }
     .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
     .iframe-box { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--panel); }
@@ -75,20 +54,27 @@
     .link { color: var(--accent); text-decoration: none; }
     .link:hover { text-decoration: underline; }
     .footer { padding: 16px; text-align:center; color: var(--muted); }
-    .modal-backdrop {
-      position: fixed; inset: 0; display: none; place-items: center; background: rgba(0,0,0,0.5);
-    }
-    .modal { width: min(640px, 92vw); background: var(--panel); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+    .modal-backdrop { position: fixed; inset: 0; display: none; place-items: center; background: rgba(0,0,0,0.5); }
+    .modal { width: min(640px, 92vw); background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: var(--shadow); }
     .modal header { border-bottom: 1px solid var(--border); padding: 10px 14px; }
     .modal .body { padding: 12px 14px; }
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+    @media (max-width:600px){ .two-col { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
-      <strong>داشبور زنده بازارها</strong>
-      <span class="badge">بدون‌سرور • مناسب GitHub Pages</span>
+      <strong id="title">داشبور زنده بازارها</strong>
+      <span class="badge" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
       <div style="flex:1"></div>
+      <select id="langSelect" aria-label="Language">
+        <option value="fa">فارسی</option>
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+      </select>
       <button id="toggleTheme">تم روشن/تاریک</button>
       <button id="openSettings">تنظیمات منابع</button>
       <button id="refreshAll">به‌روزرسانی</button>
@@ -98,61 +84,53 @@
   <main class="wrap" id="app">
     <div class="row">
 
-      <!-- ارزهای دیجیتال -->
       <section class="card" id="cryptoCard">
-        <h3>ارزهای دیجیتال</h3>
+        <h3 id="cryptoTitle">ارزهای دیجیتال</h3>
         <div class="content">
           <div class="status" id="cryptoStatus">در حال بارگذاری از CoinGecko…</div>
           <div class="list" id="cryptoList"></div>
         </div>
       </section>
 
-      <!-- Forex -->
       <section class="card" id="forexCard">
-        <h3>ارزهای جهان (Forex)</h3>
+        <h3 id="forexTitle">ارزهای جهان (Forex)</h3>
         <div class="content">
-          <div class="status" id="forexStatus">در حال دریافت از ExchangeRate.host…</div>
+          <div class="status" id="forexStatus">در حال دریافت از Frankfurter…</div>
           <div class="list" id="forexList"></div>
         </div>
       </section>
 
-      <!-- طلا و کامودیتی‌ها -->
       <section class="card" id="commoditiesCard">
-        <h3>طلا و کامودیتی‌ها</h3>
+        <h3 id="commoditiesTitle">طلا و کامودیتی‌ها</h3>
         <div class="content grid2">
           <div class="iframe-box">
-            <!-- TradingView Widget: Gold -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AGOLD&interval=60&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=fff&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1"
               title="Gold chart" width="100%" height="280" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- TradingView Widget: Crude Oil -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AUSOIL&interval=60&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=fff&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1"
               title="Oil chart" width="100%" height="280" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- TradingView Widget: Silver -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3ASILVER&interval=60&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=fff&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1"
               title="Silver chart" width="100%" height="280" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- TradingView Widget: Copper -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3ACOPPER&interval=60&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg=fff&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1"
               title="Copper chart" width="100%" height="280" frameborder="0" scrolling="no"></iframe>
           </div>
         </div>
       </section>
 
-      <!-- سکه بهار آزادی -->
       <section class="card" id="coinCard">
-        <h3>سکه بهار آزادی</h3>
+        <h3 id="coinTitle">سکه بهار آزادی</h3>
         <div class="content">
-          <div class="status">منبع پیش‌فرض: XAU به عنوان نماینده. برای منبع اختصاصی، در تنظیمات URL JSON را وارد کن.</div>
+          <div class="status" id="coinStatus">منبع پیش‌فرض: نمایه طلا. برای منبع مستقیم JSON، از تنظیمات URL اضافه کن.</div>
           <div class="list" id="coinList">
             <div class="item">
               <div class="left">
-                <strong>نمایه طلای جهانی (جایگزین داده مستقیم سکه)</strong>
-                <span class="small">برای قیمت دقیق سکه، منبع داخلی قابل‌امبد/JSON معرفی کن.</span>
+                <strong id="coinHintTitle">نمایه طلای جهانی (جایگزین داده مستقیم سکه)</strong>
+                <span class="small" id="coinHintText">برای قیمت دقیق سکه، منبع داخلی قابل‌امبد/JSON معرفی کن.</span>
               </div>
               <div class="right">
                 <a class="link" target="_blank" href="https://www.tradingview.com/symbols/XAUUSD/">XAU/USD</a>
@@ -163,60 +141,54 @@
         </div>
       </section>
 
-      <!-- شاخص بورس ایران و جهان -->
       <section class="card" id="indicesCard">
-        <h3>شاخص بورس‌ها</h3>
+        <h3 id="indicesTitle">شاخص بورس‌ها</h3>
         <div class="content grid2">
           <div class="iframe-box">
-            <!-- S&P 500 -->
-            <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol:SP%3AX&symbol=SP%3AX&interval=60&hidesidetoolbar=1&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&timezone=Etc%2FUTC"
+            <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=SP%3AX&interval=60&hidesidetoolbar=1&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&timezone=Etc%2FUTC"
               title="S&P 500" width="100%" height="240" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- NASDAQ -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=NASDAQ%3ACOMP&interval=60&hidesidetoolbar=1&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&timezone=Etc%2FUTC"
               title="NASDAQ" width="100%" height="240" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- DAX -->
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=INDEX%3ADEU40&interval=60&hidesidetoolbar=1&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&timezone=Etc%2FUTC"
               title="DAX" width="100%" height="240" frameborder="0" scrolling="no"></iframe>
           </div>
           <div class="iframe-box">
-            <!-- برای ایران: منبع قابل‌تنظیم -->
             <div style="padding:12px">
-              <strong>شاخص بورس تهران (قابل تنظیم)</strong>
-              <p class="small">اگر ویجت/صفحه قابل‌امبد داری، URL را در تنظیمات وارد کن تا اینجا نمایش داده شود.</p>
+              <strong id="tehranIdxTitle">شاخص بورس تهران (قابل تنظیم)</strong>
+              <p class="small" id="tehranIdxHint">اگر ویجت/صفحه قابل‌امبد داری، URL را در تنظیمات وارد کن تا اینجا نمایش داده شود.</p>
               <a class="link" target="_blank" href="https://www.tsetmc.com/">TSETMC</a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- آهن‌آلات -->
       <section class="card" id="ironCard">
-        <h3>آهن‌آلات</h3>
+        <h3 id="ironTitle">آهن‌آلات</h3>
         <div class="content">
-          <div class="status">منابع عمومیِ بدون‌کلید محدودند. می‌توانی منبع JSON خودت را معرفی کنی یا قیمت‌ها را دستی ثبت کنی.</div>
+          <div class="status" id="ironStatus">منابع عمومیِ بدون‌کلید محدودند. می‌توانی منبع JSON خودت را معرفی کنی یا قیمت‌ها را دستی ثبت کنی.</div>
           <div class="list" id="ironList">
             <div class="item">
               <div class="left">
-                <strong>میلگرد 16</strong>
-                <span class="small">منبع: دستی یا JSON سفارشی</span>
+                <strong id="ironRebar16Title">میلگرد 16</strong>
+                <span class="small" id="ironRebar16Src">منبع: دستی یا JSON سفارشی</span>
               </div>
               <div class="right">
                 <span id="ironRebar16">—</span>
-                <span class="small"><button class="link" onclick="promptUpdate('ironRebar16')">ثبت قیمت</button></span>
+                <span class="small"><button class="link" id="ironRebar16Btn">ثبت قیمت</button></span>
               </div>
             </div>
             <div class="item">
               <div class="left">
-                <strong>ورق فولادی 2mm</strong>
-                <span class="small">منبع: دستی یا JSON سفارشی</span>
+                <strong id="ironSheet2Title">ورق فولادی 2mm</strong>
+                <span class="small" id="ironSheet2Src">منبع: دستی یا JSON سفارشی</span>
               </div>
               <div class="right">
                 <span id="ironSheet2">—</span>
-                <span class="small"><button class="link" onclick="promptUpdate('ironSheet2')">ثبت قیمت</button></span>
+                <span class="small"><button class="link" id="ironSheet2Btn">ثبت قیمت</button></span>
               </div>
             </div>
           </div>
@@ -224,23 +196,20 @@
       </section>
 
     </div>
-    <div class="footer">
+    <div class="footer" id="footerText">
       ساخته‌شده برای اجرا روی GitHub Pages • بدون‌سرور • به‌روزرسانی سمت‌کاربر
     </div>
   </main>
 
-  <!-- Modal تنظیمات -->
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
-      <header>
-        <strong>تنظیمات منابع</strong>
-      </header>
+      <header><strong id="settingsTitle">تنظیمات منابع</strong></header>
       <div class="body">
         <div class="list">
           <div class="item">
             <div class="left">
-              <strong>فاصله به‌روزرسانی خودکار</strong>
-              <span class="small">بر حسب ثانیه (پیش‌فرض: 60)</span>
+              <strong id="refreshLabel">فاصله به‌روزرسانی خودکار</strong>
+              <span class="small" id="refreshHint">بر حسب ثانیه (پیش‌فرض: 60)</span>
             </div>
             <div class="right">
               <input type="number" min="15" step="5" id="refreshInterval" value="60" />
@@ -248,8 +217,8 @@
           </div>
           <div class="item">
             <div class="left">
-              <strong>منبع سفارشی سکه بهار آزادی (JSON)</strong>
-              <span class="small">URL باید CORS آزاد باشد. کلید: price، delta.</span>
+              <strong id="coinSrcLabel">منبع سفارشی سکه بهار آزادی (JSON)</strong>
+              <span class="small" id="coinSrcHint">URL باید CORS آزاد باشد. کلید: price، delta.</span>
             </div>
             <div class="right">
               <input type="url" id="coinSourceUrl" placeholder="https://example.com/coin.json" style="min-width: 240px;" />
@@ -257,38 +226,210 @@
           </div>
           <div class="item">
             <div class="left">
-              <strong>منبع سفارشی آهن‌آلات (JSON)</strong>
-              <span class="small">کلیدها: ironRebar16، ironSheet2، و…</span>
+              <strong id="ironSrcLabel">منبع سفارشی آهن‌آلات (JSON)</strong>
+              <span class="small" id="ironSrcHint">کلیدها: ironRebar16، ironSheet2، و…</span>
             </div>
             <div class="right">
               <input type="url" id="ironSourceUrl" placeholder="https://example.com/iron.json" style="min-width: 240px;" />
             </div>
           </div>
         </div>
-        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
-          <button onclick="saveSettings()">ذخیره</button>
-          <button onclick="closeModal()">بستن</button>
+        <div class="two-col" style="margin-top:12px;">
+          <button id="saveSettingsBtn">ذخیره</button>
+          <button id="closeSettingsBtn">بستن</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // حالت و تنظیمات
+    // ===== i18n =====
+    const i18n = {
+      fa: {
+        dir: 'rtl', locale: 'fa-IR',
+        title: 'داشبور زنده بازارها', badge: 'بدون‌سرور • مناسب GitHub Pages',
+        cryptoTitle: 'ارزهای دیجیتال', cryptoStatusLoading: 'در حال بارگذاری از CoinGecko…',
+        forexTitle: 'ارزهای جهان (Forex)', forexStatusLoading: 'در حال دریافت از Frankfurter…',
+        commoditiesTitle: 'طلا و کامودیتی‌ها',
+        coinTitle: 'سکه بهار آزادی', coinStatus: 'منبع پیش‌فرض: نمایه طلا. برای منبع مستقیم JSON، از تنظیمات URL اضافه کن.',
+        coinHintTitle: 'نمایه طلای جهانی (جایگزین داده مستقیم سکه)',
+        coinHintText: 'برای قیمت دقیق سکه، منبع داخلی قابل‌امبد/JSON معرفی کن.',
+        indicesTitle: 'شاخص بورس‌ها',
+        tehranIdxTitle: 'شاخص بورس تهران (قابل تنظیم)', tehranIdxHint: 'اگر ویجت/صفحه قابل‌امبد داری، URL را در تنظیمات وارد کن تا اینجا نمایش داده شود.',
+        ironTitle: 'آهن‌آلات', ironStatus: 'منابع عمومیِ بدون‌کلید محدودند. می‌توانی منبع JSON خودت را معرفی کنی یا قیمت‌ها را دستی ثبت کنی.',
+        ironRebar16Title: 'میلگرد 16', ironRebar16Src: 'منبع: دستی یا JSON سفارشی', ironRebar16Btn: 'ثبت قیمت',
+        ironSheet2Title: 'ورق فولادی 2mm', ironSheet2Src: 'منبع: دستی یا JSON سفارشی', ironSheet2Btn: 'ثبت قیمت',
+        footerText: 'ساخته‌شده برای اجرا روی GitHub Pages • بدون‌سرور • به‌روزرسانی سمت‌کاربر',
+        settingsTitle: 'تنظیمات منابع', refreshLabel: 'فاصله به‌روزرسانی خودکار', refreshHint: 'بر حسب ثانیه (پیش‌فرض: 60)',
+        coinSrcLabel: 'منبع سفارشی سکه بهار آزادی (JSON)', coinSrcHint: 'URL باید CORS آزاد باشد. کلید: price، delta.',
+        ironSrcLabel: 'منبع سفارشی آهن‌آلات (JSON)', ironSrcHint: 'کلیدها: ironRebar16، ironSheet2، و…',
+        saveSettingsBtn: 'ذخیره', closeSettingsBtn: 'بستن',
+        refreshBtn: 'به‌روزرسانی', settingsBtn: 'تنظیمات منابع', themeBtn: 'تم روشن/تاریک',
+        lastUpdate: 'آخرین بروزرسانی', sourceFrank: 'منبع: Frankfurter.app', marketCap: 'مارکت کپ',
+        promptPrice: 'قیمت را وارد کن:'
+      },
+      ar: {
+        dir: 'rtl', locale: 'ar-SA',
+        title: 'لوحة الأسواق الحية', badge: 'بدون خادم • مناسب لـ GitHub Pages',
+        cryptoTitle: 'العملات الرقمية', cryptoStatusLoading: 'يتم التحميل من CoinGecko…',
+        forexTitle: 'عملات العالم (فوركس)', forexStatusLoading: 'جارٍ الجلب من Frankfurter…',
+        commoditiesTitle: 'الذهب والسلع',
+        coinTitle: 'سكة بهار آزادي', coinStatus: 'المصدر الافتراضي: مؤشر الذهب. أضف عنوان JSON مخصص من الإعدادات.',
+        coinHintTitle: 'مؤشر الذهب العالمي (بديل لبيانات السكة المباشرة)',
+        coinHintText: 'لسعر السكة الدقيق، قدم مصدر JSON قابل للتضمين.',
+        indicesTitle: 'مؤشرات البورصات',
+        tehranIdxTitle: 'مؤشر بورصة طهران (قابل للتخصيص)', tehranIdxHint: 'إذا لديك ويدجت قابل للتضمين، ضع الرابط في الإعدادات للعرض هنا.',
+        ironTitle: 'الحديد والمعادن', ironStatus: 'المصادر العامة بدون مفاتيح محدودة. يمكنك إضافة JSON مخصص أو إدخال الأسعار يدويًا.',
+        ironRebar16Title: 'حديد تسليح 16', ironRebar16Src: 'المصدر: يدوي أو JSON مخصص', ironRebar16Btn: 'أدخل السعر',
+        ironSheet2Title: 'صفائح فولاذية 2مم', ironSheet2Src: 'المصدر: يدوي أو JSON مخصص', ironSheet2Btn: 'أدخل السعر',
+        footerText: 'مصمم للعمل على GitHub Pages • بدون خادم • تحديث من جانب العميل',
+        settingsTitle: 'إعدادات المصادر', refreshLabel: 'فاصل التحديث التلقائي', refreshHint: 'بالثواني (الافتراضي: 60)',
+        coinSrcLabel: 'مصدر السكة (JSON) المخصص', coinSrcHint: 'يجب أن يدعم CORS. المفاتيح: price، delta.',
+        ironSrcLabel: 'مصدر الحديد (JSON) المخصص', ironSrcHint: 'المفاتيح: ironRebar16، ironSheet2، وغيرها',
+        saveSettingsBtn: 'حفظ', closeSettingsBtn: 'إغلاق',
+        refreshBtn: 'تحديث', settingsBtn: 'إعدادات', themeBtn: 'سمة فاتحة/داكنة',
+        lastUpdate: 'آخر تحديث', sourceFrank: 'المصدر: Frankfurter.app', marketCap: 'القيمة السوقية',
+        promptPrice: 'أدخل السعر:'
+      },
+      en: {
+        dir: 'ltr', locale: 'en-US',
+        title: 'Live markets dashboard', badge: 'Serverless • Built for GitHub Pages',
+        cryptoTitle: 'Cryptocurrencies', cryptoStatusLoading: 'Loading from CoinGecko…',
+        forexTitle: 'Global currencies (Forex)', forexStatusLoading: 'Fetching from Frankfurter…',
+        commoditiesTitle: 'Gold and commodities',
+        coinTitle: 'Bahar Azadi coin', coinStatus: 'Default source: gold proxy. Add direct JSON source in Settings.',
+        coinHintTitle: 'Global gold proxy (placeholder for direct coin data)',
+        coinHintText: 'For precise coin price, provide an embeddable/JSON source.',
+        indicesTitle: 'Market indices',
+        tehranIdxTitle: 'Tehran Stock Exchange (configurable)', tehranIdxHint: 'If you have an embeddable widget, add its URL in Settings.',
+        ironTitle: 'Iron & steel', ironStatus: 'Public keyless sources are limited. Add your JSON source or enter prices manually.',
+        ironRebar16Title: 'Rebar 16', ironRebar16Src: 'Source: manual or custom JSON', ironRebar16Btn: 'Set price',
+        ironSheet2Title: 'Steel sheet 2mm', ironSheet2Src: 'Source: manual or custom JSON', ironSheet2Btn: 'Set price',
+        footerText: 'Made for GitHub Pages • Serverless • Client-side updates',
+        settingsTitle: 'Source settings', refreshLabel: 'Auto-refresh interval', refreshHint: 'In seconds (default: 60)',
+        coinSrcLabel: 'Custom Bahar Azadi source (JSON)', coinSrcHint: 'URL must allow CORS. Keys: price, delta.',
+        ironSrcLabel: 'Custom iron source (JSON)', ironSrcHint: 'Keys: ironRebar16, ironSheet2, etc.',
+        saveSettingsBtn: 'Save', closeSettingsBtn: 'Close',
+        refreshBtn: 'Refresh', settingsBtn: 'Source settings', themeBtn: 'Light/Dark',
+        lastUpdate: 'Last update', sourceFrank: 'Source: Frankfurter.app', marketCap: 'Market cap',
+        promptPrice: 'Enter price:'
+      },
+      ru: {
+        dir: 'ltr', locale: 'ru-RU',
+        title: 'Панель живых рынков', badge: 'Без сервера • Для GitHub Pages',
+        cryptoTitle: 'Криптовалюты', cryptoStatusLoading: 'Загрузка с CoinGecko…',
+        forexTitle: 'Мировые валюты (Forex)', forexStatusLoading: 'Получение с Frankfurter…',
+        commoditiesTitle: 'Золото и сырьё',
+        coinTitle: 'Монета Бахар Азади', coinStatus: 'Источник по умолчанию: прокси золота. Добавьте прямой JSON в настройках.',
+        coinHintTitle: 'Прокси золота (замена прямых данных монеты)',
+        coinHintText: 'Для точной цены монеты укажите встраиваемый/JSON источник.',
+        indicesTitle: 'Биржевые индексы',
+        tehranIdxTitle: 'Тегеранская фондовая биржа (настраиваемо)', tehranIdxHint: 'Если есть виджет для встраивания, добавьте URL в настройках.',
+        ironTitle: 'Железо и сталь', ironStatus: 'Публичные источники без ключей ограничены. Добавьте свой JSON или вводите цены вручную.',
+        ironRebar16Title: 'Арматура 16', ironRebar16Src: 'Источник: вручную или JSON', ironRebar16Btn: 'Установить цену',
+        ironSheet2Title: 'Стальной лист 2мм', ironSheet2Src: 'Источник: вручную или JSON', ironSheet2Btn: 'Установить цену',
+        footerText: 'Сделано для GitHub Pages • Без сервера • Обновления на клиенте',
+        settingsTitle: 'Настройки источников', refreshLabel: 'Интервал автообновления', refreshHint: 'В секундах (по умолчанию: 60)',
+        coinSrcLabel: 'Пользовательский источник монеты (JSON)', coinSrcHint: 'URL должен разрешать CORS. Ключи: price, delta.',
+        ironSrcLabel: 'Пользовательский источник железа (JSON)', ironSrcHint: 'Ключи: ironRebar16, ironSheet2 и др.',
+        saveSettingsBtn: 'Сохранить', closeSettingsBtn: 'Закрыть',
+        refreshBtn: 'Обновить', settingsBtn: 'Настройки', themeBtn: 'Светлая/Тёмная',
+        lastUpdate: 'Последнее обновление', sourceFrank: 'Источник: Frankfurter.app', marketCap: 'Рыночная кап.',
+        promptPrice: 'Введите цену:'
+      }
+    };
+
+    // ===== State =====
     const state = {
       theme: localStorage.getItem('theme') || 'dark',
-      refreshInterval: parseInt(localStorage.getItem('refreshInterval') || '60', 10),
+      lang: localStorage.getItem('lang') || 'fa',
+      refreshInterval: Math.max(15, parseInt(localStorage.getItem('refreshInterval') || '60', 10)),
       coinSourceUrl: localStorage.getItem('coinSourceUrl') || '',
       ironSourceUrl: localStorage.getItem('ironSourceUrl') || '',
       timers: []
     };
     document.body.setAttribute('data-theme', state.theme);
 
-    // ابزار مودال
-    const backdrop = document.getElementById('modalBackdrop');
-    function openModal() { backdrop.style.display = 'grid'; }
-    function closeModal() { backdrop.style.display = 'none'; }
-    function saveSettings() {
+    // ===== Helpers =====
+    function t(key){ const pack = i18n[state.lang]; return pack[key] || key; }
+    function setText(id, val){ const el = document.getElementById(id); if (el) el.textContent = String(val); }
+    function notify(msg){ alert(msg); }
+    function clearTimers(){ for (const t of state.timers) clearInterval(t); state.timers = []; }
+    function scheduleAutoRefresh(){
+      clearTimers();
+      state.timers.push(setInterval(loadCrypto, state.refreshInterval * 1000));
+      state.timers.push(setInterval(loadForex, state.refreshInterval * 1000));
+      state.timers.push(setInterval(loadCoinCustom, state.refreshInterval * 1000));
+      state.timers.push(setInterval(loadIronCustom, state.refreshInterval * 1000));
+    }
+    function formatPrice(n){ try { return Number(n).toLocaleString(i18n[state.lang].locale, { maximumFractionDigits: 6 }); } catch { return n; } }
+    function formatNumber(n){ try { return Number(n).toLocaleString(i18n[state.lang].locale); } catch { return n; } }
+
+    // ===== Language apply =====
+    function applyLanguage(){
+      const pack = i18n[state.lang];
+      document.documentElement.lang = state.lang;
+      document.documentElement.dir = pack.dir;
+      setText('title', pack.title);
+      setText('badge', pack.badge);
+      setText('cryptoTitle', pack.cryptoTitle);
+      setText('cryptoStatus', pack.cryptoStatusLoading);
+      setText('forexTitle', pack.forexTitle);
+      setText('forexStatus', pack.forexStatusLoading);
+      setText('commoditiesTitle', pack.commoditiesTitle);
+      setText('coinTitle', pack.coinTitle);
+      setText('coinStatus', pack.coinStatus);
+      setText('coinHintTitle', pack.coinHintTitle);
+      setText('coinHintText', pack.coinHintText);
+      setText('indicesTitle', pack.indicesTitle);
+      setText('tehranIdxTitle', pack.tehranIdxTitle);
+      setText('tehranIdxHint', pack.tehranIdxHint);
+      setText('ironTitle', pack.ironTitle);
+      setText('ironStatus', pack.ironStatus);
+      setText('ironRebar16Title', pack.ironRebar16Title);
+      setText('ironRebar16Src', pack.ironRebar16Src);
+      setText('ironRebar16Btn', pack.ironRebar16Btn);
+      setText('ironSheet2Title', pack.ironSheet2Title);
+      setText('ironSheet2Src', pack.ironSheet2Src);
+      setText('ironSheet2Btn', pack.ironSheet2Btn);
+      setText('footerText', pack.footerText);
+      setText('settingsTitle', pack.settingsTitle);
+      setText('refreshLabel', pack.refreshLabel);
+      setText('refreshHint', pack.refreshHint);
+      setText('coinSrcLabel', pack.coinSrcLabel);
+      setText('coinSrcHint', pack.coinSrcHint);
+      setText('ironSrcLabel', pack.ironSrcLabel);
+      setText('ironSrcHint', pack.ironSrcHint);
+      setText('saveSettingsBtn', pack.saveSettingsBtn);
+      setText('closeSettingsBtn', pack.closeSettingsBtn);
+      document.getElementById('toggleTheme').textContent = pack.themeBtn;
+      document.getElementById('openSettings').textContent = pack.settingsBtn;
+      document.getElementById('refreshAll').textContent = pack.refreshBtn;
+      // Re-render lists to update labels/formatting
+      loadAll(false);
+    }
+
+    // ===== Events =====
+    document.getElementById('toggleTheme').addEventListener('click', () => {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', state.theme);
+      localStorage.setItem('theme', state.theme);
+    });
+    document.getElementById('openSettings').addEventListener('click', () => { document.getElementById('modalBackdrop').style.display = 'grid'; });
+    document.getElementById('refreshAll').addEventListener('click', () => loadAll(true));
+    document.getElementById('closeSettingsBtn').addEventListener('click', () => { document.getElementById('modalBackdrop').style.display = 'none'; });
+    document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+    document.getElementById('ironRebar16Btn').addEventListener('click', () => promptUpdate('ironRebar16'));
+    document.getElementById('ironSheet2Btn').addEventListener('click', () => promptUpdate('ironSheet2'));
+    const langSelect = document.getElementById('langSelect');
+    langSelect.value = state.lang;
+    langSelect.addEventListener('change', () => {
+      state.lang = langSelect.value;
+      localStorage.setItem('lang', state.lang);
+      applyLanguage();
+    });
+
+    function saveSettings(){
       const intervalEl = document.getElementById('refreshInterval');
       const coinEl = document.getElementById('coinSourceUrl');
       const ironEl = document.getElementById('ironSourceUrl');
@@ -298,34 +439,30 @@
       localStorage.setItem('refreshInterval', String(state.refreshInterval));
       localStorage.setItem('coinSourceUrl', state.coinSourceUrl);
       localStorage.setItem('ironSourceUrl', state.ironSourceUrl);
-      notify('تنظیمات ذخیره شد. داده‌ها دوباره بارگذاری می‌شوند.');
+      notify(state.lang === 'en' ? 'Settings saved. Reloading data.' :
+             state.lang === 'ru' ? 'Настройки сохранены. Данные обновляются.' :
+             state.lang === 'ar' ? 'تم حفظ الإعدادات. سيتم تحديث البيانات.' :
+             'تنظیمات ذخیره شد. داده‌ها دوباره بارگذاری می‌شوند.');
       scheduleAutoRefresh();
       loadAll();
-      closeModal();
-    }
-    function notify(msg) {
-      // مودال ساده اعلام
-      alert(msg);
+      document.getElementById('modalBackdrop').style.display = 'none';
     }
 
-    // رویدادها
-    document.getElementById('toggleTheme').addEventListener('click', () => {
-      state.theme = state.theme === 'dark' ? 'light' : 'dark';
-      document.body.setAttribute('data-theme', state.theme);
-      localStorage.setItem('theme', state.theme);
-    });
-    document.getElementById('openSettings').addEventListener('click', openModal);
-    document.getElementById('refreshAll').addEventListener('click', () => loadAll(true));
+    function promptUpdate(id){
+      const cur = document.getElementById(id)?.textContent || '';
+      const v = prompt(t('promptPrice'), cur);
+      if (v) setText(id, v);
+    }
 
-    // توابع بارگذاری
-    async function loadCrypto() {
+    // ===== Data loaders =====
+    async function loadCrypto(){
       const status = document.getElementById('cryptoStatus');
       const list = document.getElementById('cryptoList');
       try {
-        status.textContent = 'در حال به‌روزرسانی…';
+        setText('cryptoStatus', t('cryptoStatusLoading'));
         const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&sparkline=false&price_change_percentage=1h,24h';
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('CoinGecko پاسخ نامعتبر');
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('CoinGecko error');
         const data = await res.json();
         const top = data.slice(0, 10);
         list.innerHTML = top.map(c => {
@@ -334,36 +471,37 @@
           return `
             <div class="item">
               <div class="left">
-                <strong>${c.name} (${c.symbol.toUpperCase()})</strong>
-                <span class="small">مارکت کپ: $${formatNumber(c.market_cap)}</span>
+                <strong>${escapeHtml(c.name)} (${escapeHtml(c.symbol.toUpperCase())})</strong>
+                <span class="small">${t('marketCap')}: $${formatNumber(c.market_cap)}</span>
               </div>
               <div class="right">
                 <span>$${formatPrice(c.current_price)}</span>
-                <span class="small ${cls}">${d24.toFixed(2)}%</span>
+                <span class="small ${cls}">${Number(d24).toFixed(2)}%</span>
               </div>
             </div>
           `;
         }).join('');
-        status.textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString()}`;
+        status.textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
       } catch (e) {
-        status.textContent = 'خطا در دریافت داده‌های کریپتو.';
+        status.textContent = state.lang === 'en' ? 'Error loading crypto.' :
+                             state.lang === 'ru' ? 'Ошибка загрузки крипто.' :
+                             state.lang === 'ar' ? 'خطأ في تحميل العملات الرقمية.' :
+                             'خطا در دریافت داده‌های کریپتو.';
         console.error(e);
       }
     }
 
-    async function loadForex() {
+    async function loadForex(){
       const status = document.getElementById('forexStatus');
       const list = document.getElementById('forexList');
       try {
-        status.textContent = 'در حال به‌روزرسانی…';
-        const pairs = [
-          ['USD','EUR'], ['USD','IRR'], ['EUR','IRR'], ['USD','GBP'], ['USD','JPY']
-        ];
+        setText('forexStatus', t('forexStatusLoading'));
+        const pairs = [['USD','EUR'], ['USD','GBP'], ['USD','JPY'], ['EUR','GBP'], ['EUR','USD']];
         const items = [];
         for (const [base, quote] of pairs) {
-          const url = `https://api.exchangerate.host/latest?base=${base}&symbols=${quote}`;
-          const res = await fetch(url);
-          if (!res.ok) throw new Error('ExchangeRate.host پاسخ نامعتبر');
+          const url = `https://api.frankfurter.app/latest?from=${base}&to=${quote}`;
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('Frankfurter error');
           const data = await res.json();
           const rate = data.rates[quote];
           items.push({ base, quote, rate });
@@ -372,26 +510,29 @@
           <div class="item">
             <div class="left">
               <strong>${x.base}/${x.quote}</strong>
-              <span class="small">منبع: ExchangeRate.host</span>
+              <span class="small">${t('sourceFrank')}</span>
             </div>
             <div class="right">
               <span>${formatNumber(x.rate)}</span>
             </div>
           </div>
         `).join('');
-        status.textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString()}`;
+        status.textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
       } catch (e) {
-        status.textContent = 'خطا در دریافت داده‌های ارزها.';
+        status.textContent = state.lang === 'en' ? 'Error loading forex.' :
+                             state.lang === 'ru' ? 'Ошибка загрузки валют.' :
+                             state.lang === 'ar' ? 'خطأ في جلب العملات.' :
+                             'خطا در دریافت داده‌های ارزها.';
         console.error(e);
       }
     }
 
-    async function loadCoinCustom() {
+    async function loadCoinCustom(){
       const list = document.getElementById('coinList');
       if (!state.coinSourceUrl) return;
       try {
         const res = await fetch(state.coinSourceUrl, { cache: 'no-store' });
-        if (!res.ok) throw new Error('منبع سکه پاسخ نامعتبر');
+        if (!res.ok) throw new Error('Coin source error');
         const data = await res.json();
         const price = data.price;
         const delta = data.delta || 0;
@@ -399,76 +540,64 @@
         list.innerHTML = `
           <div class="item">
             <div class="left">
-              <strong>سکه بهار آزادی</strong>
-              <span class="small">منبع سفارشی</span>
+              <strong>${t('coinTitle')}</strong>
+              <span class="small">Custom source</span>
             </div>
             <div class="right">
-              <span>${formatNumber(price)} ریال</span>
-              <span class="small ${cls}">${delta.toFixed ? delta.toFixed(2) : delta}%</span>
+              <span>${formatNumber(price)}</span>
+              <span class="small ${cls}">${(Number(delta).toFixed ? Number(delta).toFixed(2) : delta)}%</span>
             </div>
           </div>
         `;
+        setText('coinStatus', `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`);
       } catch (e) {
-        console.warn('خطا در منبع سفارشی سکه:', e);
+        console.warn('Custom coin source error:', e);
       }
     }
 
-    async function loadIronCustom() {
+    async function loadIronCustom(){
       if (!state.ironSourceUrl) return;
       try {
         const res = await fetch(state.ironSourceUrl, { cache: 'no-store' });
-        if (!res.ok) throw new Error('منبع آهن پاسخ نامعتبر');
+        if (!res.ok) throw new Error('Iron source error');
         const data = await res.json();
         if (data.ironRebar16) setText('ironRebar16', data.ironRebar16);
         if (data.ironSheet2) setText('ironSheet2', data.ironSheet2);
+        setText('ironStatus', `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`);
       } catch (e) {
-        console.warn('خطا در منبع سفارشی آهن:', e);
+        console.warn('Custom iron source error:', e);
       }
     }
 
-    // ابزارهای UI
-    function setText(id, val) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = String(val);
-    }
-    function promptUpdate(id) {
-      const cur = document.getElementById(id)?.textContent || '';
-      const v = prompt('قیمت را وارد کن:', cur);
-      if (v) setText(id, v);
-    }
-    function formatPrice(n) {
-      try { return Number(n).toLocaleString(undefined, { maximumFractionDigits: 6 }); }
-      catch { return n; }
-    }
-    function formatNumber(n) {
-      try { return Number(n).toLocaleString(); } catch { return n; }
+    // ===== Security helpers =====
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"'`=\/]/g, function (c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'}[c] || c;
+      });
     }
 
-    function clearTimers() {
-      for (const t of state.timers) clearInterval(t);
-      state.timers = [];
-    }
-    function scheduleAutoRefresh() {
-      clearTimers();
-      // هر بخش تایمر خودش را دارد تا در صورت خطا، بقیه از کار نیفتند.
-      state.timers.push(setInterval(loadCrypto, state.refreshInterval * 1000));
-      state.timers.push(setInterval(loadForex, state.refreshInterval * 1000));
-      state.timers.push(setInterval(loadCoinCustom, state.refreshInterval * 1000));
-      state.timers.push(setInterval(loadIronCustom, state.refreshInterval * 1000));
-    }
-
-    function loadAll(showToast) {
+    function loadAll(showToast){
       loadCrypto();
       loadForex();
       loadCoinCustom();
       loadIronCustom();
-      if (showToast) notify('داده‌ها به‌روزرسانی شدند.');
+      if (showToast) notify(
+        state.lang === 'en' ? 'Data refreshed.' :
+        state.lang === 'ru' ? 'Данные обновлены.' :
+        state.lang === 'ar' ? 'تم تحديث البيانات.' :
+        'داده‌ها به‌روزرسانی شدند.'
+      );
     }
 
-    // شروع
+    // ===== Init =====
     document.addEventListener('DOMContentLoaded', () => {
-      // بارگذاری اولیه و تایمر
-      loadAll(false);
+      // Apply language and theme
+      applyLanguage();
+      // Restore settings inputs
+      document.getElementById('refreshInterval').value = String(state.refreshInterval);
+      document.getElementById('coinSourceUrl').value = state.coinSourceUrl;
+      document.getElementById('ironSourceUrl').value = state.ironSourceUrl;
+      // Start timers
       scheduleAutoRefresh();
     });
   </script>
