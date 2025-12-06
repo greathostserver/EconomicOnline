@@ -2,251 +2,323 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>داشبور زنده بازارها</title>
+  <meta name="description" content="داشبور زنده با انتخاب جفت‌ارز از Binance، نرخ‌های فارکس و نمودار کامودیتی‌ها. چندزبانه و مناسب GitHub Pages." />
+  <link rel="preconnect" href="https://api.binance.com">
+  <link rel="preconnect" href="https://api.frankfurter.app">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
   <style>
     :root {
       --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
       --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
+      --field-w: 220px;
     }
     [data-theme="light"] {
-      --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
+      --bg:#f6f7fb; --panel:#ffffff; --text:#1a2230; --muted:#5c6b7c;
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
-      --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
+      --card:#ffffff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
-    body {margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
-    header {background:var(--panel);padding:10px;display:flex;gap:10px;align-items:center;position:sticky;top:0;border-bottom:1px solid var(--border);}
-    .card {background:var(--card);margin:10px;padding:10px;border-radius:8px;border:1px solid var(--border);}
-    .status {font-size:13px;color:var(--muted);margin-top:6px;}
-    .delta-up {color:var(--up);font-weight:600;}
-    .delta-down {color:var(--down);font-weight:600;}
-    .info-box {border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--panel);margin-top:8px;}
-    .grid {display:grid;gap:10px;grid-template-columns:1fr;}
-    @media(min-width:760px){.grid{grid-template-columns:repeat(2,1fr);}}
-    .iframe-box {border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--panel);}
-    .iframe-box iframe {width:100%;height:280px;border:0;}
 
-    /* محدود کردن عرض فیلدها */
-    .field {display:inline-block; max-width:220px;}
+    html, body {height:100%;}
+    body {
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
+    }
 
-    /* Choices.js سفارشی */
-    .choices__inner {background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px;}
-    .choices__list--dropdown {background:#fff; border:1px solid var(--border); border-radius:8px; box-shadow:var(--shadow);}
-    /* قالب آیتم با آیکن و متن مشکی */
+    header {
+      position:sticky; top:0; z-index:50;
+      background: color-mix(in oklab, var(--bg) 85%, transparent 15%);
+      backdrop-filter:saturate(1.2) blur(6px);
+      border-bottom:1px solid var(--border);
+    }
+    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
+    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .toolbar .spacer {flex:1;}
+    .toolbar button {
+      background:var(--panel); color:var(--text);
+      border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;
+    }
+
+    .row {display:grid; gap:14px; grid-template-columns:1fr;}
+    @media (min-width:900px) { .row { grid-template-columns: 1.5fr 1fr; } }
+
+    .card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; box-shadow:var(--shadow); overflow:hidden;
+    }
+    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
+    .card .content {padding:10px 14px;}
+    .status {font-size:13px; color:var(--muted); margin-top:6px;}
+
+    .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr;}
+    @media (max-width:760px) { .grid-2 { grid-template-columns:1fr; } }
+
+    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
+    .delta-up {color:var(--up); font-weight:600;}
+    .delta-down {color:var(--down); font-weight:600;}
+
+    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
+    .iframe-box iframe {width:100%; height:280px; border:0;}
+
+    /* فیلدهای جمع‌وجور */
+    .field {display:inline-block; width:var(--field-w);}
+    .field-group {display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap;}
+
+    /* Choices.js سفارشی و یکسان‌سازی ظاهر هر دو فیلد */
+    .choices {width:var(--field-w);}
+    .choices__inner {
+      background:var(--panel); border:1px solid var(--border); border-radius:10px;
+      color:var(--text); padding:8px;
+    }
+    .choices__list--dropdown {
+      background:#ffffff; border:1px solid var(--border);
+      border-radius:10px; box-shadow:var(--shadow);
+    }
+
+    /* آیتم‌ها با آیکن و فونت مشکی */
     .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
     .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
     .choice-with-icon .label {color:#000 !important; font-weight:600;}
     .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
     .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
-    /* آیتم انتخاب‌شده در کنترل */
+
+    /* آیتم انتخاب‌شده داخل کنترل */
     .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
     .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
     .selected-with-icon .label {color:var(--text); font-weight:600;}
+
     .choices__placeholder {color:var(--muted);}
 
     /* نام ارز در کارت اطلاعات */
-    .coin-name {color:#ffd166; font-weight:700;}
+    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
     [data-theme="light"] .coin-name {color:#1a2230;}
   </style>
 </head>
 <body data-theme="dark">
-<header>
-  <strong id="title">داشبور زنده بازارها</strong>
-  <select id="langSelect" class="field">
-    <option value="fa">فارسی</option>
-    <option value="ar">العربية</option>
-    <option value="en">English</option>
-    <option value="ru">Русский</option>
-  </select>
-  <button id="toggleTheme">تم روشن/تاریک</button>
-  <button id="refreshAll">به‌روزرسانی</button>
-</header>
-
-<main>
-  <!-- کریپتو -->
-  <section class="card">
-    <h3 id="cryptoTitle">کریپتو از Binance</h3>
-    <label id="pairLabel" for="pairSelect">انتخاب جفت‌ارز:</label>
-    <select id="pairSelect" class="field"><option value="">— هیچ‌کدام —</option></select>
-    <label id="quoteLabel" for="quoteSelect">انتخاب Quote:</label>
-    <select id="quoteSelect" class="field">
-      <option value="USDT">USDT</option>
-      <option value="BUSD">BUSD</option>
-      <option value="USDC">USDC</option>
-      <option value="BTC">BTC</option>
-    </select>
-    <div class="status" id="cryptoStatus">در حال دریافت از Binance…</div>
-    <div class="info-box">
-      <strong id="pairName">—</strong>
-      <div id="pairPrice">قیمت: —</div>
-      <div id="pairChange">تغییر 24h: —</div>
-      <div id="pairVolume">حجم 24h: —</div>
-      <div id="pairTrades">تعداد معاملات: —</div>
-      <div class="status" id="cryptoUpdated">—</div>
+  <header>
+    <div class="wrap toolbar">
+      <strong id="title">داشبور زنده بازارها</strong>
+      <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
+      <div class="spacer"></div>
+      <select id="langSelect" class="field">
+        <option value="fa">فارسی</option>
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+      </select>
+      <button id="toggleTheme">تم روشن/تاریک</button>
+      <button id="refreshAll">به‌روزرسانی</button>
     </div>
-  </section>
+  </header>
 
-  <!-- فارکس -->
-  <section class="card">
-    <h3 id="forexTitle">فارکس</h3>
-    <div class="status" id="forexStatus">در حال دریافت…</div>
-    <div class="info-box"><strong>USD/EUR</strong><div id="fx_usd_eur">—</div></div>
-    <div class="info-box"><strong>USD/GBP</strong><div id="fx_usd_gbp">—</div></div>
-    <div class="info-box"><strong>USD/JPY</strong><div id="fx_usd_jpy">—</div></div>
-    <div class="info-box"><strong>EUR/GBP</strong><div id="fx_eur_gbp">—</div></div>
-    <div class="status" id="forexUpdated">—</div>
-  </section>
+  <main class="wrap">
+    <div class="row">
+      <!-- کریپتو -->
+      <section class="card" id="cryptoCard">
+        <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
+        <div class="content">
+          <div class="status" id="cryptoStatus">در حال دریافت از Binance…</div>
 
-  <!-- کامودیتی‌ها -->
-  <section class="card">
-    <h3 id="commoditiesTitle">طلا و نفت</h3>
-    <div class="grid">
-      <div class="iframe-box">
-        <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AGOLD&interval=60&theme=dark&style=1" title="Gold"></iframe>
-      </div>
-      <div class="iframe-box">
-        <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AUSOIL&interval=60&theme=dark&style=1" title="Oil"></iframe>
-      </div>
+          <div class="field-group" style="margin-top:8px;">
+            <div>
+              <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
+              <select id="quoteSelect" class="field">
+                <option value="USDT">USDT</option>
+                <option value="BUSD">BUSD</option>
+                <option value="USDC">USDC</option>
+                <option value="BTC">BTC</option>
+              </select>
+            </div>
+            <div>
+              <label id="pairLabel" for="pairSelect">انتخاب جفت‌ارز:</label>
+              <select id="pairSelect" class="field"><option value="">— هیچ‌کدام —</option></select>
+              <div class="status" id="pairHint">USDT/USDC/BUSD توصیه‌شده</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:10px;">
+            <div class="info-box">
+              <strong id="pairName">—</strong>
+              <div id="pairPrice">قیمت: —</div>
+              <div id="pairChange">تغییر 24h: —</div>
+            </div>
+            <div class="info-box">
+              <div id="pairVolume">حجم 24h: —</div>
+              <div id="pairTrades">تعداد معاملات: —</div>
+              <div class="status" id="cryptoUpdated">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- فارکس -->
+      <section class="card" id="forexCard">
+        <h3 id="forexTitle">ارزهای جهان (Forex)</h3>
+        <div class="content">
+          <div class="status" id="forexStatus">در حال دریافت از Frankfurter…</div>
+          <div class="grid-2" style="margin-top:8px;">
+            <div class="info-box"><strong>USD/EUR</strong><div id="fx_usd_eur">—</div></div>
+            <div class="info-box"><strong>USD/GBP</strong><div id="fx_usd_gbp">—</div></div>
+            <div class="info-box"><strong>USD/JPY</strong><div id="fx_usd_jpy">—</div></div>
+            <div class="info-box"><strong>EUR/GBP</strong><div id="fx_eur_gbp">—</div></div>
+          </div>
+          <div class="status" id="forexUpdated" style="margin-top:8px;">—</div>
+        </div>
+      </section>
     </div>
-  </section>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script>
-  const state = { lang:'fa', quote:'USDT', binanceAll:[], pairChoices:null, quoteChoices:null };
-  const i18n = {
-    fa:{cryptoTitle:'کریپتو از Binance',cryptoStatus:'در حال دریافت از Binance…',pairLabel:'انتخاب جفت‌ارز:',quoteLabel:'انتخاب Quote:',priceLabel:'قیمت',changeLabel:'تغییر 24h',volLabel:'حجم 24h',tradesLabel:'تعداد معاملات',lastUpdate:'آخرین بروزرسانی',noneText:'— هیچ‌کدام —',locale:'fa-IR'},
-    en:{cryptoTitle:'Crypto from Binance',cryptoStatus:'Loading from Binance…',pairLabel:'Select pair:',quoteLabel:'Select quote:',priceLabel:'Price',changeLabel:'24h change',volLabel:'24h volume',tradesLabel:'Trades',lastUpdate:'Last update',noneText:'— None —',locale:'en-US'}
-  };
-  function t(k){return (i18n[state.lang]||{})[k]||k;}
-  function formatNum(n,opts){try{return Number(n).toLocaleString(i18n[state.lang].locale,opts||{});}catch{return n;}}
+    <!-- کامودیتی‌ها -->
+    <section class="card" id="commoditiesCard" style="margin-top:12px;">
+      <h3 id="commoditiesTitle">طلا و کامودیتی‌ها</h3>
+      <div class="content grid-2">
+        <div class="iframe-box">
+          <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AGOLD&interval=60&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1" title="Gold"></iframe>
+        </div>
+        <div class="iframe-box">
+          <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tvx&symbol=TVC%3AUSOIL&interval=60&theme=dark&style=1&hideideas=1&hide_top_toolbar=1&hidetimescale=1" title="Oil"></iframe>
+        </div>
+      </div>
+    </section>
 
-  function iconUrl(base){ return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; }
+    <div class="status" style="text-align:center; padding:16px;">
+      ساخته‌شده برای اجرا روی GitHub Pages • بدون‌سرور • به‌روزرسانی سمت‌کاربر
+    </div>
+  </main>
 
-  async function loadBinance(){
-    document.getElementById('cryptoStatus').textContent = t('cryptoStatus');
-    const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
-    state.binanceAll = await res.json();
-    populatePairChoices();
-    document.getElementById('cryptoUpdated').textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
-  }
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    // i18n (خلاصه برای تمرکز روی UI)
+    const i18n = {
+      fa: { locale:'fa-IR', cryptoStatus:'در حال دریافت از Binance…', priceLabel:'قیمت', changeLabel:'تغییر 24h', volLabel:'حجم 24h', tradesLabel:'تعداد معاملات', lastUpdate:'آخرین بروزرسانی', noneText:'— هیچ‌کدام —' },
+      en: { locale:'en-US', cryptoStatus:'Loading from Binance…', priceLabel:'Price', changeLabel:'24h change', volLabel:'24h volume', tradesLabel:'Trades', lastUpdate:'Last update', noneText:'— None —' }
+    };
+    const state = { lang:'fa', quote:'USDT', binanceAll:[], pairChoices:null, quoteChoices:null, refreshMs:60000 };
 
-  function populatePairChoices(){
-    const select = document.getElementById('pairSelect');
-    const quote = state.quote;
-    const pairs = state.binanceAll.filter(d => d.symbol.endsWith(quote));
+    function t(k){ return (i18n[state.lang]||i18n.fa)[k] || k; }
+    function formatNum(n, opts){ try{ return Number(n).toLocaleString(i18n[state.lang].locale, opts||{});} catch{ return n; } }
+    function iconUrl(base){ return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; }
 
-    select.innerHTML = `<option value="">${t('noneText')}</option>` + pairs.map(p=>{
-      const base = p.symbol.slice(0, p.symbol.length - quote.length);
-      return `<option value="${p.symbol}" data-custom-properties="${iconUrl(base)}">${base}/${quote}</option>`;
-    }).join('');
-
-    if (state.pairChoices) { state.pairChoices.destroy(); }
-    state.pairChoices = new Choices(select, {
-      searchEnabled: true,
-      itemSelectText: '',
-      shouldSort: true,
-      position: 'bottom',
-      callbackOnCreateTemplates: function(template) {
-        return {
-          option: (classNames, data) => {
-            const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
-            return template(`
-              <div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">
-                ${icon}<span class="label">${data.label}</span>
-              </div>
-            `);
-          },
-          item: (classNames, data) => {
-            const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
-            return template(`
-              <div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}">
-                ${icon}<span class="label">${data.label}</span>
-              </div>
-            `);
-          }
-        };
-      }
-    });
-
-    select.addEventListener('change', e => renderPairInfo(e.target.value, pairs));
-
-    select.value = '';
-    select.dispatchEvent(new Event('change'));
-  }
-
-  function renderPairInfo(symbol, pairs){
-    const priceEl = document.getElementById('pairPrice');
-    const changeEl = document.getElementById('pairChange');
-    const volEl = document.getElementById('pairVolume');
-    const tradesEl = document.getElementById('pairTrades');
-    const nameEl = document.getElementById('pairName');
-
-    if (!symbol) {
-      nameEl.innerHTML = '<span class="coin-name">—</span>';
-      priceEl.textContent = `${t('priceLabel')}: —`;
-      changeEl.textContent = `${t('changeLabel')}: —`;
-      volEl.textContent = `${t('volLabel')}: —`;
-      tradesEl.textContent = `${t('tradesLabel')}: —`;
-      return;
+    // init Choices for both fields
+    function initQuoteChoices(){
+      const el = document.getElementById('quoteSelect');
+      if (state.quoteChoices) state.quoteChoices.destroy();
+      state.quoteChoices = new Choices(el, {
+        searchEnabled: false, itemSelectText: '', shouldSort: false, position: 'bottom'
+      });
+      el.addEventListener('change', ()=>{
+        state.quote = el.value;
+        populatePairChoices();
+      });
     }
-    const info = pairs.find(p => p.symbol === symbol);
-    if (!info) return;
-    const base = symbol.slice(0, symbol.length - state.quote.length);
 
-    nameEl.innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
-    priceEl.textContent = `${t('priceLabel')}: $${formatNum(info.lastPrice, {maximumFractionDigits: 8})}`;
-    changeEl.innerHTML = `${t('changeLabel')}: <span class="${Number(info.priceChangePercent)>=0?'delta-up':'delta-down'}">${formatNum(info.priceChangePercent, {maximumFractionDigits:2})}%</span>`;
-    volEl.textContent = `${t('volLabel')}: $${formatNum(info.quoteVolume)}`;
-    tradesEl.textContent = `${t('tradesLabel')}: ${formatNum(info.count||0)}`;
-  }
-
-  function initQuoteChoices(){
-    const select = document.getElementById('quoteSelect');
-    if (state.quoteChoices) { state.quoteChoices.destroy(); }
-    state.quoteChoices = new Choices(select, {
-      searchEnabled: false,
-      itemSelectText: '',
-      shouldSort: false,
-      position: 'bottom'
-    });
-    select.addEventListener('change', ()=>{
-      state.quote = select.value;
+    async function loadBinance(){
+      document.getElementById('cryptoStatus').textContent = t('cryptoStatus');
+      const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
+      if (!res.ok) { document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; return; }
+      state.binanceAll = await res.json();
       populatePairChoices();
-    });
-  }
-
-  async function loadForex(){
-    document.getElementById('forexStatus').textContent = 'در حال دریافت…';
-    const pairs = [
-      ['USD','EUR','fx_usd_eur'],
-      ['USD','GBP','fx_usd_gbp'],
-      ['USD','JPY','fx_usd_jpy'],
-      ['EUR','GBP','fx_eur_gbp']
-    ];
-    for (const [base, quote, elId] of pairs) {
-      const res = await fetch(`https://api.frankfurter.app/latest?from=${base}&to=${quote}`, {cache:'no-store'});
-      const data = await res.json();
-      document.getElementById(elId).textContent = formatNum(data.rates[quote], {maximumFractionDigits: 6});
+      document.getElementById('cryptoUpdated').textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
     }
-    document.getElementById('forexUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
-  }
 
-  document.addEventListener('DOMContentLoaded', ()=>{
-    initQuoteChoices();
-    loadBinance();
-    loadForex();
+    function populatePairChoices(){
+      const el = document.getElementById('pairSelect');
+      const quote = state.quote;
+      const list = state.binanceAll.filter(d => d.symbol.endsWith(quote));
+
+      el.innerHTML = `<option value="">${t('noneText')}</option>` + list.map(d=>{
+        const base = d.symbol.slice(0, d.symbol.length - quote.length);
+        return `<option value="${d.symbol}" data-custom-properties="${iconUrl(base)}">${base}/${quote}</option>`;
+      }).join('');
+
+      if (state.pairChoices) state.pairChoices.destroy();
+      state.pairChoices = new Choices(el, {
+        searchEnabled: true, itemSelectText: '', shouldSort: true, position: 'bottom',
+        callbackOnCreateTemplates: function(template) {
+          return {
+            option: (classNames, data) => {
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+              return template(`<div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+            },
+            item: (classNames, data) => {
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+              return template(`<div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+            }
+          };
+        }
+      });
+
+      el.addEventListener('change', e => renderPairInfo(e.target.value, list));
+      el.value = '';
+      el.dispatchEvent(new Event('change'));
+    }
+
+    function renderPairInfo(symbol, list){
+      const nameEl = document.getElementById('pairName');
+      const priceEl = document.getElementById('pairPrice');
+      const changeEl = document.getElementById('pairChange');
+      const volEl = document.getElementById('pairVolume');
+      const tradesEl = document.getElementById('pairTrades');
+
+      if (!symbol) {
+        nameEl.innerHTML = '<span class="coin-name">—</span>';
+        priceEl.textContent = `${t('priceLabel')}: —`;
+        changeEl.textContent = `${t('changeLabel')}: —`;
+        volEl.textContent = `${t('volLabel')}: —`;
+        tradesEl.textContent = `${t('tradesLabel')}: —`;
+        return;
+      }
+      const info = list.find(d => d.symbol === symbol);
+      if (!info) return;
+      const base = symbol.slice(0, symbol.length - state.quote.length);
+
+      const priceNum = Number(info.lastPrice);
+      const chgNum = Number(info.priceChangePercent);
+      const volNum = Number(info.quoteVolume);
+      const tradesNum = Number(info.count || 0);
+
+      nameEl.innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
+      priceEl.textContent = `${t('priceLabel')}: $${formatNum(priceNum, {maximumFractionDigits: 8})}`;
+      changeEl.innerHTML = `${t('changeLabel')}: <span class="${chgNum>=0?'delta-up':'delta-down'}">${formatNum(chgNum, {maximumFractionDigits: 2})}%</span>`;
+      volEl.textContent = `${t('volLabel')}: $${formatNum(volNum)}`;
+      tradesEl.textContent = `${t('tradesLabel')}: ${formatNum(tradesNum)}`;
+    }
+
+    async function loadForex(){
+      document.getElementById('forexStatus').textContent = 'در حال دریافت از Frankfurter…';
+      const pairs = [
+        ['USD','EUR','fx_usd_eur'],
+        ['USD','GBP','fx_usd_gbp'],
+        ['USD','JPY','fx_usd_jpy'],
+        ['EUR','GBP','fx_eur_gbp']
+      ];
+      for (const [base, quote, elId] of pairs) {
+        const res = await fetch(`https://api.frankfurter.app/latest?from=${base}&to=${quote}`, {cache:'no-store'});
+        if (!res.ok) continue;
+        const data = await res.json();
+        document.getElementById(elId).textContent = formatNum(data.rates[quote], {maximumFractionDigits: 6});
+      }
+      document.getElementById('forexUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
+    }
+
+    // Theme and refresh
     document.getElementById('toggleTheme').addEventListener('click', ()=>{
       const body = document.body;
-      const next = body.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', next);
+      body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
     });
     document.getElementById('refreshAll').addEventListener('click', ()=>{
       loadBinance(); loadForex();
     });
-  });
-</script>
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      initQuoteChoices();
+      loadBinance();
+      loadForex();
+      setInterval(loadBinance, state.refreshMs);
+      setInterval(loadForex, state.refreshMs);
+    });
+  </script>
 </body>
 </html>
