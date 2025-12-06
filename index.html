@@ -4,8 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>داشبور زنده بازارها</title>
-  <link rel="preconnect" href="https://api.binance.com">
-  <link rel="preconnect" href="https://api.frankfurter.app">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
     :root {
@@ -18,48 +16,53 @@
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
-    html, body { height: 100%; }
-    body { margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial; }
-    header { position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 80%, transparent 20%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px); }
-    .wrap { max-width:1200px; margin:0 auto; padding:14px; }
-    .toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .toolbar select, .toolbar button { background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer; }
-    .row { display:grid; gap:14px; grid-template-columns:1fr; }
+
+    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
+    header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 80%, transparent 20%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
+    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
+    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .toolbar select, .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
+
+    .row {display:grid; gap:14px; grid-template-columns:1fr;}
     @media (min-width:900px){ .row { grid-template-columns:1.5fr 1fr; } }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
-    .card h3 { margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px; }
-    .card .content { padding:10px 14px; }
-    .status { font-size:13px; color:var(--muted); margin-top:6px; }
-    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden;}
+    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
+    .card .content {padding:10px 14px;}
+    .status {font-size:13px; color:var(--muted); margin-top:6px;}
+
+    .info-grid {display:grid; grid-template-columns:1fr 1fr; gap:10px;}
     @media (max-width:700px){ .info-grid { grid-template-columns:1fr; } }
-    .info-box { border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel); }
-    .delta-up { color:var(--up); font-weight:600; }
-    .delta-down { color:var(--down); font-weight:600; }
+    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
 
-    .grid { display:grid; gap:10px; grid-template-columns:1fr; }
+    .delta-up {color:var(--up); font-weight:600;}
+    .delta-down {color:var(--down); font-weight:600;}
+
+    .grid {display:grid; gap:10px; grid-template-columns:1fr;}
     @media (min-width:760px){ .grid { grid-template-columns:repeat(2,1fr); } }
-    .iframe-box { border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel); }
-    .iframe-box iframe { width:100%; height:280px; border:0; }
+    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
+    .iframe-box iframe {width:100%; height:280px; border:0;}
 
-    /* Choices.js styles */
-    .choices { margin-top:6px; font-size:14px; color:var(--text); }
-    .choices__inner { background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:8px; }
-    .choices__list--dropdown { background:var(--card); border:1px solid var(--border); border-radius:8px; box-shadow:var(--shadow); }
-    /* آیتم‌های داخل کشو: متن مشکی و آیکن */
-    .choices__list--dropdown .choice-with-icon { display:flex; align-items:center; gap:8px; padding:8px; }
-    .choices__list--dropdown .choice-with-icon img { width:20px; height:20px; border-radius:50%; object-fit:contain; }
-    .choices__list--dropdown .choice-with-icon .label { color:#000; font-weight:600; }
-    [data-theme="light"] .choices__list--dropdown .choice-with-icon .label { color:#000; }
-    .choices__list--dropdown .choices__item--selectable:hover,
-    .choices__list--dropdown .choices__item--selectable.is-highlighted { background:var(--accent); }
-    .choices__list--dropdown .choices__item--selectable.is-highlighted .label { color:#fff; }
-    .choices__item--selectable.is-selected { background:var(--accent); }
-    .choices__item--selectable.is-selected .label { color:#fff; }
-    .choices__placeholder { color:var(--muted); }
+    /* Choices.js سفارشی — زمینه لیست سفید تا متن مشکی کاملاً خوانا باشد */
+    .choices {margin-top:6px; font-size:14px; color:var(--text);}
+    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:8px;}
+    .choices__list--dropdown {background:#ffffff; border:1px solid var(--border); border-radius:8px; box-shadow:var(--shadow);}
+    .choices__list--dropdown .choices__item {padding:0; } /* چون خودمان قالب می‌سازیم */
 
-    /* نام ارز انتخاب شده در کارت اطلاعات */
-    .coin-name { color:#ffd166; font-weight:700; letter-spacing:0.2px; }
-    [data-theme="light"] .coin-name { color:#1a2230; }
+    /* قالب آیتم با آیکن و متن مشکی */
+    .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
+    .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
+    .choice-with-icon .label {color:#000 !important; font-weight:600;}
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
+    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
+
+    /* آیتم انتخاب‌شده (نمایش در کنترل) نیز با آیکن */
+    .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
+    .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
+    .selected-with-icon .label {color:var(--text); font-weight:600;}
+
+    .choices__placeholder {color:var(--muted);}
+    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
+    [data-theme="light"] .coin-name {color:#1a2230;}
   </style>
 </head>
 <body data-theme="dark">
@@ -81,7 +84,7 @@
 
   <main class="wrap">
     <div class="row">
-      <!-- Crypto -->
+      <!-- کریپتو -->
       <section class="card" id="cryptoCard">
         <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
         <div class="content">
@@ -119,7 +122,7 @@
         </div>
       </section>
 
-      <!-- Forex -->
+      <!-- فارکس -->
       <section class="card" id="forexCard">
         <h3 id="forexTitle">ارزهای جهان (Forex)</h3>
         <div class="content">
@@ -135,7 +138,7 @@
       </section>
     </div>
 
-    <!-- Commodities -->
+    <!-- کامودیتی‌ها -->
     <section class="card" id="commoditiesCard" style="margin-top:12px;">
       <h3 id="commoditiesTitle">طلا و کامودیتی‌ها</h3>
       <div class="content grid">
@@ -239,7 +242,7 @@
       if (emptyOpt) emptyOpt.textContent = p.noneText;
     }
 
-    // Events
+    // UI events
     const langSelect = document.getElementById('langSelect');
     langSelect.value = state.lang;
     langSelect.addEventListener('change', ()=>{
@@ -259,7 +262,7 @@
       state.quote = quoteSelect.value; localStorage.setItem('quote', state.quote); populatePairs();
     });
 
-    // Binance load + populate
+    // Binance load + populate with icons
     async function loadBinance(){
       try {
         setText('cryptoStatus', t('cryptoStatus'));
@@ -279,6 +282,10 @@
       }
     }
 
+    function iconUrlFor(symbolBase){
+      return `https://cryptoicon-api.vercel.app/api/icon/${symbolBase.toLowerCase()}`;
+    }
+
     function populatePairs(){
       const select = document.getElementById('pairSelect');
       const quote = state.quote;
@@ -286,12 +293,10 @@
 
       if (state.choicesInstance) { state.choicesInstance.destroy(); state.choicesInstance = null; }
 
-      // Build options with icon + label via data-custom-properties
+      // Build options: store icon URL in data-custom-properties
       select.innerHTML = `<option value="">${t('noneText')}</option>` + pairs.map(p=>{
         const base = p.symbol.slice(0, p.symbol.length - quote.length);
-        const iconUrl = `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`;
-        const label = `${base}/${quote}`;
-        return `<option value="${p.symbol}" data-custom-properties="${iconUrl}">${label}</option>`;
+        return `<option value="${p.symbol}" data-custom-properties="${iconUrlFor(base)}">${base}/${quote}</option>`;
       }).join('');
 
       state.choicesInstance = new Choices(select, {
@@ -302,9 +307,18 @@
         callbackOnCreateTemplates: function(template) {
           return {
             option: (classNames, data) => {
-              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" />` : '';
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
               return template(`
-                <div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}" data-custom-properties="${data.customProperties}">
+                <div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">
+                  ${icon}<span class="label">${data.label}</span>
+                </div>
+              `);
+            },
+            item: (classNames, data) => {
+              // Selected item rendering (single select)
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+              return template(`
+                <div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}" data-custom-properties="${data.customProperties}">
                   ${icon}<span class="label">${data.label}</span>
                 </div>
               `);
@@ -318,7 +332,6 @@
       // Default: None
       select.value = '';
       select.dispatchEvent(new Event('change'));
-
       setText('cryptoStatus', `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`);
     }
 
@@ -378,7 +391,6 @@
 
     // Init
     document.addEventListener('DOMContentLoaded', ()=>{
-      document.body.setAttribute('data-theme', state.theme);
       document.getElementById('langSelect').value = state.lang;
       document.getElementById('quoteSelect').value = state.quote;
       applyLang();
