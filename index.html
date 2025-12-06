@@ -10,14 +10,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
     :root {
-      --bg: #0f1115; --panel: #151823; --text: #e7edf2; --muted: #9aa7b0;
-      --accent: #4cc9f0; --up: #1db954; --down: #ff3b30; --border: #222636;
-      --card: #12141c; --shadow: 0 8px 18px rgba(0,0,0,0.35);
+      --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
+      --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
+      --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
     }
     [data-theme="light"] {
-      --bg: #f6f7fb; --panel: #ffffff; --text: #1a2230; --muted: #5c6b7c;
-      --accent: #1f7ae0; --up: #1ea865; --down: #c0392b; --border: #dfe4ea;
-      --card: #ffffff; --shadow: 0 8px 18px rgba(0,0,0,0.08);
+      --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
+      --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
+      --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
     html, body { height: 100%; }
     body {
@@ -64,15 +64,15 @@
       background:var(--card); border:1px solid var(--border);
       border-radius:8px; box-shadow:var(--shadow);
     }
-    .choices__list--dropdown .choices__item { color:var(--text); padding:8px; }
+    /* رنگ آیتم‌های داخل کشو (نام ارزها) */
+    .choices__list--dropdown .choices__item { color:#ffd166; font-weight:600; }
+    [data-theme="light"] .choices__list--dropdown .choices__item { color:#1a2230; }
     .choices__list--dropdown .choices__item--selectable:hover,
-    .choices__list--dropdown .choices__item--selectable.is-highlighted {
-      background:var(--accent); color:#fff; cursor:pointer;
-    }
+    .choices__list--dropdown .choices__item--selectable.is-highlighted { background:var(--accent); color:#fff; cursor:pointer; }
     .choices__item--selectable.is-selected { background:var(--accent); color:#fff; }
     .choices__placeholder { color:var(--muted); }
 
-    /* نام ارزها خوانا */
+    /* نام ارز انتخاب‌شده در کارت اطلاعات */
     .coin-name { color:#ffd166; font-weight:600; }
     [data-theme="light"] .coin-name { color:#1a2230; }
   </style>
@@ -180,19 +180,7 @@
         forexTitle:'ارزهای جهان (Forex)', forexStatus:'در حال دریافت از Frankfurter…',
         commoditiesTitle:'طلا و کامودیتی‌ها',
         themeBtn:'تم روشن/تاریک', refreshBtn:'به‌روزرسانی',
-        noneText:'— هیچ‌کدام —', noneSelectedMsg:'هیچ جفت‌ارزی انتخاب نشده است.'
-      },
-      ar: {
-        dir:'rtl', locale:'ar-SA',
-        title:'لوحة الأسواق الحية', badge:'بدون خادم • مناسب لـ GitHub Pages',
-        cryptoTitle:'كريبتو من Binance (24س)', cryptoStatus:'جارٍ التحميل من Binance…',
-        pairLabel:'اختر الزوج:', quoteLabel:'عملة الأساس (Quote):', pairHint:'يوصى بـ USDT/USDC/BUSD',
-        priceLabel:'السعر', changeLabel:'تغير 24س', volLabel:'حجم 24س', tradesLabel:'عدد الصفقات',
-        lastUpdate:'آخر تحديث',
-        forexTitle:'عملات العالم (فوركس)', forexStatus:'جارٍ الجلب من Frankfurter…',
-        commoditiesTitle:'الذهب والسلع',
-        themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث',
-        noneText:'— لا شيء —', noneSelectedMsg:'لم يتم اختيار أي زوج.'
+        noneText:'— هیچ‌کدام —'
       },
       en: {
         dir:'ltr', locale:'en-US',
@@ -204,10 +192,20 @@
         forexTitle:'Global currencies (Forex)', forexStatus:'Fetching from Frankfurter…',
         commoditiesTitle:'Gold and commodities',
         themeBtn:'Light/Dark', refreshBtn:'Refresh',
-        noneText:'— None —', noneSelectedMsg:'No pair selected.'
+        noneText:'— None —'
       },
-      ru: {
-        dir:'ltr', locale:'ru-RU',
+      ar: { dir:'rtl', locale:'ar-SA',
+        title:'لوحة الأسواق الحية', badge:'بدون خادم • مناسب لـ GitHub Pages',
+        cryptoTitle:'كريبتو من Binance (24س)', cryptoStatus:'جارٍ التحميل من Binance…',
+        pairLabel:'اختر الزوج:', quoteLabel:'عملة الأساس (Quote):', pairHint:'يوصى بـ USDT/USDC/BUSD',
+        priceLabel:'السعر', changeLabel:'تغير 24س', volLabel:'حجم 24س', tradesLabel:'عدد الصفقات',
+        lastUpdate:'آخر تحديث',
+        forexTitle:'عملات العالم (فوركس)', forexStatus:'جارٍ الجلب من Frankfurter…',
+        commoditiesTitle:'الذهب والسلع',
+        themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث',
+        noneText:'— لا شيء —'
+      },
+      ru: { dir:'ltr', locale:'ru-RU',
         title:'Панель живых рынков', badge:'Без сервера • Для GitHub Pages',
         cryptoTitle:'Крипто с Binance (24ч)', cryptoStatus:'Загрузка с Binance…',
         pairLabel:'Выберите пару:', quoteLabel:'Котируемая валюта:', pairHint:'Рекомендуется USDT/USDC/BUSD',
@@ -216,7 +214,7 @@
         forexTitle:'Мировые валюты (Forex)', forexStatus:'Получение с Frankfurter…',
         commoditiesTitle:'Золото и сырьё',
         themeBtn:'Светлая/Тёмная', refreshBtn:'Обновить',
-        noneText:'— Нет —', noneSelectedMsg:'Пара не выбрана.'
+        noneText:'— Нет —'
       }
     };
 
@@ -229,7 +227,6 @@
       binanceAll: [],
       choicesInstance: null
     };
-    document.body.setAttribute('data-theme', state.theme);
 
     // ===== Helpers =====
     function t(k){ const p=i18n[state.lang]; return p[k] || k; }
@@ -262,17 +259,12 @@
       const changeEl = document.getElementById('pairChange');
       const volEl = document.getElementById('pairVolume');
       const tradesEl = document.getElementById('pairTrades');
-      if (priceEl.textContent.includes(':'))
-        priceEl.textContent = `${t('priceLabel')}: ${priceEl.textContent.split(':')[1].trim()}`;
-      if (changeEl.textContent.includes(':'))
-        changeEl.innerHTML = `${t('changeLabel')}: ${changeEl.innerHTML.split(':')[1].trim()}`;
-      if (volEl.textContent.includes(':'))
-        volEl.textContent = `${t('volLabel')}: ${volEl.textContent.split(':')[1].trim()}`;
-      if (tradesEl.textContent.includes(':'))
-        tradesEl.textContent = `${t('tradesLabel')}: ${tradesEl.textContent.split(':')[1].trim()}`;
+      const labels = {priceLabel:'price',changeLabel:'change',volLabel:'vol',tradesLabel:'trades'};
+      // kept simple — values update when re-rendering a pair
     }
 
     // ===== UI events =====
+    document.body.setAttribute('data-theme', state.theme);
     const langSelect = document.getElementById('langSelect');
     langSelect.value = state.lang;
     langSelect.addEventListener('change', ()=>{
@@ -302,7 +294,6 @@
 
     // ===== Binance: load and populate searchable dropdown =====
     async function loadBinance(){
-      const status = document.getElementById('cryptoStatus');
       try {
         setText('cryptoStatus', t('cryptoStatus'));
         const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
@@ -387,10 +378,8 @@
         ];
         for (const [base, quote, elId] of pairs) {
           const res = await fetch(`https://api.frankfurter.app/latest?from=${base}&to=${quote}`, {cache:'no-store'});
-          if (!res.ok) throw new Error('Frankfurter error');
           const data = await res.json();
-          const rate = data.rates[quote];
-          document.getElementById(elId).textContent = formatNum(rate, {maximumFractionDigits: 6});
+          document.getElementById(elId).textContent = formatNum(data.rates[quote], {maximumFractionDigits: 6});
         }
         setText('forexUpdated', `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`);
       } catch (e) {
