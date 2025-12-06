@@ -1,124 +1,46 @@
-<!doctype html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>داشبور زنده بازارها</title>
-  <style>
-    body { font-family: sans-serif; margin:0; background:#111; color:#eee; }
-    header { background:#222; padding:10px; display:flex; gap:10px; align-items:center; }
-    select, button { padding:6px 10px; border-radius:6px; border:1px solid #444; background:#333; color:#eee; }
-    .card { background:#1a1a1a; margin:10px; padding:10px; border-radius:8px; }
-    .item { display:flex; justify-content:space-between; padding:6px; border-bottom:1px solid #333; }
-    .delta-up { color:#2ecc71; } .delta-down { color:#e74c3c; }
-  </style>
-</head>
-<body>
-<header>
-  <strong id="title">داشبور زنده بازارها</strong>
-  <select id="langSelect">
-    <option value="fa">فارسی</option>
-    <option value="ar">العربية</option>
-    <option value="en">English</option>
-    <option value="ru">Русский</option>
-  </select>
-</header>
-
-<main>
-  <!-- کریپتو -->
-  <section class="card">
-    <h3 id="cryptoTitle">ارزهای دیجیتال</h3>
-    <label id="cryptoLabel" for="cryptoSelect">انتخاب ارز:</label>
-    <select id="cryptoSelect"></select>
-    <div id="cryptoStatus">در حال بارگذاری لیست ارزها…</div>
-    <div id="cryptoInfo"></div>
-  </section>
-
-  <!-- Forex -->
-  <section class="card">
-    <h3 id="forexTitle">ارزهای جهان (Forex)</h3>
-    <div id="forexStatus">در حال دریافت…</div>
-    <div id="forexList"></div>
-  </section>
-</main>
+<section class="card">
+  <h3 id="cryptoTitle">ارزهای دیجیتال</h3>
+  <input type="text" id="cryptoSearch" placeholder="جستجو..." style="width:100%;padding:8px;margin:8px 0;">
+  <div id="cryptoStatus">در حال بارگذاری...</div>
+  <table id="cryptoTable" style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th>نام</th><th>قیمت</th><th>تغییر 24h</th><th>مارکت کپ</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
 
 <script>
-const i18n = {
-  fa:{dir:'rtl',title:'داشبور زنده بازارها',cryptoTitle:'ارزهای دیجیتال',cryptoLabel:'انتخاب ارز:',cryptoStatus:'در حال بارگذاری لیست ارزها…',forexTitle:'ارزهای جهان (Forex)',lastUpdate:'آخرین بروزرسانی'},
-  ar:{dir:'rtl',title:'لوحة الأسواق الحية',cryptoTitle:'العملات الرقمية',cryptoLabel:'اختر العملة:',cryptoStatus:'جارٍ تحميل قائمة العملات…',forexTitle:'عملات العالم (فوركس)',lastUpdate:'آخر تحديث'},
-  en:{dir:'ltr',title:'Live Markets Dashboard',cryptoTitle:'Cryptocurrencies',cryptoLabel:'Select coin:',cryptoStatus:'Loading coin list…',forexTitle:'Global currencies (Forex)',lastUpdate:'Last update'},
-  ru:{dir:'ltr',title:'Панель живых рынков',cryptoTitle:'Криптовалюты',cryptoLabel:'Выберите монету:',cryptoStatus:'Загрузка списка монет…',forexTitle:'Мировые валюты (Forex)',lastUpdate:'Последнее обновление'}
-};
-let lang='fa';
-
-function applyLang(){
-  const pack=i18n[lang];
-  document.documentElement.dir=pack.dir;
-  document.getElementById('title').textContent=pack.title;
-  document.getElementById('cryptoTitle').textContent=pack.cryptoTitle;
-  document.getElementById('cryptoLabel').textContent=pack.cryptoLabel;
-  document.getElementById('cryptoStatus').textContent=pack.cryptoStatus;
-  document.getElementById('forexTitle').textContent=pack.forexTitle;
-}
-
-document.getElementById('langSelect').addEventListener('change',e=>{
-  lang=e.target.value; applyLang();
-});
-
-// ===== Crypto =====
-async function loadCryptoList(){
-  const select=document.getElementById('cryptoSelect');
+async function loadCryptoTable(){
   const status=document.getElementById('cryptoStatus');
+  const tbody=document.querySelector('#cryptoTable tbody');
   try{
-    const res=await fetch('https://api.coingecko.com/api/v3/coins/list');
-    const data=await res.json();
-    const top=data.slice(0,500);
-    select.innerHTML=top.map(c=>`<option value="${c.id}">${c.name} (${c.symbol.toUpperCase()})</option>`).join('');
-    status.textContent=i18n[lang].cryptoStatus;
-    select.addEventListener('change',()=>loadCryptoInfo(select.value));
-    loadCryptoInfo(top[0].id);
-  }catch(e){status.textContent='خطا در دریافت لیست ارزها';}
-}
-
-async function loadCryptoInfo(id){
-  const info=document.getElementById('cryptoInfo');
-  const status=document.getElementById('cryptoStatus');
-  try{
-    status.textContent='...';
-    const url=`https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    status.textContent='در حال دریافت داده‌ها...';
+    const url='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1';
     const res=await fetch(url);
     const data=await res.json();
-    const price=data.market_data.current_price.usd;
-    const change=data.market_data.price_change_percentage_24h;
-    const cap=data.market_data.market_cap.usd;
-    const cls=change>=0?'delta-up':'delta-down';
-    info.innerHTML=`<div class="item"><div>${data.name} (${data.symbol.toUpperCase()})<br><span>مارکت کپ: $${cap.toLocaleString()}</span></div><div>$${price.toLocaleString()}<br><span class="${cls}">${change.toFixed(2)}%</span></div></div>`;
-    status.textContent=`${i18n[lang].lastUpdate}: ${new Date().toLocaleTimeString()}`;
-  }catch(e){status.textContent='خطا در دریافت اطلاعات';}
+    tbody.innerHTML=data.map(c=>{
+      const cls=c.price_change_percentage_24h>=0?'delta-up':'delta-down';
+      return `<tr>
+        <td><img src="${c.image}" width="20"> ${c.name} (${c.symbol.toUpperCase()})</td>
+        <td>$${c.current_price.toLocaleString()}</td>
+        <td class="${cls}">${c.price_change_percentage_24h.toFixed(2)}%</td>
+        <td>$${c.market_cap.toLocaleString()}</td>
+      </tr>`;
+    }).join('');
+    status.textContent='لیست آماده است';
+    // جستجو
+    document.getElementById('cryptoSearch').addEventListener('input',e=>{
+      const q=e.target.value.toLowerCase();
+      [...tbody.rows].forEach(r=>{
+        r.style.display=r.textContent.toLowerCase().includes(q)?'':'none';
+      });
+    });
+  }catch(e){
+    status.textContent='خطا در دریافت داده‌ها';
+  }
 }
-
-// ===== Forex =====
-async function loadForex(){
-  const status=document.getElementById('forexStatus');
-  const list=document.getElementById('forexList');
-  try{
-    const pairs=[['USD','EUR'],['USD','GBP'],['USD','JPY']];
-    const items=[];
-    for(const [base,quote] of pairs){
-      const res=await fetch(`https://api.frankfurter.app/latest?from=${base}&to=${quote}`);
-      const data=await res.json();
-      items.push(`<div class="item"><div>${base}/${quote}</div><div>${data.rates[quote]}</div></div>`);
-    }
-    list.innerHTML=items.join('');
-    status.textContent=`${i18n[lang].lastUpdate}: ${new Date().toLocaleTimeString()}`;
-  }catch(e){status.textContent='خطا در دریافت ارزها';}
-}
-
-document.addEventListener('DOMContentLoaded',()=>{
-  applyLang();
-  loadCryptoList();
-  loadForex();
-});
+document.addEventListener('DOMContentLoaded',loadCryptoTable);
 </script>
-</body>
-</html>
