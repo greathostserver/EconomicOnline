@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>داشبور زنده بازارها</title>
-  <meta name="description" content="نمایش زنده ارزهای دیجیتال با جدول حرفه‌ای، جستجو و مرتب‌سازی، به‌همراه ارزهای جهان و ویجت کامودیتی‌ها. آماده برای GitHub Pages." />
-  <link rel="preconnect" href="https://api.coingecko.com">
+  <meta name="description" content="نمایش زنده بازار کریپتو از Binance، ارزهای جهان، و کامودیتی‌ها. چندزبانه، جستجو و مرتب‌سازی. آماده برای GitHub Pages." />
+  <link rel="preconnect" href="https://api.binance.com">
   <link rel="preconnect" href="https://api.frankfurter.app">
   <style>
     :root {
@@ -46,7 +46,7 @@
 
     /* Table */
     .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 10px; }
-    table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
     thead th {
       background: var(--panel); color: var(--text); border-bottom: 1px solid var(--border);
       padding: 10px; font-weight: 600; text-align: left; cursor: pointer; position: sticky; top: 0;
@@ -54,8 +54,6 @@
     tbody td { padding: 10px; border-bottom: 1px solid var(--border); }
     tbody tr:nth-child(odd) { background: var(--table-row); }
     tbody tr:nth-child(even) { background: var(--table-row-alt); }
-    .name-cell { display:flex; align-items:center; gap:10px; }
-    .name-cell img { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); }
     .delta-up { color: var(--up); font-weight: 600; }
     .delta-down { color: var(--down); font-weight: 600; }
 
@@ -72,7 +70,13 @@
       <strong id="title">داشبور زنده بازارها</strong>
       <span class="badge" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
       <div style="flex:1"></div>
-      <input id="cryptoSearch" type="text" placeholder="جستجو ارز…" aria-label="Search coin" />
+      <input id="cryptoSearch" type="text" placeholder="جستجو جفت ارز…" aria-label="Search pair" />
+      <select id="quoteSelect" aria-label="Quote">
+        <option value="USDT">USDT</option>
+        <option value="BUSD">BUSD</option>
+        <option value="USDC">USDC</option>
+        <option value="BTC">BTC</option>
+      </select>
       <select id="langSelect" aria-label="Language">
         <option value="fa">فارسی</option>
         <option value="ar">العربية</option>
@@ -87,18 +91,18 @@
   <main class="wrap">
     <div class="row">
       <section class="card" id="cryptoCard">
-        <h3 id="cryptoTitle">ارزهای دیجیتال</h3>
+        <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
         <div class="content">
-          <div class="status" id="cryptoStatus">در حال بارگذاری از CoinGecko…</div>
+          <div class="status" id="cryptoStatus">در حال بارگذاری از Binance…</div>
           <div class="table-wrap">
             <table id="cryptoTable">
               <thead>
                 <tr>
-                  <th data-key="name" id="thName">نام</th>
-                  <th data-key="current_price" id="thPrice">قیمت</th>
-                  <th data-key="price_change_percentage_24h" id="thChange">تغییر 24h</th>
-                  <th data-key="market_cap" id="thCap">مارکت کپ</th>
-                  <th data-key="total_volume" id="thVol">حجم 24h</th>
+                  <th data-key="symbol" id="thPair">جفت</th>
+                  <th data-key="lastPriceNum" id="thPrice">قیمت</th>
+                  <th data-key="priceChangePercentNum" id="thChange">تغییر 24h</th>
+                  <th data-key="quoteVolumeNum" id="thVol">حجم 24h (Quote)</th>
+                  <th data-key="count" id="thTrades">تعداد معاملات</th>
                 </tr>
               </thead>
               <tbody id="cryptoBody"></tbody>
@@ -144,51 +148,51 @@
   </main>
 
   <script>
-    // ===== i18n packs =====
+    // ===== i18n =====
     const i18n = {
       fa: {
         dir:'rtl', locale:'fa-IR',
         title:'داشبور زنده بازارها', badge:'بدون‌سرور • مناسب GitHub Pages',
-        cryptoTitle:'ارزهای دیجیتال', cryptoStatus:'در حال بارگذاری از CoinGecko…',
-        thName:'نام', thPrice:'قیمت', thChange:'تغییر 24h', thCap:'مارکت کپ', thVol:'حجم 24h',
+        cryptoTitle:'کریپتو از Binance (24h)', cryptoStatus:'در حال بارگذاری از Binance…',
+        thPair:'جفت', thPrice:'قیمت', thChange:'تغییر 24h', thVol:'حجم 24h (Quote)', thTrades:'تعداد معاملات',
         forexTitle:'ارزهای جهان (Forex)', forexStatus:'در حال دریافت از Frankfurter…',
         fxPairHdr:'جفت ارز', fxRateHdr:'نرخ',
         commoditiesTitle:'طلا و کامودیتی‌ها',
         lastUpdate:'آخرین بروزرسانی', themeBtn:'تم روشن/تاریک', refreshBtn:'به‌روزرسانی',
-        searchPlaceholder:'جستجو ارز…'
+        searchPlaceholder:'جستجو جفت ارز…'
       },
       ar: {
         dir:'rtl', locale:'ar-SA',
         title:'لوحة الأسواق الحية', badge:'بدون خادم • مناسب لـ GitHub Pages',
-        cryptoTitle:'العملات الرقمية', cryptoStatus:'جارٍ التحميل من CoinGecko…',
-        thName:'الاسم', thPrice:'السعر', thChange:'تغير 24س', thCap:'القيمة السوقية', thVol:'حجم 24س',
+        cryptoTitle:'كريبتو من Binance (24س)', cryptoStatus:'جارٍ التحميل من Binance…',
+        thPair:'الزوج', thPrice:'السعر', thChange:'تغير 24س', thVol:'حجم 24س (الاقتباس)', thTrades:'عدد الصفقات',
         forexTitle:'عملات العالم (فوركس)', forexStatus:'جارٍ الجلب من Frankfurter…',
         fxPairHdr:'زوج العملة', fxRateHdr:'السعر',
         commoditiesTitle:'الذهب والسلع',
         lastUpdate:'آخر تحديث', themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث',
-        searchPlaceholder:'ابحث عن عملة…'
+        searchPlaceholder:'ابحث عن الزوج…'
       },
       en: {
         dir:'ltr', locale:'en-US',
         title:'Live markets dashboard', badge:'Serverless • Built for GitHub Pages',
-        cryptoTitle:'Cryptocurrencies', cryptoStatus:'Loading from CoinGecko…',
-        thName:'Name', thPrice:'Price', thChange:'24h change', thCap:'Market cap', thVol:'24h volume',
+        cryptoTitle:'Crypto from Binance (24h)', cryptoStatus:'Loading from Binance…',
+        thPair:'Pair', thPrice:'Price', thChange:'24h change', thVol:'24h volume (quote)', thTrades:'Trade count',
         forexTitle:'Global currencies (Forex)', forexStatus:'Fetching from Frankfurter…',
         fxPairHdr:'Pair', fxRateHdr:'Rate',
         commoditiesTitle:'Gold and commodities',
         lastUpdate:'Last update', themeBtn:'Light/Dark', refreshBtn:'Refresh',
-        searchPlaceholder:'Search coin…'
+        searchPlaceholder:'Search pair…'
       },
       ru: {
         dir:'ltr', locale:'ru-RU',
         title:'Панель живых рынков', badge:'Без сервера • Для GitHub Pages',
-        cryptoTitle:'Криптовалюты', cryptoStatus:'Загрузка с CoinGecko…',
-        thName:'Название', thPrice:'Цена', thChange:'Изм. 24ч', thCap:'Рыночная кап.', thVol:'Объём 24ч',
+        cryptoTitle:'Крипто с Binance (24ч)', cryptoStatus:'Загрузка с Binance…',
+        thPair:'Пара', thPrice:'Цена', thChange:'Изм. 24ч', thVol:'Объём 24ч (кот.)', thTrades:'Сделки',
         forexTitle:'Мировые валюты (Forex)', forexStatus:'Получение с Frankfurter…',
         fxPairHdr:'Пара', fxRateHdr:'Курс',
         commoditiesTitle:'Золото и сырьё',
         lastUpdate:'Последнее обновление', themeBtn:'Светлая/Тёмная', refreshBtn:'Обновить',
-        searchPlaceholder:'Поиск монеты…'
+        searchPlaceholder:'Поиск пары…'
       }
     };
 
@@ -196,8 +200,9 @@
     const state = {
       theme: localStorage.getItem('theme') || 'dark',
       lang: localStorage.getItem('lang') || 'fa',
-      sortKey: 'market_cap',
+      sortKey: 'quoteVolumeNum',
       sortDir: 'desc',
+      quote: localStorage.getItem('quote') || 'USDT',
       cryptoData: [],
       refreshMs: 60000, // 60s
       timers: []
@@ -216,21 +221,20 @@
       setText('badge', p.badge);
       setText('cryptoTitle', p.cryptoTitle);
       setText('cryptoStatus', p.cryptoStatus);
-      setText('thName', p.thName);
+      setText('thPair', p.thPair);
       setText('thPrice', p.thPrice);
       setText('thChange', p.thChange);
-      setText('thCap', p.thCap);
       setText('thVol', p.thVol);
+      setText('thTrades', p.thTrades);
       setText('forexTitle', p.forexTitle);
       setText('forexStatus', p.forexStatus);
       setText('fxPairHdr', p.fxPairHdr);
       setText('fxRateHdr', p.fxRateHdr);
       setText('commoditiesTitle', p.commoditiesTitle);
-      setText('footerText', p.title.includes('dashboard') ? 'Made for GitHub Pages • Serverless • Client-side updates' : 'ساخته‌شده برای اجرا روی GitHub Pages • بدون‌سرور • به‌روزرسانی سمت‌کاربر');
       document.getElementById('toggleTheme').textContent = p.themeBtn;
       document.getElementById('refreshAll').textContent = p.refreshBtn;
       document.getElementById('cryptoSearch').placeholder = p.searchPlaceholder;
-      renderCrypto(); // re-render for number format
+      renderCrypto(); // re-render number formats
     }
 
     function schedule(){
@@ -240,7 +244,7 @@
       state.timers.push(setInterval(loadForex, state.refreshMs));
     }
 
-    // ===== Theme & Lang events =====
+    // ===== UI events =====
     document.getElementById('toggleTheme').addEventListener('click', ()=>{
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
       document.body.setAttribute('data-theme', state.theme);
@@ -253,30 +257,54 @@
       localStorage.setItem('lang', state.lang);
       applyLang();
     });
+    const quoteSelect = document.getElementById('quoteSelect');
+    quoteSelect.value = state.quote;
+    quoteSelect.addEventListener('change', ()=>{
+      state.quote = quoteSelect.value;
+      localStorage.setItem('quote', state.quote);
+      loadCrypto();
+    });
     document.getElementById('refreshAll').addEventListener('click', ()=>{
       loadCrypto();
       loadForex();
     });
+    document.getElementById('cryptoSearch').addEventListener('input', renderCrypto);
 
-    // ===== Crypto: load, render, search, sort =====
+    // ===== Binance Crypto (24h ticker) =====
     async function loadCrypto(){
       const status = document.getElementById('cryptoStatus');
+      const quote = state.quote;
       try {
         setText('cryptoStatus', t('cryptoStatus'));
-        // Pull top 250 by market cap (2 pages of 125 for lighter load)
-        const urls = [
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=125&page=1&sparkline=false&price_change_percentage=1h,24h',
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=125&page=2&sparkline=false&price_change_percentage=1h,24h'
-        ];
-        const results = await Promise.all(urls.map(u => fetch(u, {cache:'no-store'}).then(r=>r.json())));
-        state.cryptoData = [...results[0], ...results[1]];
+        // Fetch all 24hr tickers
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
+        if (!res.ok) throw new Error('Binance 24hr error');
+        const data = await res.json();
+        // Filter by selected quote (e.g., USDT)
+        const filtered = data.filter(d => d.symbol.endsWith(quote));
+        // Map numeric fields for sorting/formatting
+        state.cryptoData = filtered.map(d => ({
+          symbol: d.symbol,
+          base: d.symbol.slice(0, d.symbol.length - quote.length),
+          quote: quote,
+          lastPrice: d.lastPrice,
+          lastPriceNum: Number(d.lastPrice),
+          priceChangePercent: d.priceChangePercent,
+          priceChangePercentNum: Number(d.priceChangePercent),
+          quoteVolume: d.quoteVolume,
+          quoteVolumeNum: Number(d.quoteVolume),
+          count: Number(d.count || 0)
+        }));
+        // Default sort by quote volume desc
+        state.sortKey = state.sortKey || 'quoteVolumeNum';
+        state.sortDir = state.sortDir || 'desc';
         renderCrypto();
         status.textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
       } catch (e) {
-        status.textContent = state.lang==='en' ? 'Error loading crypto.' :
-                             state.lang==='ru' ? 'Ошибка загрузки крипто.' :
-                             state.lang==='ar' ? 'خطأ في تحميل العملات الرقمية.' :
-                             'خطا در دریافت داده‌های کریپتو.';
+        status.textContent = state.lang==='en' ? 'Error loading Binance data.' :
+                             state.lang==='ru' ? 'Ошибка загрузки данных Binance.' :
+                             state.lang==='ar' ? 'خطأ في جلب بيانات Binance.' :
+                             'خطا در دریافت داده‌های Binance.';
         console.error(e);
       }
     }
@@ -286,13 +314,14 @@
       const q = document.getElementById('cryptoSearch').value.trim().toLowerCase();
       let rows = state.cryptoData.slice();
 
-      // Filter
+      // Filter by search query (pair or base)
       if (q) {
-        rows = rows.filter(c =>
-          (c.name || '').toLowerCase().includes(q) ||
-          (c.symbol || '').toLowerCase().includes(q)
+        rows = rows.filter(r =>
+          r.symbol.toLowerCase().includes(q) ||
+          r.base.toLowerCase().includes(q)
         );
       }
+
       // Sort
       const key = state.sortKey;
       const dir = state.sortDir === 'asc' ? 1 : -1;
@@ -303,26 +332,21 @@
         return 0;
       });
 
-      body.innerHTML = rows.map(c=>{
-        const change24 = c.price_change_percentage_24h || 0;
-        const cls = change24 >= 0 ? 'delta-up' : 'delta-down';
+      // Render top 200 for performance
+      const renderRows = rows.slice(0, 200).map(r=>{
+        const cls = r.priceChangePercentNum >= 0 ? 'delta-up' : 'delta-down';
         return `
           <tr>
-            <td class="name-cell">
-              <img src="${c.image}" alt="${escapeHtml(c.symbol)}">
-              <span>${escapeHtml(c.name)} (${escapeHtml(c.symbol.toUpperCase())})</span>
-            </td>
-            <td>$${formatNum(c.current_price, {maximumFractionDigits: 6})}</td>
-            <td class="${cls}">${Number(change24).toFixed(2)}%</td>
-            <td>$${formatNum(c.market_cap)}</td>
-            <td>$${formatNum(c.total_volume)}</td>
+            <td>${escapeHtml(r.base)}/${escapeHtml(r.quote)}</td>
+            <td>$${formatNum(r.lastPriceNum, {maximumFractionDigits: 8})}</td>
+            <td class="${cls}">${formatNum(r.priceChangePercentNum, {maximumFractionDigits: 2})}%</td>
+            <td>$${formatNum(r.quoteVolumeNum)}</td>
+            <td>${formatNum(r.count)}</td>
           </tr>
         `;
       }).join('');
+      body.innerHTML = renderRows;
     }
-
-    // Search input
-    document.getElementById('cryptoSearch').addEventListener('input', renderCrypto);
 
     // Sort handlers
     const ths = document.querySelectorAll('#cryptoTable thead th');
@@ -375,9 +399,15 @@
 
     // ===== Init =====
     document.addEventListener('DOMContentLoaded', ()=>{
+      // Apply lang and theme
+      document.body.setAttribute('data-theme', state.theme);
+      const langSelect = document.getElementById('langSelect'); langSelect.value = state.lang;
+      const quoteSelect = document.getElementById('quoteSelect'); quoteSelect.value = state.quote;
       applyLang();
+      // Load data
       loadCrypto();
       loadForex();
+      // Auto-refresh
       schedule();
     });
   </script>
