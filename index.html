@@ -24,11 +24,9 @@
       margin: 0; background: var(--bg); color: var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", Tahoma, Arial;
     }
-    header {
-      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(1.2) blur(6px);
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(1.2) blur(6px);
       background: color-mix(in oklab, var(--bg) 80%, transparent 20%);
-      border-bottom: 1px solid var(--border);
-    }
+      border-bottom: 1px solid var(--border); }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 14px; }
     .toolbar { display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
     .toolbar select, .toolbar button {
@@ -73,6 +71,10 @@
     }
     .choices__item--selectable.is-selected { background:var(--accent); color:#fff; }
     .choices__placeholder { color:var(--muted); }
+
+    /* نام ارزها خوانا */
+    .coin-name { color:#ffd166; font-weight:600; }
+    [data-theme="light"] .coin-name { color:#1a2230; }
   </style>
 </head>
 <body data-theme="dark">
@@ -166,9 +168,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <script>
-    // i18n packs
+    // ===== i18n =====
     const i18n = {
-      fa: { dir:'rtl', locale:'fa-IR',
+      fa: {
+        dir:'rtl', locale:'fa-IR',
         title:'داشبور زنده بازارها', badge:'بدون‌سرور • مناسب GitHub Pages',
         cryptoTitle:'کریپتو از Binance (24h)', cryptoStatus:'در حال دریافت از Binance…',
         pairLabel:'انتخاب جفت‌ارز:', quoteLabel:'انتخاب ارز مبنا (Quote):', pairHint:'USDT/USDC/BUSD توصیه‌شده',
@@ -179,7 +182,8 @@
         themeBtn:'تم روشن/تاریک', refreshBtn:'به‌روزرسانی',
         noneText:'— هیچ‌کدام —', noneSelectedMsg:'هیچ جفت‌ارزی انتخاب نشده است.'
       },
-      ar: { dir:'rtl', locale:'ar-SA',
+      ar: {
+        dir:'rtl', locale:'ar-SA',
         title:'لوحة الأسواق الحية', badge:'بدون خادم • مناسب لـ GitHub Pages',
         cryptoTitle:'كريبتو من Binance (24س)', cryptoStatus:'جارٍ التحميل من Binance…',
         pairLabel:'اختر الزوج:', quoteLabel:'عملة الأساس (Quote):', pairHint:'يوصى بـ USDT/USDC/BUSD',
@@ -190,7 +194,8 @@
         themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث',
         noneText:'— لا شيء —', noneSelectedMsg:'لم يتم اختيار أي زوج.'
       },
-      en: { dir:'ltr', locale:'en-US',
+      en: {
+        dir:'ltr', locale:'en-US',
         title:'Live markets dashboard', badge:'Serverless • Built for GitHub Pages',
         cryptoTitle:'Crypto from Binance (24h)', cryptoStatus:'Loading from Binance…',
         pairLabel:'Select pair:', quoteLabel:'Select quote:', pairHint:'Recommended: USDT/USDC/BUSD',
@@ -201,7 +206,8 @@
         themeBtn:'Light/Dark', refreshBtn:'Refresh',
         noneText:'— None —', noneSelectedMsg:'No pair selected.'
       },
-      ru: { dir:'ltr', locale:'ru-RU',
+      ru: {
+        dir:'ltr', locale:'ru-RU',
         title:'Панель живых рынков', badge:'Без сервера • Для GitHub Pages',
         cryptoTitle:'Крипто с Binance (24ч)', cryptoStatus:'Загрузка с Binance…',
         pairLabel:'Выберите пару:', quoteLabel:'Котируемая валюта:', pairHint:'Рекомендуется USDT/USDC/BUSD',
@@ -214,17 +220,18 @@
       }
     };
 
-    // State
+    // ===== State =====
     const state = {
       theme: localStorage.getItem('theme') || 'dark',
       lang: localStorage.getItem('lang') || 'fa',
       quote: localStorage.getItem('quote') || 'USDT',
-      refreshMs: 60000,
+      refreshMs: 60000, // 60s
       binanceAll: [],
       choicesInstance: null
     };
+    document.body.setAttribute('data-theme', state.theme);
 
-    // Helpers
+    // ===== Helpers =====
     function t(k){ const p=i18n[state.lang]; return p[k] || k; }
     function setText(id, val){ const el=document.getElementById(id); if(el) el.textContent=String(val); }
     function formatNum(n, opts){ try{ return Number(n).toLocaleString(i18n[state.lang].locale, opts||{}); }catch{ return n; } }
@@ -265,8 +272,7 @@
         tradesEl.textContent = `${t('tradesLabel')}: ${tradesEl.textContent.split(':')[1].trim()}`;
     }
 
-    // Events
-    document.body.setAttribute('data-theme', state.theme);
+    // ===== UI events =====
     const langSelect = document.getElementById('langSelect');
     langSelect.value = state.lang;
     langSelect.addEventListener('change', ()=>{
@@ -294,8 +300,9 @@
       populatePairs();
     });
 
-    // Binance
+    // ===== Binance: load and populate searchable dropdown =====
     async function loadBinance(){
+      const status = document.getElementById('cryptoStatus');
       try {
         setText('cryptoStatus', t('cryptoStatus'));
         const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
@@ -345,7 +352,7 @@
 
     function renderPairInfo(symbol, pairs){
       if (!symbol) {
-        document.getElementById('pairName').textContent = '—';
+        document.getElementById('pairName').innerHTML = '<span class="coin-name">—</span>';
         document.getElementById('pairPrice').textContent = `${t('priceLabel')}: —`;
         document.getElementById('pairChange').textContent = `${t('changeLabel')}: —`;
         document.getElementById('pairVolume').textContent = `${t('volLabel')}: —`;
@@ -361,14 +368,14 @@
       const volNum = Number(info.quoteVolume);
       const tradesNum = Number(info.count || 0);
 
-      document.getElementById('pairName').textContent = `${base}/${state.quote}`;
+      document.getElementById('pairName').innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
       document.getElementById('pairPrice').textContent = `${t('priceLabel')}: $${formatNum(priceNum, {maximumFractionDigits: 8})}`;
       document.getElementById('pairChange').innerHTML = `${t('changeLabel')}: <span class="${chgNum>=0 ? 'delta-up':'delta-down'}">${formatNum(chgNum, {maximumFractionDigits: 2})}%</span>`;
       document.getElementById('pairVolume').textContent = `${t('volLabel')}: $${formatNum(volNum)}`;
       document.getElementById('pairTrades').textContent = `${t('tradesLabel')}: ${formatNum(tradesNum)}`;
     }
 
-    // Forex
+    // ===== Forex =====
     async function loadForex(){
       try {
         setText('forexStatus', t('forexStatus'));
@@ -397,15 +404,15 @@
       }
     }
 
-    // Init
+    // ===== Init =====
     document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('langSelect').value = state.lang;
       document.getElementById('quoteSelect').value = state.quote;
       applyLang();
       loadBinance();
       loadForex();
-      setInterval(loadBinance, 60000);
-      setInterval(loadForex, 60000);
+      setInterval(loadBinance, state.refreshMs);
+      setInterval(loadForex, state.refreshMs);
     });
   </script>
 </body>
