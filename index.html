@@ -28,7 +28,7 @@
       border-bottom: 1px solid var(--border); }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 14px; }
     .toolbar { display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
-    .toolbar select, .toolbar button, .toolbar input {
+    .toolbar select, .toolbar button {
       background: var(--panel); color: var(--text); border: 1px solid var(--border);
       border-radius: 10px; padding: 8px 10px; cursor: pointer;
     }
@@ -81,7 +81,9 @@
           <div class="info-grid" style="margin-top:8px;">
             <div class="info-box">
               <label id="pairLabel" for="pairSelect">انتخاب جفت‌ارز:</label>
-              <select id="pairSelect"></select>
+              <select id="pairSelect">
+                <option value="">— هیچ‌کدام —</option>
+              </select>
               <div class="status" id="pairHint">USDT/USDC/BUSD توصیه‌شده</div>
             </div>
             <div class="info-box">
@@ -157,7 +159,9 @@
         lastUpdate:'آخرین بروزرسانی',
         forexTitle:'ارزهای جهان (Forex)', forexStatus:'در حال دریافت از Frankfurter…',
         commoditiesTitle:'طلا و کامودیتی‌ها',
-        themeBtn:'تم روشن/تاریک', refreshBtn:'به‌روزرسانی'
+        themeBtn:'تم روشن/تاریک', refreshBtn:'به‌روزرسانی',
+        noneText:'— هیچ‌کدام —',
+        noneSelectedMsg:'هیچ جفت‌ارزی انتخاب نشده است.'
       },
       ar: {
         dir:'rtl', locale:'ar-SA',
@@ -168,7 +172,9 @@
         lastUpdate:'آخر تحديث',
         forexTitle:'عملات العالم (فوركس)', forexStatus:'جارٍ الجلب من Frankfurter…',
         commoditiesTitle:'الذهب والسلع',
-        themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث'
+        themeBtn:'سمة فاتحة/داكنة', refreshBtn:'تحديث',
+        noneText:'— لا شيء —',
+        noneSelectedMsg:'لم يتم اختيار أي زوج.'
       },
       en: {
         dir:'ltr', locale:'en-US',
@@ -179,7 +185,9 @@
         lastUpdate:'Last update',
         forexTitle:'Global currencies (Forex)', forexStatus:'Fetching from Frankfurter…',
         commoditiesTitle:'Gold and commodities',
-        themeBtn:'Light/Dark', refreshBtn:'Refresh'
+        themeBtn:'Light/Dark', refreshBtn:'Refresh',
+        noneText:'— None —',
+        noneSelectedMsg:'No pair selected.'
       },
       ru: {
         dir:'ltr', locale:'ru-RU',
@@ -190,7 +198,9 @@
         lastUpdate:'Последнее обновление',
         forexTitle:'Мировые валюты (Forex)', forexStatus:'Получение с Frankfurter…',
         commoditiesTitle:'Золото и сырьё',
-        themeBtn:'Светлая/Тёмная', refreshBtn:'Обновить'
+        themeBtn:'Светлая/Тёмная', refreshBtn:'Обновить',
+        noneText:'— Нет —',
+        noneSelectedMsg:'Пара не выбрана.'
       }
     };
 
@@ -229,6 +239,9 @@
       document.getElementById('refreshAll').textContent = p.refreshBtn;
       // اگر داده کریپتو هست، برچسب‌ها را به‌روز کن
       updatePairInfoLabels();
+      // اگر گزینه‌ی خالی باید به‌روزرسانی شود
+      const emptyOpt = document.querySelector('#pairSelect option[value=""]');
+      if (emptyOpt) emptyOpt.textContent = p.noneText;
     }
 
     function schedule(){
@@ -298,8 +311,8 @@
         state.choicesInstance = null;
       }
 
-      // گزینه‌ها را بساز
-      select.innerHTML = pairs
+      // گزینه خالی + گزینه‌ها
+      select.innerHTML = `<option value="">${t('noneText')}</option>` + pairs
         .map(p => `<option value="${p.symbol}">${p.symbol}</option>`)
         .join('');
 
@@ -314,16 +327,9 @@
       // رویداد تغییر برای نمایش اطلاعات
       select.addEventListener('change', e => renderPairInfo(e.target.value, pairs));
 
-      // انتخاب پیش‌فرض: بزرگ‌ترین حجم
-      const topByVol = pairs
-        .map(p => ({ s: p.symbol, v: Number(p.quoteVolume || '0') }))
-        .sort((a,b)=>b.v - a.v)[0];
-      const defaultSymbol = topByVol ? topByVol.s : (pairs[0]?.symbol || '');
-      if (defaultSymbol) {
-        select.value = defaultSymbol;
-        // Choices نیاز به تریگر دستی دارد:
-        select.dispatchEvent(new Event('change'));
-      }
+      // انتخاب پیش‌فرض: گزینه خالی (هیچ‌کدام)
+      select.value = '';
+      select.dispatchEvent(new Event('change'));
 
       setText('cryptoStatus', `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`);
     }
@@ -338,7 +344,7 @@
       if (priceEl.textContent.includes(':'))
         priceEl.textContent = `${t('priceLabel')}: ${priceEl.textContent.split(':')[1].trim()}`;
       if (changeEl.textContent.includes(':'))
-        changeEl.textContent = `${t('changeLabel')}: ${changeEl.textContent.split(':')[1].trim()}`;
+        changeEl.innerHTML = `${t('changeLabel')}: ${changeEl.innerHTML.split(':')[1].trim()}`;
       if (volEl.textContent.includes(':'))
         volEl.textContent = `${t('volLabel')}: ${volEl.textContent.split(':')[1].trim()}`;
       if (tradesEl.textContent.includes(':'))
@@ -346,6 +352,15 @@
     }
 
     function renderPairInfo(symbol, pairs){
+      if (!symbol) {
+        document.getElementById('pairName').textContent = '—';
+        document.getElementById('pairPrice').textContent = `${t('priceLabel')}: —`;
+        document.getElementById('pairChange').textContent = `${t('changeLabel')}: —`;
+        document.getElementById('pairVolume').textContent = `${t('volLabel')}: —`;
+        document.getElementById('pairTrades').textContent = `${t('tradesLabel')}: —`;
+        return;
+      }
+
       const info = pairs.find(p => p.symbol === symbol);
       if (!info) return;
       const base = symbol.slice(0, symbol.length - state.quote.length);
