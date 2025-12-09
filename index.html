@@ -9,131 +9,266 @@
     :root {
       --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
-      --card:#12141c; --field-w:220px;
+      --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
+      --field-w:220px;
     }
-    body {margin:0;background:var(--bg);color:var(--text);font-family:sans-serif;}
-    header {background:var(--panel);padding:10px;display:flex;gap:10px;align-items:center;position:sticky;top:0;border-bottom:1px solid var(--border);}
-    .card {background:var(--card);margin:10px;padding:10px;border-radius:8px;border:1px solid var(--border);}
-    .status {font-size:13px;color:var(--muted);margin-top:6px;}
-    .delta-up {color:var(--up);font-weight:600;}
-    .delta-down {color:var(--down);font-weight:600;}
-    .info-box {border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--panel);margin-top:8px;}
-    .grid-2 {display:grid;gap:10px;grid-template-columns:1fr 1fr !important;} /* همیشه دو ستون */
-    .field {display:inline-block;width:var(--field-w);}
+    [data-theme="light"] {
+      --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
+      --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
+      --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
+    }
+
+    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
+
+    header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
+    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
+    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .toolbar .spacer {flex:1;}
+    .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
+
+    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; margin:12px 0;}
+    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
+    .card .content {padding:10px 14px;}
+    .status {font-size:13px; color:var(--muted); margin-top:6px;}
+
+    /* دو ستون ثابت حتی روی موبایل */
+    .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr !important;}
+
+    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
+    .delta-up {color:var(--up); font-weight:600;}
+    .delta-down {color:var(--down); font-weight:600;}
+
+    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
+    .iframe-box iframe {width:100%; height:280px; border:0;}
+
+    /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
+    .field {display:inline-block; width:var(--field-w);}
     .choices {width:var(--field-w);}
-    .choices__inner {background:var(--panel);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:8px;}
-    .choices__list--dropdown {background:#fff;border:1px solid var(--border);border-radius:10px;}
-    .choice-with-icon {display:flex;align-items:center;gap:8px;padding:8px 10px;}
-    .choice-with-icon img {width:20px;height:20px;border-radius:50%;object-fit:contain;}
-    .choice-with-icon .label {color:#000 !important;font-weight:600;}
-    .selected-with-icon {display:inline-flex;align-items:center;gap:8px;}
-    .selected-with-icon img {width:18px;height:18px;border-radius:50%;object-fit:contain;}
-    .selected-with-icon .label {color:var(--text);font-weight:600;}
-    /* متن گزینه‌های Quote همیشه تیره */
+    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:10px; color:var(--text); padding:8px;}
+    .choices__list--dropdown {background:#fff; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);}
+
+    /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
+    .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
+    .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
+    .choice-with-icon .label {color:#000 !important; font-weight:600;}
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
+    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
+
+    /* آیتم انتخاب‌شده داخل کنترل */
+    .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
+    .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
+    .selected-with-icon .label {color:var(--text); font-weight:600;}
+
+    /* متن گزینه‌های Quote همیشه تیره — هدف‌گیری دقیق choices بعد از select */
     #quoteSelect + .choices .choices__list--dropdown .choices__item span,
     #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-      color:#1a2230 !important;font-weight:600;
+      color:#1a2230 !important; font-weight:600;
     }
-    .coin-name {color:#ffd166;font-weight:700;}
-  </style>
-</head>
-<body data-theme="dark">
-<header>
-  <strong>داشبور زنده بازارها</strong>
-  <select id="langSelect" class="field">
-    <option value="fa">فارسی</option>
-    <option value="en">English</option>
-  </select>
-  <button id="toggleTheme">تم روشن/تاریک</button>
-  <button id="refreshAll">به‌روزرسانی</button>
-</header>
 
-<main>
-  <section class="card">
-    <h3>کریپتو از Binance</h3>
-    <div class="grid-2">
-      <div>
-        <label for="quoteSelect">انتخاب Quote:</label>
-        <select id="quoteSelect" class="field">
-          <option value="USDT">USDT</option>
-          <option value="BUSD">BUSD</option>
-          <option value="USDC">USDC</option>
-          <option value="BTC">BTC</option>
-        </select>
-      </div>
-      <div>
-        <label for="pairSelect">انتخاب جفت‌ارز:</label>
-        <select id="pairSelect" class="field"><option value="">— هیچ‌کدام —</option></select>
-      </div>
-    </div>
-    <div class="status" id="cryptoStatus">در حال دریافت…</div>
-    <div class="info-box">
-      <strong id="pairName">—</strong>
-      <div id="pairPrice">قیمت: —</div>
-      <div id="pairChange">تغییر 24h: —</div>
-      <div id="pairVolume">حجم 24h: —</div>
-      <div id="pairTrades">تعداد معاملات: —</div>
-      <div class="status" id="cryptoUpdated">—</div>
-    </div>
-  </section>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script>
-const state={quote:'USDT',binanceAll:[],pairChoices:null,quoteChoices:null,usdToIrr:0};
-function iconUrl(base){return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`;}
-function formatNum(n,opts){try{return Number(n).toLocaleString('fa-IR',opts||{});}catch{return n;}}
-  function renderPairInfo(symbol,pairs){
-  const nameEl=document.getElementById('pairName');
-  const priceEl=document.getElementById('pairPrice');
-  const changeEl=document.getElementById('pairChange');
-  const volEl=document.getElementById('pairVolume');
-  const tradesEl=document.getElementById('pairTrades');
-
-  if(!symbol){
-    nameEl.innerHTML="—";
-    priceEl.textContent="قیمت: —";
-    changeEl.textContent="تغییر 24h: —";
-    volEl.textContent="حجم 24h: —";
-    tradesEl.textContent="تعداد معاملات: —";
-    return;
+    /* نام ارز در کارت اطلاعات */
+    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
+    [data-theme="light"] .coin-name {color:#1a2230;}
+  
+/* --- FORCE DESKTOP LAYOUT ON MOBILE --- */
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr !important;
   }
-  const info=pairs.find(p=>p.symbol===symbol);
-  if(!info)return;
-  const base=symbol.slice(0,symbol.length-state.quote.length);
-  const priceUSD=Number(info.lastPrice);
-  const chgNum=Number(info.priceChangePercent);
-  const volNum=Number(info.quoteVolume);
-  const tradesNum=Number(info.count||0);
-  const priceIRR=state.usdToIrr?priceUSD*state.usdToIrr:0;
-
-  nameEl.innerHTML=`<span class="coin-name">${base}/${state.quote}</span>`;
-  priceEl.textContent=`قیمت: $${formatNum(priceUSD)} | ریال ${formatNum(priceIRR)}`;
-  changeEl.innerHTML=`تغییر 24h: <span class="${chgNum>=0?'delta-up':'delta-down'}">${formatNum(chgNum,{maximumFractionDigits:2})}%</span>`;
-  volEl.textContent=`حجم 24h: $${formatNum(volNum)}`;
-  tradesEl.textContent=`تعداد معاملات: ${formatNum(tradesNum)}`;
+  body {
+    zoom: 0.85; /* shrink to fit */
+  }
+  .wrap {
+    max-width: 1200px !important;
+  }
 }
 
-// تغییر تم
-document.getElementById('toggleTheme').addEventListener('click',()=>{
-  const body=document.body;
-  body.setAttribute('data-theme',body.getAttribute('data-theme')==='dark'?'light':'dark');
-});
+</style>
+</head>
+<body data-theme="dark">
+  <header>
+    <div class="wrap toolbar">
+      <strong id="title">داشبور زنده بازارها</strong>
+      <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
+      <div class="spacer"></div>
+      <select id="langSelect" class="field">
+        <option value="fa">فارسی</option>
+        <option value="en">English</option>
+      </select>
+      <button id="toggleTheme">تم روشن/تاریک</button>
+      <button id="refreshAll">به‌روزرسانی</button>
+    </div>
+  </header>
 
-// دکمه‌ی به‌روزرسانی
-document.getElementById('refreshAll').addEventListener('click',()=>{
-  loadUsdToIrr(); loadBinance();
-});
+  <main class="wrap">
+    <!-- کریپتو -->
+    <section class="card" id="cryptoCard">
+      <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
+      <div class="content">
+        <div class="status" id="cryptoStatus">در حال دریافت…</div>
 
-// مقداردهی اولیه
-document.addEventListener('DOMContentLoaded',async()=>{
-  new Choices('#langSelect',{searchEnabled:false,itemSelectText:''});
-  new Choices('#quoteSelect',{searchEnabled:false,itemSelectText:''});
-  await loadUsdToIrr();
-  await loadBinance();
-  setInterval(loadUsdToIrr,5*60*1000); // هر ۵ دقیقه نرخ ریال
-  setInterval(loadBinance,60*1000);    // هر دقیقه داده‌های Binance
-});
-</script>
+        <div class="grid-2" style="margin-top:8px;">
+          <div class="info-box">
+            <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
+            <select id="quoteSelect" class="field">
+              <option value="USDT">USDT</option>
+              <option value="BUSD">BUSD</option>
+              <option value="USDC">USDC</option>
+              <option value="BTC">BTC</option>
+            </select>
+          </div>
+          <div class="info-box">
+            <label id="pairLabel" for="pairSelect">انتخاب جفت‌ارز:</label>
+            <select id="pairSelect" class="field"><option value="">— هیچ‌کدام —</option></select>
+            <div class="status" id="pairHint">USDT/USDC/BUSD توصیه‌شده</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:8px;">
+          <div class="info-box">
+            <strong id="pairName">—</strong>
+            <div id="pairPrice">قیمت: —</div>
+            <div id="pairChange">تغییر 24h: —</div>
+          </div>
+          <div class="info-box">
+            <div id="pairVolume">حجم 24h: —</div>
+            <div id="pairTrades">تعداد معاملات: —</div>
+            <div class="status" id="cryptoUpdated">—</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    const state = { quote:'USDT', binanceAll:[], pairChoices:null, quoteChoices:null, usdToIrr:0 };
+
+    function iconUrl(base){ return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; }
+    function formatNum(n,opts){ try{ return Number(n).toLocaleString('fa-IR',opts||{});} catch{ return n; } }
+
+    async function loadUsdToIrr(){
+      try{
+        const res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=IRR', {cache:'no-store'});
+        const data = await res.json();
+        state.usdToIrr = Number(data.rates?.IRR || 0);
+      }catch(e){ state.usdToIrr = 0; }
+    }
+
+    async function loadBinance(){
+      document.getElementById('cryptoStatus').textContent = 'در حال دریافت از Binance…';
+      const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
+      if (!res.ok) { document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; return; }
+      state.binanceAll = await res.json();
+      populatePairs();
+      document.getElementById('cryptoUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
+    }
+
+    function populatePairs(){
+      const select = document.getElementById('pairSelect');
+      const quote = state.quote;
+      const pairs = state.binanceAll.filter(d => d.symbol.endsWith(quote));
+
+      select.innerHTML = `<option value="">— هیچ‌کدام —</option>` + pairs.map(p=>{
+        const base = p.symbol.slice(0, p.symbol.length - quote.length);
+        return `<option value="${p.symbol}" data-custom-properties="${iconUrl(base)}">${base}/${quote}</option>`;
+      }).join('');
+
+      if (state.pairChoices) state.pairChoices.destroy();
+      state.pairChoices = new Choices(select, {
+        searchEnabled:true, itemSelectText:'', shouldSort:true, position:'bottom',
+        callbackOnCreateTemplates: function(template) {
+          return {
+            option: (classNames, data) => {
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+              return template(`<div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+            },
+            item: (classNames, data) => {
+              const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+              return template(`<div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+            }
+          };
+        }
+      });
+
+      select.addEventListener('change', e => renderPairInfo(e.target.value, pairs));
+      select.value = '';
+      select.dispatchEvent(new Event('change'));
+    }
+
+    function renderPairInfo(symbol, pairs){
+      const nameEl = document.getElementById('pairName');
+      const priceEl = document.getElementById('pairPrice');
+      const changeEl = document.getElementById('pairChange');
+      const volEl = document.getElementById('pairVolume');
+      const tradesEl = document.getElementById('pairTrades');
+
+      if (!symbol) {
+        nameEl.innerHTML = '<span class="coin-name">—</span>';
+        priceEl.textContent = 'قیمت: —';
+        changeEl.textContent = 'تغییر 24h: —';
+        volEl.textContent = 'حجم 24h: —';
+        tradesEl.textContent = 'تعداد معاملات: —';
+        return;
+      }
+      const info = pairs.find(p => p.symbol === symbol);
+      if (!info) return;
+
+      const base = symbol.slice(0, symbol.length - state.quote.length);
+      const priceUSD = Number(info.lastPrice);
+      const chgNum = Number(info.priceChangePercent);
+      const volNum = Number(info.quoteVolume);
+      const tradesNum = Number(info.count || 0);
+
+      const priceIRR = state.usdToIrr ? priceUSD * state.usdToIrr : 0;
+
+      nameEl.innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
+      priceEl.textContent = `قیمت: $${formatNum(priceUSD, {maximumFractionDigits: 8})}` + (state.usdToIrr ? ` | ریال ${formatNum(priceIRR)}` : '');
+      changeEl.innerHTML = `تغییر 24h: <span class="${chgNum>=0?'delta-up':'delta-down'}">${formatNum(chgNum, {maximumFractionDigits: 2})}%</span>`;
+      volEl.textContent = `حجم 24h: $${formatNum(volNum)}`;
+      tradesEl.textContent = `تعداد معاملات: ${formatNum(tradesNum)}`;
+    }
+
+    function initQuoteChoices(){
+      const select = document.getElementById('quoteSelect');
+      if (state.quoteChoices) state.quoteChoices.destroy();
+      state.quoteChoices = new Choices(select, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
+      select.addEventListener('change', ()=>{
+        state.quote = select.value;
+        populatePairs();
+      });
+      // اعمال رنگ تیره روی لیست Quote بعد از ساخت
+      const quoteChoicesEl = select.nextElementSibling;
+      if (quoteChoicesEl && quoteChoicesEl.classList.contains('choices')) {
+        const style = document.createElement('style');
+        style.textContent = `
+          #quoteSelect + .choices .choices__list--dropdown .choices__item span,
+          #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
+            color:#1a2230 !important; font-weight:600;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+
+    // Theme toggle
+    document.getElementById('toggleTheme').addEventListener('click', ()=>{
+      const body = document.body;
+      body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+    });
+    document.getElementById('refreshAll').addEventListener('click', ()=>{
+      loadUsdToIrr(); loadBinance();
+    });
+
+    // Init
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      new Choices('#langSelect', {searchEnabled:false, itemSelectText:''});
+      initQuoteChoices();
+      await loadUsdToIrr();
+      await loadBinance();
+      // refresh
+      setInterval(loadUsdToIrr, 5*60*1000);
+      setInterval(loadBinance, 60*1000);
+    });
+  </script>
 </body>
 </html>
