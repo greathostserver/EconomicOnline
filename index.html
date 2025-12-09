@@ -21,8 +21,8 @@
     body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
 
     header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
-    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
-    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .wrap {max-width:1200px; width:1200px; margin:0 auto; padding:14px;}
+    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:nowrap;}
     .toolbar .spacer {flex:1;}
     .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
 
@@ -59,15 +59,22 @@
     .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
     .selected-with-icon .label {color:var(--text); font-weight:600;}
 
-    /* متن گزینه‌های Quote همیشه تیره — هدف‌گیری دقیق choices بعد از select */
-    #quoteSelect + .choices .choices__list--dropdown .choices__item span,
-    #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
+    /* متن گزینه‌های Quote همیشه تیره (و در هایلایت سفید) */
+    #quoteSelect + .choices .choices__list--dropdown .choices__item--selectable,
+    #quoteSelect + .choices .choices__list--dropdown .choices__item--selectable .label {
       color:#1a2230 !important; font-weight:600;
+    }
+    #quoteSelect + .choices .choices__list--dropdown .choices__item--selectable.is-highlighted,
+    #quoteSelect + .choices .choices__list--dropdown .choices__item--selectable.is-highlighted .label {
+      color:#fff !important;
     }
 
     /* نام ارز در کارت اطلاعات */
     .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
     [data-theme="light"] .coin-name {color:#1a2230;}
+
+    /* نمایش دسکتاپ حتی روی موبایل */
+    html, body {min-width:1024px; overflow-x:auto;}
   </style>
 </head>
 <body data-theme="dark">
@@ -124,8 +131,7 @@
       </div>
     </section>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <script>
     const state = { quote:'USDT', binanceAll:[], pairChoices:null, quoteChoices:null, usdToIrr:0 };
 
@@ -222,18 +228,6 @@
         state.quote = select.value;
         populatePairs();
       });
-      // اعمال رنگ تیره روی لیست Quote بعد از ساخت
-      const quoteChoicesEl = select.nextElementSibling;
-      if (quoteChoicesEl && quoteChoicesEl.classList.contains('choices')) {
-        const style = document.createElement('style');
-        style.textContent = `
-          #quoteSelect + .choices .choices__list--dropdown .choices__item span,
-          #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-            color:#1a2230 !important; font-weight:600;
-          }
-        `;
-        document.head.appendChild(style);
-      }
     }
 
     // Theme toggle
