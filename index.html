@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://api.exchangerate.host">
   <link rel="preconnect" href="https://api.frankfurter.app">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
   <style>
     :root {
       --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
@@ -21,24 +22,40 @@
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
+
     html, body {height:100%;}
-    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
-    header {position:sticky; top:0; z-index:50; background:color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
+    body {
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
+    }
+
+    header {
+      position:sticky; top:0; z-index:50;
+      background: color-mix(in oklab, var(--bg) 85%, transparent 15%);
+      backdrop-filter:saturate(1.2) blur(6px);
+      border-bottom:1px solid var(--border);
+    }
     .wrap {max-width:1200px; margin:0 auto; padding:14px;}
     .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
     .toolbar .spacer {flex:1;}
-    .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
+    .toolbar button {
+      background:var(--panel); color:var(--text);
+      border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;
+    }
 
     .row {display:grid; gap:14px; grid-template-columns:1fr;}
-    @media (min-width:900px){ .row { grid-template-columns:1.5fr 1fr; } }
+    @media (min-width:900px) { .row { grid-template-columns: 1.5fr 1fr; } }
 
-    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden;}
+    .card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; box-shadow:var(--shadow); overflow:hidden;
+    }
     .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
     .card .content {padding:10px 14px;}
     .status {font-size:13px; color:var(--muted); margin-top:6px;}
 
+    /* دو ستون ثابت حتی روی موبایل */
     .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr;}
-    @media (max-width:760px){ .grid-2 { grid-template-columns:1fr; } }
 
     .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
     .delta-up {color:var(--up); font-weight:600;}
@@ -47,22 +64,35 @@
     .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
     .iframe-box iframe {width:100%; height:280px; border:0;}
 
-    /* فیلدهای جمع‌وجور و یکسان‌سازی */
+    /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
     .field {display:inline-block; width:var(--field-w);}
     .choices {width:var(--field-w);}
-    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:10px; color:var(--text); padding:8px;}
-    .choices__list--dropdown {background:#fff; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);}
-    /* آیتم‌ها با آیکن و فونت مشکی */
+    .choices__inner {
+      background:var(--panel); border:1px solid var(--border); border-radius:10px;
+      color:var(--text); padding:8px;
+    }
+    .choices__list--dropdown {
+      background:#fff; border:1px solid var(--border);
+      border-radius:10px; box-shadow:var(--shadow);
+    }
+
+    /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
     .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
     .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
     .choice-with-icon .label {color:#000 !important; font-weight:600;}
     .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
     .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
-    /* آیتم انتخاب‌شده در کنترل */
+
+    /* آیتم انتخاب‌شده داخل کنترل */
     .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
     .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
     .selected-with-icon .label {color:var(--text); font-weight:600;}
-    .choices__placeholder {color:var(--muted);}
+
+    /* متن گزینه‌های Quote همیشه تیره */
+    #quoteSelect ~ .choices .choices__list--dropdown .choices__item span,
+    #quoteSelect ~ .choices .choices__list--dropdown .choice-with-icon .label {
+      color:#1a2230 !important; font-weight:600;
+    }
 
     /* نام ارز در کارت اطلاعات */
     .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
@@ -91,6 +121,7 @@
         <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
         <div class="content">
           <div class="status" id="cryptoStatus">در حال دریافت…</div>
+
           <div class="grid-2" style="margin-top:8px;">
             <div class="info-box">
               <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
@@ -159,7 +190,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <script>
-    const state = { lang:'fa', quote:'USDT', binanceAll:[], usdToIrr:0, pairChoices:null, quoteChoices:null, refreshMs:60000 };
+    const state = {
+      lang:'fa', quote:'USDT', binanceAll:[], usdToIrr:0,
+      pairChoices:null, quoteChoices:null, refreshMs:60000
+    };
     const i18n = {
       fa:{ locale:'fa-IR', cryptoStatus:'در حال دریافت…', priceLabel:'قیمت', changeLabel:'تغییر 24h', volLabel:'حجم 24h', tradesLabel:'تعداد معاملات', lastUpdate:'آخرین بروزرسانی', noneText:'— هیچ‌کدام —' },
       en:{ locale:'en-US', cryptoStatus:'Loading…', priceLabel:'Price', changeLabel:'24h change', volLabel:'24h volume', tradesLabel:'Trades', lastUpdate:'Last update', noneText:'— None —' }
@@ -167,6 +201,26 @@
     function t(k){ return (i18n[state.lang]||i18n.fa)[k] || k; }
     function formatNum(n, opts){ try{ return Number(n).toLocaleString(i18n[state.lang].locale, opts||{});} catch{ return n; } }
     function iconUrl(base){ return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; }
+
+    // Theme toggle
+    document.getElementById('toggleTheme').addEventListener('click', ()=>{
+      const body = document.body;
+      body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+    });
+    document.getElementById('refreshAll').addEventListener('click', ()=>{
+      loadUsdToIrr(); loadBinance(); loadForex();
+    });
+
+    // Initialize Choices for language (optional visual consistency)
+    new Choices('#langSelect', {searchEnabled:false, itemSelectText:''});
+
+    function initQuoteChoices(){
+      const el = document.getElementById('quoteSelect');
+      if (state.quoteChoices) state.quoteChoices.destroy();
+      state.quoteChoices = new Choices(el, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
+      el.addEventListener('change', ()=>{ state.quote = el.value; populatePairChoices(); });
+      el.value = state.quote;
+    }
 
     async function loadUsdToIrr(){
       try {
@@ -179,16 +233,10 @@
     async function loadBinance(){
       document.getElementById('cryptoStatus').textContent = t('cryptoStatus');
       const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
+      if (!res.ok) { document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; return; }
       state.binanceAll = await res.json();
       populatePairChoices();
       document.getElementById('cryptoUpdated').textContent = `${t('lastUpdate')}: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
-    }
-
-    function initQuoteChoices(){
-      const el = document.getElementById('quoteSelect');
-      if (state.quoteChoices) state.quoteChoices.destroy();
-      state.quoteChoices = new Choices(el, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
-      el.addEventListener('change', ()=>{ state.quote = el.value; populatePairChoices(); });
     }
 
     function populatePairChoices(){
@@ -247,7 +295,6 @@
       const volNum = Number(info.quoteVolume);
       const tradesNum = Number(info.count || 0);
 
-      // محاسبه ریال
       const priceIRR = state.usdToIrr ? priceUSD * state.usdToIrr : 0;
 
       nameEl.innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
@@ -271,26 +318,16 @@
         const data = await res.json();
         document.getElementById(elId).textContent = formatNum(data.rates[quote], {maximumFractionDigits: 6});
       }
-      document.getElementById('forexUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString(i18n[state.lang].locale)}`;
+      document.getElementById('forexUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
     }
 
-    document.getElementById('toggleTheme').addEventListener('click', ()=>{
-      const body = document.body;
-      body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
-    });
-    document.getElementById('refreshAll').addEventListener('click', ()=>{
-      loadUsdToIrr(); loadBinance(); loadForex();
-    });
-
+    // Init
     document.addEventListener('DOMContentLoaded', async ()=>{
-      // init
-      new Choices('#langSelect', {searchEnabled:false, itemSelectText:''});
       initQuoteChoices();
       await loadUsdToIrr();
       await loadBinance();
       await loadForex();
-      // auto refresh
-      setInterval(loadUsdToIrr, state.refreshMs * 5); // ریال کمتر تغییر می‌کند
+      setInterval(loadUsdToIrr, state.refreshMs * 5);
       setInterval(loadBinance, state.refreshMs);
       setInterval(loadForex, state.refreshMs);
     });
