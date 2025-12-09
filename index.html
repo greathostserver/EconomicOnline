@@ -6,24 +6,36 @@
   <title>داشبور زنده بازارها</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     :root {
       --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
       --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
       --field-w:220px;
     }
+    
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
 
+    html, body {
+      width: 100%;
+      min-width: 1200px;
+      overflow-x: auto;
+    }
+    
     body {
       margin:0; 
       background:var(--bg); 
       color:var(--text); 
       font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
-      min-width: 1200px; /* حداقل عرض */
+      font-size: 14px;
+      line-height: 1.4;
     }
 
     header {
@@ -33,12 +45,12 @@
       background: color-mix(in oklab, var(--bg) 85%, transparent 15%); 
       border-bottom:1px solid var(--border); 
       backdrop-filter:saturate(1.2) blur(6px);
-      width: 100%;
+      min-width: 1200px;
     }
     
     .wrap {
-      width: 1200px; /* عرض ثابت */
-      margin: 0 auto; /* وسط چین */
+      width: 1200px;
+      margin: 0 auto;
       padding: 14px;
     }
     
@@ -46,6 +58,7 @@
       display: flex; 
       align-items: center; 
       gap: 10px;
+      white-space: nowrap;
     }
     
     .toolbar .spacer {
@@ -57,9 +70,10 @@
       color: var(--text); 
       border: 1px solid var(--border); 
       border-radius: 10px; 
-      padding: 8px 10px; 
+      padding: 8px 12px; 
       cursor: pointer;
-      white-space: nowrap; /* از شکسته شدن متن جلوگیری می‌کند */
+      font-size: 14px;
+      white-space: nowrap;
     }
 
     .card {
@@ -69,17 +83,19 @@
       box-shadow: var(--shadow); 
       overflow: hidden; 
       margin: 12px 0;
+      width: 100%;
     }
     
     .card h3 {
       margin: 0; 
-      padding: 10px 14px; 
+      padding: 12px 14px; 
       border-bottom: 1px solid var(--border); 
       font-size: 16px;
+      font-weight: 600;
     }
     
     .card .content {
-      padding: 10px 14px;
+      padding: 12px 14px;
     }
     
     .status {
@@ -88,18 +104,20 @@
       margin-top: 6px;
     }
 
-    /* دو ستون ثابت */
+    /* دو ستون ثابت - عرض کامل */
     .grid-2 {
       display: grid;
-      gap: 10px;
+      gap: 12px;
       grid-template-columns: 1fr 1fr !important;
+      width: 100%;
     }
 
     .info-box {
       border: 1px solid var(--border); 
       border-radius: 10px; 
-      padding: 10px; 
+      padding: 12px; 
       background: var(--panel);
+      width: 100%;
     }
     
     .delta-up {
@@ -110,19 +128,6 @@
     .delta-down {
       color: var(--down); 
       font-weight: 600;
-    }
-
-    .iframe-box {
-      border: 1px solid var(--border); 
-      border-radius: 10px; 
-      overflow: hidden; 
-      background: var(--panel);
-    }
-    
-    .iframe-box iframe {
-      width: 100%; 
-      height: 280px; 
-      border: 0;
     }
 
     /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
@@ -140,7 +145,8 @@
       border: 1px solid var(--border); 
       border-radius: 10px; 
       color: var(--text); 
-      padding: 8px;
+      padding: 8px 10px;
+      font-size: 14px;
     }
     
     .choices__list--dropdown {
@@ -148,6 +154,8 @@
       border: 1px solid var(--border); 
       border-radius: 10px; 
       box-shadow: var(--shadow);
+      width: var(--field-w);
+      min-width: var(--field-w);
     }
 
     /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
@@ -168,6 +176,7 @@
     .choice-with-icon .label {
       color: #000 !important; 
       font-weight: 600;
+      font-size: 14px;
     }
     
     .choices__list--dropdown .choices__item--selectable.is-highlighted {
@@ -195,6 +204,7 @@
     .selected-with-icon .label {
       color: var(--text); 
       font-weight: 600;
+      font-size: 14px;
     }
 
     /* متن گزینه‌های Quote همیشه تیره */
@@ -209,6 +219,7 @@
       color: #ffd166; 
       font-weight: 700; 
       letter-spacing: 0.2px;
+      font-size: 16px;
     }
     
     [data-theme="light"] .coin-name {
@@ -224,16 +235,19 @@
     /* متن آیتم‌های داخل منو در حالت تاریک */
     body[data-theme="dark"] .choices__list--dropdown .choices__item {
       color: var(--text) !important;
+      font-size: 14px;
     }
 
     /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت تاریک) */
     body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
       color: var(--text) !important;
+      font-size: 14px;
     }
 
     /* متن آیتم‌های داخل منو در حالت روشن */
     body[data-theme="light"] .choices__list--dropdown .choices__item {
       color: #1a2230 !important;
+      font-size: 14px;
     }
 
     /* هایلایت آیتم در حالت hover برای هر دو تم */
@@ -252,12 +266,25 @@
     body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
       color: var(--text) !important;
     }
+    
+    /* اطلاعات نمایش داده شده */
+    #pairName, #pairPrice, #pairChange, #pairVolume, #pairTrades {
+      font-size: 14px;
+      margin: 4px 0;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
-      <strong id="title">داشبور زنده بازارها</strong>
+      <strong id="title" style="font-size: 18px;">داشبور زنده بازارها</strong>
       <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
       <div class="spacer"></div>
       <select id="langSelect" class="field">
@@ -276,7 +303,7 @@
       <div class="content">
         <div class="status" id="cryptoStatus">در حال دریافت…</div>
 
-        <div class="grid-2" style="margin-top:8px;">
+        <div class="grid-2" style="margin-top:12px;">
           <div class="info-box">
             <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
             <select id="quoteSelect" class="field">
@@ -293,7 +320,7 @@
           </div>
         </div>
 
-        <div class="grid-2" style="margin-top:8px;">
+        <div class="grid-2" style="margin-top:12px;">
           <div class="info-box">
             <strong id="pairName">—</strong>
             <div id="pairPrice">قیمت: —</div>
@@ -331,6 +358,7 @@
       state.binanceAll = await res.json();
       populatePairs();
       document.getElementById('cryptoUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
+      document.getElementById('cryptoStatus').textContent = 'داده‌ها دریافت شد';
     }
 
     function populatePairs(){
