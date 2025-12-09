@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=1200, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>داشبور زنده بازارها</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
@@ -18,56 +18,202 @@
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
 
-    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
+    body {
+      margin:0; 
+      background:var(--bg); 
+      color:var(--text); 
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
+      min-width: 1200px; /* حداقل عرض */
+    }
 
-    header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
-    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
-    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-    .toolbar .spacer {flex:1;}
-    .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
+    header {
+      position:sticky; 
+      top:0; 
+      z-index:50; 
+      background: color-mix(in oklab, var(--bg) 85%, transparent 15%); 
+      border-bottom:1px solid var(--border); 
+      backdrop-filter:saturate(1.2) blur(6px);
+      width: 100%;
+    }
+    
+    .wrap {
+      width: 1200px; /* عرض ثابت */
+      margin: 0 auto; /* وسط چین */
+      padding: 14px;
+    }
+    
+    .toolbar {
+      display: flex; 
+      align-items: center; 
+      gap: 10px;
+    }
+    
+    .toolbar .spacer {
+      flex: 1;
+    }
+    
+    .toolbar button {
+      background: var(--panel); 
+      color: var(--text); 
+      border: 1px solid var(--border); 
+      border-radius: 10px; 
+      padding: 8px 10px; 
+      cursor: pointer;
+      white-space: nowrap; /* از شکسته شدن متن جلوگیری می‌کند */
+    }
 
-    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; margin:12px 0;}
-    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
-    .card .content {padding:10px 14px;}
-    .status {font-size:13px; color:var(--muted); margin-top:6px;}
+    .card {
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      box-shadow: var(--shadow); 
+      overflow: hidden; 
+      margin: 12px 0;
+    }
+    
+    .card h3 {
+      margin: 0; 
+      padding: 10px 14px; 
+      border-bottom: 1px solid var(--border); 
+      font-size: 16px;
+    }
+    
+    .card .content {
+      padding: 10px 14px;
+    }
+    
+    .status {
+      font-size: 13px; 
+      color: var(--muted); 
+      margin-top: 6px;
+    }
 
-    /* دو ستون ثابت حتی روی موبایل */
-    .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr !important;}
+    /* دو ستون ثابت */
+    .grid-2 {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr !important;
+    }
 
-    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
-    .delta-up {color:var(--up); font-weight:600;}
-    .delta-down {color:var(--down); font-weight:600;}
+    .info-box {
+      border: 1px solid var(--border); 
+      border-radius: 10px; 
+      padding: 10px; 
+      background: var(--panel);
+    }
+    
+    .delta-up {
+      color: var(--up); 
+      font-weight: 600;
+    }
+    
+    .delta-down {
+      color: var(--down); 
+      font-weight: 600;
+    }
 
-    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
-    .iframe-box iframe {width:100%; height:280px; border:0;}
+    .iframe-box {
+      border: 1px solid var(--border); 
+      border-radius: 10px; 
+      overflow: hidden; 
+      background: var(--panel);
+    }
+    
+    .iframe-box iframe {
+      width: 100%; 
+      height: 280px; 
+      border: 0;
+    }
 
     /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
-    .field {display:inline-block; width:var(--field-w);}
-    .choices {width:var(--field-w);}
-    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:10px; color:var(--text); padding:8px;}
-    .choices__list--dropdown {background:#fff; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);}
+    .field {
+      display: inline-block; 
+      width: var(--field-w);
+    }
+    
+    .choices {
+      width: var(--field-w);
+    }
+    
+    .choices__inner {
+      background: var(--panel); 
+      border: 1px solid var(--border); 
+      border-radius: 10px; 
+      color: var(--text); 
+      padding: 8px;
+    }
+    
+    .choices__list--dropdown {
+      background: #fff; 
+      border: 1px solid var(--border); 
+      border-radius: 10px; 
+      box-shadow: var(--shadow);
+    }
 
     /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
-    .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
-    .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
-    .choice-with-icon .label {color:#000 !important; font-weight:600;}
-    .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
-    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
+    .choice-with-icon {
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      padding: 8px 10px;
+    }
+    
+    .choice-with-icon img {
+      width: 20px; 
+      height: 20px; 
+      border-radius: 50%; 
+      object-fit: contain;
+    }
+    
+    .choice-with-icon .label {
+      color: #000 !important; 
+      font-weight: 600;
+    }
+    
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+      background: var(--accent);
+    }
+    
+    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {
+      color: #fff !important;
+    }
 
     /* آیتم انتخاب‌شده داخل کنترل */
-    .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
-    .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
-    .selected-with-icon .label {color:var(--text); font-weight:600;}
+    .selected-with-icon {
+      display: inline-flex; 
+      align-items: center; 
+      gap: 8px;
+    }
+    
+    .selected-with-icon img {
+      width: 18px; 
+      height: 18px; 
+      border-radius: 50%; 
+      object-fit: contain;
+    }
+    
+    .selected-with-icon .label {
+      color: var(--text); 
+      font-weight: 600;
+    }
 
-    /* متن گزینه‌های Quote همیشه تیره — هدف‌گیری دقیق choices بعد از select */
+    /* متن گزینه‌های Quote همیشه تیره */
     #quoteSelect + .choices .choices__list--dropdown .choices__item span,
     #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-      color:#1a2230 !important; font-weight:600;
+      color: #1a2230 !important; 
+      font-weight: 600;
     }
 
     /* نام ارز در کارت اطلاعات */
-    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
-    [data-theme="light"] .coin-name {color:#1a2230;}
+    .coin-name {
+      color: #ffd166; 
+      font-weight: 700; 
+      letter-spacing: 0.2px;
+    }
+    
+    [data-theme="light"] .coin-name {
+      color: #1a2230;
+    }
 
     /* پشت‌زمینه منوی dropdown در حالت تاریک */
     body[data-theme="dark"] .choices__list--dropdown {
@@ -77,6 +223,11 @@
 
     /* متن آیتم‌های داخل منو در حالت تاریک */
     body[data-theme="dark"] .choices__list--dropdown .choices__item {
+      color: var(--text) !important;
+    }
+
+    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت تاریک) */
+    body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
       color: var(--text) !important;
     }
 
@@ -93,16 +244,6 @@
 
     /* استایل خاص برای منوی quoteSelect (حالت روشن) */
     body[data-theme="light"] #quoteSelect + .choices .choices__list--dropdown .choices__item {
-      color: #1a2230 !important;
-    }
-
-    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت تاریک) */
-    body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
-      color: var(--text) !important;
-    }
-
-    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت روشن) */
-    body[data-theme="light"] .choices__list--dropdown .choice-with-icon .label {
       color: #1a2230 !important;
     }
 
