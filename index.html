@@ -68,21 +68,50 @@
     /* نام ارز در کارت اطلاعات */
     .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
     [data-theme="light"] .coin-name {color:#1a2230;}
-  
-/* --- FORCE DESKTOP LAYOUT ON MOBILE --- */
-@media (max-width: 900px) {
-  .grid-2 {
-    grid-template-columns: 1fr 1fr !important;
-  }
-  body {
-    zoom: 0.85; /* shrink to fit */
-  }
-  .wrap {
-    max-width: 1200px !important;
-  }
-}
 
-</style>
+    /* پشت‌زمینه منوی dropdown در حالت تاریک */
+    body[data-theme="dark"] .choices__list--dropdown {
+      background-color: var(--panel) !important;
+      border-color: var(--border) !important;
+    }
+
+    /* متن آیتم‌های داخل منو در حالت تاریک */
+    body[data-theme="dark"] .choices__list--dropdown .choices__item {
+      color: var(--text) !important;
+    }
+
+    /* متن آیتم‌های داخل منو در حالت روشن */
+    body[data-theme="light"] .choices__list--dropdown .choices__item {
+      color: #1a2230 !important;
+    }
+
+    /* هایلایت آیتم در حالت hover برای هر دو تم */
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+      background-color: var(--accent) !important;
+      color: white !important;
+    }
+
+    /* استایل خاص برای منوی quoteSelect (حالت روشن) */
+    body[data-theme="light"] #quoteSelect + .choices .choices__list--dropdown .choices__item {
+      color: #1a2230 !important;
+    }
+
+    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت تاریک) */
+    body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
+      color: var(--text) !important;
+    }
+
+    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت روشن) */
+    body[data-theme="light"] .choices__list--dropdown .choice-with-icon .label {
+      color: #1a2230 !important;
+    }
+
+    /* تنظیم رنگ متن برای quoteSelect در حالت تاریک */
+    body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choices__item span,
+    body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
+      color: var(--text) !important;
+    }
+  </style>
 </head>
 <body data-theme="dark">
   <header>
