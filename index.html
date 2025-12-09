@@ -2,14 +2,10 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=1200, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>داشبور زنده بازارها</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    
     :root {
       --bg:#0f1115; --panel:#151823; --text:#e7edf2; --muted:#9aa7b0;
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
@@ -23,99 +19,121 @@
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
     }
 
-    html, body {
-      width: 100%;
-      min-width: 1200px;
-      overflow-x: auto;
+    * {
+      box-sizing: border-box;
     }
     
     body {
-      margin:0; 
-      background:var(--bg); 
-      color:var(--text); 
-      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
+      margin: 0; 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", Tahoma, Arial;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
+      overflow-x: hidden;
     }
 
+    /* Header Styles */
     header {
-      position:sticky; 
-      top:0; 
-      z-index:50; 
+      position: sticky; 
+      top: 0; 
+      z-index: 50; 
       background: color-mix(in oklab, var(--bg) 85%, transparent 15%); 
-      border-bottom:1px solid var(--border); 
-      backdrop-filter:saturate(1.2) blur(6px);
-      min-width: 1200px;
+      border-bottom: 1px solid var(--border); 
+      backdrop-filter: saturate(1.2) blur(6px);
+      width: 100%;
     }
     
     .wrap {
-      width: 1200px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 14px;
+      padding: 12px 16px;
+      width: 100%;
     }
     
     .toolbar {
       display: flex; 
       align-items: center; 
       gap: 10px;
-      white-space: nowrap;
+      flex-wrap: wrap;
     }
     
     .toolbar .spacer {
       flex: 1;
+      min-width: 20px;
     }
     
     .toolbar button {
       background: var(--panel); 
       color: var(--text); 
       border: 1px solid var(--border); 
-      border-radius: 10px; 
+      border-radius: 8px; 
       padding: 8px 12px; 
       cursor: pointer;
       font-size: 14px;
-      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    
+    .toolbar button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* Card Styles */
     .card {
       background: var(--card); 
       border: 1px solid var(--border); 
       border-radius: 12px; 
       box-shadow: var(--shadow); 
       overflow: hidden; 
-      margin: 12px 0;
+      margin: 16px 0;
       width: 100%;
     }
     
     .card h3 {
       margin: 0; 
-      padding: 12px 14px; 
+      padding: 14px 16px; 
       border-bottom: 1px solid var(--border); 
       font-size: 16px;
       font-weight: 600;
     }
     
     .card .content {
-      padding: 12px 14px;
+      padding: 16px;
     }
     
     .status {
       font-size: 13px; 
       color: var(--muted); 
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
-    /* دو ستون ثابت - عرض کامل */
+    /* Grid System */
     .grid-2 {
       display: grid;
       gap: 12px;
-      grid-template-columns: 1fr 1fr !important;
       width: 100%;
     }
+    
+    /* Desktop: 2 columns */
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    /* Mobile: 1 column */
+    @media (max-width: 767px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
 
+    /* Info Box */
     .info-box {
       border: 1px solid var(--border); 
       border-radius: 10px; 
-      padding: 12px; 
+      padding: 16px; 
       background: var(--panel);
       width: 100%;
     }
@@ -130,14 +148,16 @@
       font-weight: 600;
     }
 
-    /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
+    /* Form Fields */
     .field {
       display: inline-block; 
-      width: var(--field-w);
+      width: 100%;
+      max-width: var(--field-w);
     }
     
     .choices {
-      width: var(--field-w);
+      width: 100%;
+      max-width: var(--field-w);
     }
     
     .choices__inner {
@@ -145,8 +165,9 @@
       border: 1px solid var(--border); 
       border-radius: 10px; 
       color: var(--text); 
-      padding: 8px 10px;
+      padding: 10px 12px;
       font-size: 14px;
+      min-height: 42px;
     }
     
     .choices__list--dropdown {
@@ -154,11 +175,10 @@
       border: 1px solid var(--border); 
       border-radius: 10px; 
       box-shadow: var(--shadow);
-      width: var(--field-w);
-      min-width: var(--field-w);
+      z-index: 100;
     }
 
-    /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
+    /* Choice Items with Icons */
     .choice-with-icon {
       display: flex; 
       align-items: center; 
@@ -187,7 +207,7 @@
       color: #fff !important;
     }
 
-    /* آیتم انتخاب‌شده داخل کنترل */
+    /* Selected Item */
     .selected-with-icon {
       display: inline-flex; 
       align-items: center; 
@@ -207,14 +227,14 @@
       font-size: 14px;
     }
 
-    /* متن گزینه‌های Quote همیشه تیره */
+    /* Quote Select Specific Styles */
     #quoteSelect + .choices .choices__list--dropdown .choices__item span,
     #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
       color: #1a2230 !important; 
       font-weight: 600;
     }
 
-    /* نام ارز در کارت اطلاعات */
+    /* Coin Name */
     .coin-name {
       color: #ffd166; 
       font-weight: 700; 
@@ -226,65 +246,143 @@
       color: #1a2230;
     }
 
-    /* پشت‌زمینه منوی dropdown در حالت تاریک */
+    /* Dropdown Dark Theme */
     body[data-theme="dark"] .choices__list--dropdown {
       background-color: var(--panel) !important;
       border-color: var(--border) !important;
     }
 
-    /* متن آیتم‌های داخل منو در حالت تاریک */
     body[data-theme="dark"] .choices__list--dropdown .choices__item {
       color: var(--text) !important;
       font-size: 14px;
     }
 
-    /* متن آیتم‌های دارای آیکن در منوی dropdown (حالت تاریک) */
     body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
       color: var(--text) !important;
       font-size: 14px;
     }
 
-    /* متن آیتم‌های داخل منو در حالت روشن */
     body[data-theme="light"] .choices__list--dropdown .choices__item {
       color: #1a2230 !important;
       font-size: 14px;
     }
 
-    /* هایلایت آیتم در حالت hover برای هر دو تم */
     .choices__list--dropdown .choices__item--selectable.is-highlighted {
       background-color: var(--accent) !important;
       color: white !important;
     }
 
-    /* استایل خاص برای منوی quoteSelect (حالت روشن) */
     body[data-theme="light"] #quoteSelect + .choices .choices__list--dropdown .choices__item {
       color: #1a2230 !important;
     }
 
-    /* تنظیم رنگ متن برای quoteSelect در حالت تاریک */
     body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choices__item span,
     body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
       color: var(--text) !important;
     }
     
-    /* اطلاعات نمایش داده شده */
+    /* Data Display */
     #pairName, #pairPrice, #pairChange, #pairVolume, #pairTrades {
       font-size: 14px;
-      margin: 4px 0;
+      margin: 6px 0;
+      line-height: 1.4;
     }
     
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-size: 14px;
       font-weight: 500;
+    }
+    
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 767px) {
+      .wrap {
+        padding: 10px 12px;
+      }
+      
+      .toolbar {
+        gap: 8px;
+      }
+      
+      .toolbar button {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      
+      #title {
+        font-size: 16px;
+      }
+      
+      .card h3 {
+        padding: 12px 14px;
+        font-size: 15px;
+      }
+      
+      .card .content {
+        padding: 12px;
+      }
+      
+      .info-box {
+        padding: 12px;
+      }
+      
+      .choices__inner {
+        padding: 8px 10px;
+        min-height: 38px;
+      }
+      
+      .field {
+        max-width: 100%;
+      }
+      
+      .choices {
+        max-width: 100%;
+      }
+    }
+    
+    /* Tablet Responsive Adjustments */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .wrap {
+        padding: 14px 20px;
+        max-width: 100%;
+      }
+      
+      .field {
+        max-width: 200px;
+      }
+      
+      .choices {
+        max-width: 200px;
+      }
+    }
+    
+    /* Small Mobile (iPhone SE size) */
+    @media (max-width: 375px) {
+      .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .toolbar .spacer {
+        display: none;
+      }
+      
+      .toolbar button, .toolbar select {
+        width: 100%;
+        max-width: none;
+      }
+      
+      #badge {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
-      <strong id="title" style="font-size: 18px;">داشبور زنده بازارها</strong>
+      <strong id="title">داشبور زنده بازارها</strong>
       <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
       <div class="spacer"></div>
       <select id="langSelect" class="field">
@@ -354,7 +452,10 @@
     async function loadBinance(){
       document.getElementById('cryptoStatus').textContent = 'در حال دریافت از Binance…';
       const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
-      if (!res.ok) { document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; return; }
+      if (!res.ok) { 
+        document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; 
+        return; 
+      }
       state.binanceAll = await res.json();
       populatePairs();
       document.getElementById('cryptoUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
@@ -373,7 +474,10 @@
 
       if (state.pairChoices) state.pairChoices.destroy();
       state.pairChoices = new Choices(select, {
-        searchEnabled:true, itemSelectText:'', shouldSort:true, position:'bottom',
+        searchEnabled:true, 
+        itemSelectText:'', 
+        shouldSort:true, 
+        position:'auto',
         callbackOnCreateTemplates: function(template) {
           return {
             option: (classNames, data) => {
@@ -429,23 +533,16 @@
     function initQuoteChoices(){
       const select = document.getElementById('quoteSelect');
       if (state.quoteChoices) state.quoteChoices.destroy();
-      state.quoteChoices = new Choices(select, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
+      state.quoteChoices = new Choices(select, {
+        searchEnabled:false, 
+        itemSelectText:'', 
+        shouldSort:false, 
+        position:'auto'
+      });
       select.addEventListener('change', ()=>{
         state.quote = select.value;
         populatePairs();
       });
-      // اعمال رنگ تیره روی لیست Quote بعد از ساخت
-      const quoteChoicesEl = select.nextElementSibling;
-      if (quoteChoicesEl && quoteChoicesEl.classList.contains('choices')) {
-        const style = document.createElement('style');
-        style.textContent = `
-          #quoteSelect + .choices .choices__list--dropdown .choices__item span,
-          #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-            color:#1a2230 !important; font-weight:600;
-          }
-        `;
-        document.head.appendChild(style);
-      }
     }
 
     // Theme toggle
@@ -453,8 +550,10 @@
       const body = document.body;
       body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
     });
+    
     document.getElementById('refreshAll').addEventListener('click', ()=>{
-      loadUsdToIrr(); loadBinance();
+      loadUsdToIrr(); 
+      loadBinance();
     });
 
     // Init
@@ -466,6 +565,34 @@
       // refresh
       setInterval(loadUsdToIrr, 5*60*1000);
       setInterval(loadBinance, 60*1000);
+    });
+
+    // Handle window resize for better mobile experience
+    window.addEventListener('resize', function() {
+      if (state.pairChoices) {
+        state.pairChoices.destroy();
+        setTimeout(() => {
+          const select = document.getElementById('pairSelect');
+          state.pairChoices = new Choices(select, {
+            searchEnabled:true, 
+            itemSelectText:'', 
+            shouldSort:true, 
+            position:'auto',
+            callbackOnCreateTemplates: function(template) {
+              return {
+                option: (classNames, data) => {
+                  const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+                  return template(`<div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+                },
+                item: (classNames, data) => {
+                  const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
+                  return template(`<div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
+                }
+              };
+            }
+          });
+        }, 100);
+      }
     });
   </script>
 </body>
