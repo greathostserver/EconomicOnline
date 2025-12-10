@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>داشبور زنده بازارها</title>
+  <title>داشبورد زنده بازارها</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
     :root {
@@ -11,183 +11,863 @@
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
       --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
       --field-w:220px;
-      --dropdown-bg:#1e2230;
+      --dropdown-bg: #1a1e2a;
+      --dropdown-text: #e7edf2;
+      --home-btn: #1db954;
+      --tools-btn: #1f7ae0;
     }
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
-      --dropdown-bg:#fff;
+      --dropdown-bg: #fff;
+      --dropdown-text: #1a2230;
+      --home-btn: #1ea865;
+      --tools-btn: #1f7ae0;
     }
 
-    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
-
-    header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
-    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
-    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-    .toolbar .spacer {flex:1;}
-    .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
-
-    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; margin:12px 0;}
-    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
-    .card .content {padding:10px 14px;}
-    .status {font-size:13px; color:var(--muted); margin-top:6px;}
-
-    /* دو ستون ثابت حتی روی موبایل */
-    .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr !important;}
-    .grid-3 {display:grid; gap:10px; grid-template-columns:1fr 1fr 1fr !important;}
-    .grid-4 {display:grid; gap:10px; grid-template-columns:1fr 1fr 1fr 1fr !important;}
-
-    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
-    .delta-up {color:var(--up); font-weight:600;}
-    .delta-down {color:var(--down); font-weight:600;}
-
-    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
-    .iframe-box iframe {width:100%; height:280px; border:0;}
-
-    /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
-    .field {display:inline-block; width:var(--field-w);}
-    .choices {width:var(--field-w);}
-    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:10px; color:var(--text); padding:8px;}
-    
-    /* منوی dropdown با رنگ تیره */
-    .choices__list--dropdown {background:var(--dropdown-bg) !important; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);}
-    [data-theme="dark"] .choices__list--dropdown .choices__item,
-    [data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
-      color:var(--text) !important;
+    * {
+      box-sizing: border-box;
     }
-    .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
-    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
 
-    /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
-    .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
-    .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
-    .choice-with-icon .label {color:#1a2230 !important; font-weight:600;}
-    [data-theme="dark"] .choice-with-icon .label {color:var(--text) !important;}
+    body {
+      margin:0; 
+      background:var(--bg); 
+      color:var(--text); 
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+    }
 
-    /* آیتم انتخاب‌شده داخل کنترل */
-    .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
-    .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
-    .selected-with-icon .label {color:var(--text); font-weight:600;}
+    body[dir="ltr"] {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
 
-    /* نام ارز در کارت اطلاعات */
-    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
-    [data-theme="light"] .coin-name {color:#1a2230;}
+    body[lang="ar"] {
+      font-family: "Noto Naskh Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+    }
 
-    /* کارت‌های نرخ ارز */
-    .currency-cards {display:grid; gap:12px; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));}
-    .currency-card {border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--panel); transition:transform 0.2s;}
-    .currency-card:hover {transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-    .currency-card-header {display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
-    .currency-card-title {display:flex; align-items:center; gap:8px; font-weight:600;}
-    .currency-flag {width:24px; height:18px; border-radius:3px; object-fit:cover;}
-    .currency-price {font-size:18px; font-weight:700; margin:4px 0;}
-    .currency-change {font-size:14px; display:flex; align-items:center; gap:6px;}
-    .currency-time {font-size:12px; color:var(--muted); margin-top:4px;}
-    
-    /* ریال ایران - هایلایت ویژه */
-    .irr-card {border:2px solid #ffd166; background:color-mix(in oklab, var(--panel) 90%, #ffd166 10%);}
-    .irr-card .currency-price {color:#ffd166;}
-    [data-theme="light"] .irr-card .currency-price {color:#d4a017;}
-    
-    /* جدول نرخ ارزها */
-    .currency-table {width:100%; border-collapse:collapse; margin-top:10px;}
-    .currency-table th, .currency-table td {padding:10px; text-align:center; border-bottom:1px solid var(--border);}
-    .currency-table th {background:color-mix(in oklab, var(--panel) 80%, var(--accent) 20%); font-weight:600;}
-    .currency-table tr:hover {background:color-mix(in oklab, var(--panel) 90%, transparent);}
-    
-    /* ریال ایران در جدول */
-    .irr-row {background:color-mix(in oklab, var(--panel) 90%, #ffd166 10%) !important;}
-    .irr-row:hover {background:color-mix(in oklab, var(--panel) 80%, #ffd166 20%) !important;}
-    
-    /* دکمه‌های نمایش */
-    .view-toggle {display:flex; gap:10px; margin-bottom:12px;}
-    .view-toggle button {background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer; color:var(--text);}
-    .view-toggle button.active {background:var(--accent); color:white; border-color:var(--accent);}
-    
-    /* لوگوی ایران */
-    .iran-logo {color:#ffd166; font-weight:700;}
+    body[lang="ru"] {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body[lang="en"] {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    header {
+      position:sticky; 
+      top:0; 
+      z-index:50; 
+      background: color-mix(in oklab, var(--bg) 85%, transparent 15%); 
+      border-bottom:1px solid var(--border); 
+      backdrop-filter:saturate(1.2) blur(6px);
+    }
+
+    .wrap {
+      max-width:1200px; 
+      margin:0 auto; 
+      padding:12px 16px;
+      width: 100%;
+    }
+
+    .toolbar {
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+      flex-wrap:wrap;
+    }
+
+    .toolbar .spacer {
+      flex:1;
+    }
+
+    .toolbar button {
+      background:var(--panel); 
+      color:var(--text); 
+      border:1px solid var(--border); 
+      border-radius:10px; 
+      padding:8px 12px; 
+      cursor:pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .home-btn {
+      background: var(--home-btn) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .tools-btn {
+      background: var(--tools-btn) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .home-btn:hover, .tools-btn:hover {
+      opacity: 0.9;
+    }
+
+    .card {
+      background:var(--card); 
+      border:1px solid var(--border); 
+      border-radius:12px; 
+      box-shadow:var(--shadow); 
+      overflow:hidden; 
+      margin:12px 0;
+    }
+
+    .card h3 {
+      margin:0; 
+      padding:12px 16px; 
+      border-bottom:1px solid var(--border); 
+      font-size:16px;
+    }
+
+    .card .content {
+      padding:12px 16px;
+    }
+
+    .status {
+      font-size:13px; 
+      color:var(--muted); 
+      margin-top:6px;
+    }
+
+    .grid-2 {
+      display:grid; 
+      gap:12px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .info-box {
+      border:1px solid var(--border); 
+      border-radius:10px; 
+      padding:12px; 
+      background:var(--panel);
+      min-width: 0;
+    }
+
+    .delta-up {
+      color:var(--up); 
+      font-weight:600;
+    }
+
+    .delta-down {
+      color:var(--down); 
+      font-weight:600;
+    }
+
+    .field {
+      display: block;
+      width: 100%;
+      max-width: var(--field-w);
+      margin-top: 6px;
+    }
+
+    .choices {
+      width: 100%;
+      max-width: var(--field-w);
+    }
+
+    .choices__inner {
+      background:var(--panel); 
+      border:1px solid var(--border); 
+      border-radius:10px; 
+      color:var(--text); 
+      padding:8px;
+      min-height: 40px;
+    }
+
+    .choices__list--dropdown,
+    .choices__list[aria-expanded] {
+      background: var(--dropdown-bg) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 10px !important;
+      box-shadow: var(--shadow) !important;
+      color: var(--dropdown-text) !important;
+    }
+
+    .choices__list--dropdown .choices__item,
+    .choices__list[aria-expanded] .choices__item {
+      color: var(--dropdown-text) !important;
+      background: var(--dropdown-bg) !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable,
+    .choices__list[aria-expanded] .choices__item--selectable {
+      color: var(--dropdown-text) !important;
+      background: var(--dropdown-bg) !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable.is-highlighted,
+    .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+      background: var(--accent) !important;
+      color: white !important;
+    }
+
+    .choice-with-icon {
+      display:flex; 
+      align-items:center; 
+      gap:8px; 
+      padding:8px 10px;
+    }
+
+    .choice-with-icon img {
+      width:20px; 
+      height:20px; 
+      border-radius:50%; 
+      object-fit:contain;
+    }
+
+    .choice-with-icon .label {
+      color: var(--dropdown-text) !important; 
+      font-weight:600;
+    }
+
+    .choices__list--dropdown .choices__item--selectable.is-highlighted .label,
+    .choices__list[aria-expanded] .choices__item--selectable.is-highlighted .label {
+      color: white !important;
+    }
+
+    .selected-with-icon {
+      display:inline-flex; 
+      align-items:center; 
+      gap:8px;
+    }
+
+    .selected-with-icon img {
+      width:18px; 
+      height:18px; 
+      border-radius:50%; 
+      object-fit:contain;
+    }
+
+    .selected-with-icon .label {
+      color:var(--text); 
+      font-weight:600;
+    }
+
+    #quoteSelect + .choices .choices__list--dropdown .choices__item span,
+    #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
+      color: var(--dropdown-text) !important; 
+      font-weight:600;
+    }
+
+    .coin-name {
+      color:#ffd166; 
+      font-weight:700; 
+      letter-spacing:0.2px;
+    }
+
+    [data-theme="light"] .coin-name {
+      color:#1a2230;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-right: 6px;
+    }
+
+    .badge.up { 
+      background: var(--up); 
+      color: white; 
+    }
+
+    .badge.down { 
+      background: var(--down); 
+      color: white; 
+    }
+
+    .badge.neutral { 
+      background: var(--muted); 
+      color: white; 
+    }
+
+    .input-field {
+      display: block;
+      width: 100%;
+      max-width: var(--field-w);
+      background:var(--panel); 
+      border:1px solid var(--border); 
+      border-radius:10px; 
+      color:var(--text); 
+      padding:10px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      margin-top: 6px;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .input-field::placeholder {
+      color: var(--muted);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+      width: 100%;
+      font-size: 14px;
+      max-width: var(--field-w);
+    }
+
+    button.primary:hover {
+      opacity: 0.9;
+    }
+
+    button.danger {
+      background: var(--down);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+      width: 100%;
+      font-size: 14px;
+      max-width: var(--field-w);
+    }
+
+    button.danger:hover {
+      opacity: 0.9;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .popular-crypto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .popular-crypto-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      transition: transform 0.2s;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .popular-crypto-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .alert-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .alert-item.triggered {
+      border-left: 4px solid var(--up);
+    }
+
+    .alert-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      gap: 8px;
+    }
+
+    .alert-actions button {
+      flex: 1;
+      padding: 6px;
+      font-size: 12px;
+    }
+
+    .calculator-result {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      border: 1px solid var(--border);
+      word-break: break-word;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .button-group button {
+      flex: 1;
+    }
+
+    /* بهبود نمایش گزینه‌های طولانی در dropdown */
+    .choices__list--dropdown .choices__item,
+    .choices__list[aria-expanded] .choices__item {
+      word-break: break-word;
+      white-space: normal;
+      line-height: 1.3;
+    }
+
+    .choice-with-icon .label,
+    .selected-with-icon .label {
+      word-break: break-word;
+      white-space: normal;
+      line-height: 1.3;
+    }
+
+    /* بهبود نمایش در حالت‌های مختلف زبان */
+    body[lang="ru"] .toolbar button,
+    body[lang="ru"] .home-btn,
+    body[lang="ru"] .tools-btn {
+      letter-spacing: -0.2px;
+    }
+
+    body[lang="ar"] .toolbar button,
+    body[lang="ar"] .home-btn,
+    body[lang="ar"] .tools-btn {
+      letter-spacing: 0;
+    }
+
+    /* ریسپانسیو */
+    @media (max-width: 1024px) {
+      .wrap {
+        max-width: 95%;
+      }
+      
+      .popular-crypto-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 10px 12px;
+      }
+      
+      .toolbar {
+        gap: 8px;
+      }
+      
+      .toolbar button,
+      .home-btn,
+      .tools-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.3;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      
+      #title {
+        font-size: 16px;
+      }
+      
+      #badge {
+        font-size: 10px;
+      }
+      
+      .card h3 {
+        padding: 10px 14px;
+        font-size: 15px;
+      }
+      
+      .card .content {
+        padding: 10px 14px;
+      }
+      
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .popular-crypto-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+      }
+      
+      .popular-crypto-item {
+        padding: 10px;
+      }
+      
+      .notification {
+        left: 10px;
+        right: 10px;
+        max-width: none;
+        top: 10px;
+        font-size: 13px;
+        padding: 10px 12px;
+      }
+      
+      .choices__inner {
+        padding: 6px;
+        min-height: 36px;
+        font-size: 11px;
+      }
+      
+      .input-field {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+      
+      button.primary, button.danger, .home-btn, .tools-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+        max-width: none;
+      }
+      
+      .calculator-result {
+        font-size: 14px;
+        padding: 10px;
+      }
+      
+      .alert-item {
+        padding: 8px;
+        font-size: 12px;
+      }
+      
+      .alert-actions button {
+        font-size: 11px;
+        padding: 5px;
+      }
+      
+      .field, .choices, .input-field, button.primary, button.danger, .home-btn, .tools-btn {
+        max-width: 100% !important;
+      }
+      
+      #badge {
+        display: none;
+      }
+      
+      .choices__list--dropdown .choices__item,
+      .choices__list[aria-expanded] .choices__item {
+        font-size: 11px;
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.3;
+        padding: 8px 10px;
+      }
+      
+      #langSelect.field {
+        max-width: 100px;
+        font-size: 11px;
+      }
+      
+      .choices {
+        max-width: 100% !important;
+      }
+      
+      .toolbar-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .toolbar-buttons {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      
+      .toolbar button,
+      .home-btn,
+      .tools-btn {
+        flex: 1;
+        min-width: calc(33.333% - 8px);
+        font-size: 10px;
+        padding: 5px 6px;
+      }
+      
+      #langSelect.field {
+        max-width: 90px;
+        font-size: 10px;
+      }
+      
+      .choices__inner {
+        font-size: 10px;
+      }
+      
+      .choices__list--dropdown .choices__item,
+      .choices__list[aria-expanded] .choices__item {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
+      
+      body[lang="ru"] .toolbar button,
+      body[lang="ru"] .home-btn,
+      body[lang="ru"] .tools-btn,
+      body[lang="ar"] .toolbar button,
+      body[lang="ar"] .home-btn,
+      body[lang="ar"] .tools-btn {
+        font-size: 9px;
+        padding: 4px 5px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .wrap {
+        padding: 8px 10px;
+      }
+      
+      .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      
+      .toolbar .spacer {
+        display: none;
+      }
+      
+      .toolbar-buttons {
+        display: flex;
+        gap: 6px;
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      
+      .toolbar button,
+      .home-btn,
+      .tools-btn {
+        flex: 1;
+        text-align: center;
+        min-width: calc(50% - 6px);
+        font-size: 10px;
+        padding: 5px 6px;
+        min-height: 30px;
+      }
+      
+      #langSelect.field {
+        width: 100%;
+        margin-top: 4px;
+        max-width: 100%;
+        font-size: 10px;
+      }
+      
+      .popular-crypto-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .card h3 {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+      
+      .card .content {
+        padding: 8px 12px;
+      }
+      
+      .info-box {
+        padding: 10px;
+      }
+      
+      .status {
+        font-size: 12px;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .choices__inner {
+        font-size: 10px;
+        padding: 5px 8px;
+        min-height: 34px;
+      }
+      
+      .choices__list--dropdown .choices__item,
+      .choices__list[aria-expanded] .choices__item {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
+      
+      .choices {
+        max-width: 100% !important;
+      }
+      
+      .choices__list--dropdown {
+        max-width: 280px;
+        left: 50% !important;
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .popular-crypto-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .toolbar-buttons {
+        flex-wrap: wrap;
+      }
+      
+      .toolbar button,
+      .home-btn,
+      .tools-btn {
+        min-width: calc(50% - 3px);
+        font-size: 9px;
+        padding: 4px 5px;
+      }
+      
+      #langSelect.field {
+        font-size: 9px;
+      }
+      
+      .choices__inner {
+        font-size: 9px;
+      }
+      
+      .choices__list--dropdown .choices__item,
+      .choices__list[aria-expanded] .choices__item {
+        font-size: 9px;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--muted);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    .choices__list--dropdown {
+      z-index: 100;
+    }
+
+    .info-box div {
+      margin: 4px 0;
+      word-break: break-word;
+    }
+
+    #pairPrice, #pairChange, #pairVolume, #pairTrades {
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      #pairPrice, #pairChange, #pairVolume, #pairTrades {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
-      <strong id="title">📊 داشبور زنده بازارها <span class="iran-logo">ایران</span></strong>
-      <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <strong id="title">داشبورد زنده بازارها</strong>
+        <span class="status" id="badge">فقط Binance • مناسب GitHub Pages</span>
+      </div>
       <div class="spacer"></div>
-      <select id="langSelect" class="field">
-        <option value="fa">فارسی</option>
-        <option value="en">English</option>
-      </select>
-      <button id="toggleTheme">تم روشن/تاریک</button>
-      <button id="refreshAll">🔄 به‌روزرسانی</button>
+      <div class="toolbar-buttons">
+        <a href="https://khoobeha.ir" target="_blank" class="home-btn" id="homeButton">
+          خانه
+        </a>
+        <a href="https://khoobeha.ir" target="_blank" class="tools-btn" id="toolsButton">
+          ابزارها
+        </a>
+        
+        <select id="langSelect" class="field" style="max-width: 120px;">
+          <option value="fa">فارسی</option>
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+          <option value="ru">Русский</option>
+        </select>
+        <button id="toggleTheme">تم روشن/تاریک</button>
+        <button id="refreshAll">به‌روزرسانی</button>
+      </div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- نرخ ارزهای ایرانی -->
-    <section class="card" id="currencyCard">
-      <h3>💰 نرخ ارزهای جهانی به ریال ایران</h3>
-      <div class="content">
-        <div class="view-toggle">
-          <button id="viewCards" class="active">کارت‌ها</button>
-          <button id="viewTable">جدول</button>
-        </div>
-        
-        <div class="status" id="currencyStatus">در حال دریافت نرخ ارزها از سرور ایرانی...</div>
-        
-        <!-- نمایش کارت‌ها -->
-        <div id="cardsView" class="currency-cards">
-          <div class="currency-card irr-card">
-            <div class="currency-card-header">
-              <div class="currency-card-title">
-                <img src="https://flagcdn.com/w20/ir.png" alt="ایران" class="currency-flag" onerror="this.style.display='none'">
-                <span>ریال ایران</span>
-              </div>
-            </div>
-            <div class="currency-price">1 ریال</div>
-            <div class="currency-change">
-              <span>واحد پول ایران</span>
-            </div>
-            <div class="currency-time">پایه محاسبات</div>
-          </div>
-          <!-- کارت‌های ارزها اینجا اضافه می‌شوند -->
-        </div>
-        
-        <!-- نمایش جدول -->
-        <div id="tableView" style="display:none;">
-          <table class="currency-table">
-            <thead>
-              <tr>
-                <th>پرچم</th>
-                <th>ارز</th>
-                <th>نرخ (ریال)</th>
-                <th>تغییر (ریال)</th>
-                <th>درصد تغییر</th>
-                <th>به روزرسانی</th>
-              </tr>
-            </thead>
-            <tbody id="currencyTableBody">
-              <tr class="irr-row">
-                <td><img src="https://flagcdn.com/w20/ir.png" alt="ایران" class="currency-flag"></td>
-                <td><strong>ریال ایران</strong></td>
-                <td><strong>1</strong></td>
-                <td>0</td>
-                <td>0%</td>
-                <td>پایه</td>
-              </tr>
-              <!-- ردیف‌های ارزها اینجا اضافه می‌شوند -->
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="status" id="currencyUpdated">آخرین بروزرسانی: —</div>
-      </div>
-    </section>
-
-    <!-- کریپتو -->
     <section class="card" id="cryptoCard">
-      <h3 id="cryptoTitle">🪙 کریپتو از Binance (24h)</h3>
+      <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
       <div class="content">
         <div class="status" id="cryptoStatus">در حال دریافت…</div>
 
@@ -196,15 +876,15 @@
             <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
             <select id="quoteSelect" class="field">
               <option value="USDT">USDT</option>
-              <option value="BUSD">BUSD</option>
-              <option value="USDC">USDC</option>
               <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="BNB">BNB</option>
             </select>
           </div>
           <div class="info-box">
             <label id="pairLabel" for="pairSelect">انتخاب جفت‌ارز:</label>
             <select id="pairSelect" class="field"><option value="">— هیچ‌کدام —</option></select>
-            <div class="status" id="pairHint">USDT/USDC/BUSD توصیه‌شده</div>
+            <div class="status" id="pairHint">USDT توصیه‌شده برای بیشترین جفت‌ها</div>
           </div>
         </div>
 
@@ -220,6 +900,112 @@
             <div class="status" id="cryptoUpdated">—</div>
           </div>
         </div>
+
+        <div style="margin-top: 16px;">
+          <h4 id="popularTitle" style="margin: 12px 0 8px 0; font-size: 15px;">ارزهای دیجیتال محبوب (بر اساس USDT)</h4>
+          <div id="popularCryptoContainer" class="popular-crypto-grid"></div>
+          <div class="status" id="popularUpdated">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 id="calcTitle">ماشین حساب تبدیل ارز</h3>
+      <div class="content">
+        <div class="grid-2">
+          <div class="info-box">
+            <div class="field-group">
+              <label id="calcFromLabel" for="calcFrom">از:</label>
+              <select id="calcFrom" class="field">
+                <option value="BTC">BTC (بیت‌کوین)</option>
+                <option value="ETH">ETH (اتریوم)</option>
+                <option value="BNB">BNB (بایننس)</option>
+                <option value="USDT">USDT</option>
+                <option value="XRP">XRP</option>
+                <option value="ADA">ADA</option>
+                <option value="SOL">SOL</option>
+                <option value="DOT">DOT</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label id="calcAmountLabel" for="calcAmount">مقدار:</label>
+              <input type="number" id="calcAmount" class="input-field" placeholder="مقدار" min="0" step="0.00000001">
+            </div>
+          </div>
+          <div class="info-box">
+            <div class="field-group">
+              <label id="calcToLabel" for="calcTo">به:</label>
+              <select id="calcTo" class="field">
+                <option value="USDT">USDT</option>
+                <option value="BTC">BTC (بیت‌کوین)</option>
+                <option value="ETH">ETH (اتریوم)</option>
+                <option value="BNB">BNB (بایننس)</option>
+                <option value="XRP">XRP</option>
+                <option value="ADA">ADA</option>
+                <option value="SOL">SOL</option>
+                <option value="DOT">DOT</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>&nbsp;</label>
+              <button id="calcConvert" class="primary">تبدیل</button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="calcResult" class="calculator-result">
+          <span id="calcResultLabel">نتیجه:</span> —
+        </div>
+        <div class="status" style="margin-top: 8px;">
+          <span id="calcInfo">تمام محاسبات با استفاده از قیمت‌های لحظه‌ای Binance انجام می‌شود</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 id="alertTitle">هشدار قیمت</h3>
+      <div class="content">
+        <div class="grid-2">
+          <div class="info-box">
+            <div class="field-group">
+              <label id="alertPairLabel" for="alertPair">جفت ارز:</label>
+              <select id="alertPair" class="field"></select>
+            </div>
+          </div>
+          <div class="info-box">
+            <div class="field-group">
+              <label id="alertPriceLabel" for="alertPrice">قیمت هدف:</label>
+              <input type="number" id="alertPrice" class="input-field" placeholder="قیمت هدف" min="0" step="0.00000001">
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-box" style="margin-top: 10px;">
+          <div class="field-group">
+            <label id="alertConditionLabel" for="alertCondition">شرط:</label>
+            <select id="alertCondition" class="field">
+              <option value="above">بالاتر از</option>
+              <option value="below">پایین‌تر از</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="setAlert" class="primary">تنظیم هشدار</button>
+          <button id="clearAlerts" class="danger">پاک کردن همه</button>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <h4 id="activeAlertsTitle" style="margin-bottom: 8px; font-size: 15px;">هشدارهای فعال</h4>
+          <div id="alertsList" style="max-height: 250px; overflow-y: auto;">
+            <div style="color: var(--muted); text-align: center; padding: 20px;">
+              <span id="noAlertsText">هشداری تنظیم نشده است</span>
+            </div>
+          </div>
+          <div class="status" style="margin-top: 8px;">
+            <span id="alertsInfo">هشدارها در مرورگر شما ذخیره می‌شوند</span>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -227,342 +1013,939 @@
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <script>
     const state = { 
-      quote:'USDT', 
-      binanceAll:[], 
-      pairChoices:null, 
-      quoteChoices:null, 
-      usdToIrr:0,
-      currencyRates: [],
-      currentView: 'cards'
+      quote: 'USDT', 
+      binanceAll: [], 
+      pairChoices: null, 
+      quoteChoices: null, 
+      alerts: JSON.parse(localStorage.getItem('cryptoAlerts')) || [],
+      popularCryptos: ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'DOGEUSDT', 'ADAUSDT', 'DOTUSDT'],
+      calcFromChoices: null,
+      calcToChoices: null,
+      alertPairChoices: null,
+      alertConditionChoices: null,
+      currentLang: localStorage.getItem('dashboardLang') || 'fa',
+      langSelectChoices: null
     };
 
-    // API ایرانی TGJU - بدون نیاز به API Key
-    const TGJU_API_URL = 'https://api.tgju.online/v1/data/sana/json';
+    const translations = {
+      fa: {
+        pageTitle: "داشبورد زنده بازارها",
+        title: "داشبورد زنده بازارها",
+        badge: "فقط Binance • مناسب GitHub Pages",
+        homeButton: "خانه",
+        toolsButton: "ابزارها",
+        toggleTheme: "تم روشن/تاریک",
+        refreshAll: "به‌روزرسانی",
+        cryptoTitle: "کریپتو از Binance (24h)",
+        cryptoStatus: "در حال دریافت…",
+        quoteLabel: "انتخاب ارز مبنا (Quote):",
+        pairLabel: "انتخاب جفت‌ارز:",
+        pairHint: "USDT توصیه‌شده برای بیشترین جفت‌ها",
+        noneOption: "هیچ‌کدام",
+        priceLabel: "قیمت:",
+        changeLabel: "تغییر 24h:",
+        volumeLabel: "حجم 24h:",
+        tradesLabel: "تعداد معاملات:",
+        updatedLabel: "آخرین بروزرسانی:",
+        popularTitle: "ارزهای دیجیتال محبوب (بر اساس USDT)",
+        highLabel: "بالا:",
+        lowLabel: "پایین:",
+        calcTitle: "ماشین حساب تبدیل ارز",
+        calcFromLabel: "از:",
+        calcToLabel: "به:",
+        calcAmountLabel: "مقدار:",
+        calcAmountPlaceholder: "مقدار",
+        calcConvert: "تبدیل",
+        calcResultLabel: "نتیجه:",
+        calcInfo: "تمام محاسبات با استفاده از قیمت‌های لحظه‌ای Binance انجام می‌شود",
+        alertTitle: "هشدار قیمت",
+        alertPairLabel: "جفت ارز:",
+        selectPairOption: "انتخاب جفت ارز",
+        alertPriceLabel: "قیمت هدف:",
+        alertPricePlaceholder: "قیمت هدف",
+        alertConditionLabel: "شرط:",
+        alertConditionAbove: "بالاتر از",
+        alertConditionBelow: "پایین‌تر از",
+        setAlert: "تنظیم هشدار",
+        clearAlerts: "پاک کردن همه",
+        activeAlertsTitle: "هشدارهای فعال",
+        noAlertsText: "هشداری تنظیم نشده است",
+        alertsInfo: "هشدارها در مرورگر شما ذخیره می‌شوند",
+        activeLabel: "فعال",
+        inactiveLabel: "غیرفعال",
+        aboveLabel: "بالاتر از",
+        belowLabel: "پایین‌تر از",
+        deleteLabel: "حذف",
+        enableLabel: "فعال کردن",
+        disableLabel: "غیرفعال کردن",
+        USDT: "USDT",
+        BTC: "BTC (بیت‌کوین)",
+        ETH: "ETH (اتریوم)",
+        BNB: "BNB (بایننس)",
+        XRP: "XRP",
+        ADA: "ADA",
+        SOL: "SOL",
+        DOT: "DOT",
+        DOGE: "DOGE",
+        langName_fa: "فارسی",
+        langName_en: "انگلیسی",
+        langName_ar: "عربی",
+        langName_ru: "روسی",
+        errorConnection: "خطا در اتصال به Binance",
+        errorFetch: "خطا در دریافت داده‌های Binance",
+        loading: "در حال دریافت از Binance…",
+        successAlertSet: "هشدار تنظیم شد",
+        successAlertDeleted: "هشدار حذف شد",
+        successAlertsCleared: "همه هشدارها پاک شدند",
+        successAlertToggled: "هشدار تغییر وضعیت داد",
+        errorAmount: "لطفاً مقدار معتبر وارد کنید",
+        errorSameCurrency: "ارز مبدا و مقصد نمی‌توانند یکسان باشند",
+        errorCalculation: "خطا در محاسبه. داده‌های کافی نیستند",
+        errorAlertFields: "لطفاً همه فیلدها را به درستی پر کنید",
+        errorAlertExists: "این هشدار از قبل وجود دارد",
+        confirmClearAlerts: "آیا از پاک کردن همه هشدارها مطمئنید؟",
+        themeDark: "تم تاریک فعال شد",
+        themeLight: "تم روشن فعال شد",
+        updating: "در حال به‌روزرسانی داده‌ها از Binance...",
+        ready: "داشبورد آماده است! تمام داده‌ها از Binance دریافت می‌شوند.",
+        alertTriggered: "هشدار قیمت فعال شد! قیمت فعلی:",
+        currency: "ارز",
+        target: "هدف",
+        condition: "شرط",
+        status: "وضعیت",
+        actions: "عملیات",
+        time: "زمان",
+        date: "تاریخ",
+        search: "جستجو",
+        select: "انتخاب",
+        all: "همه",
+        none: "هیچ",
+        loadingData: "در حال دریافت داده‌ها...",
+        noData: "داده‌ای موجود نیست",
+        error: "خطا",
+        success: "موفقیت",
+        warning: "هشدار",
+        info: "اطلاعات",
+        from: "از",
+        to: "به",
+        amount: "مقدار",
+        convert: "تبدیل",
+        result: "نتیجه",
+        baseCurrency: "ارز مبنا",
+        currencyPair: "جفت ارز",
+        targetPrice: "قیمت هدف",
+        priceAlert: "هشدار قیمت",
+        clearAll: "پاک کردن همه",
+        activeAlerts: "هشدارهای فعال",
+        storedInBrowser: "در مرورگر ذخیره می‌شوند",
+        lightDarkTheme: "تم روشن/تاریک",
+        update: "به‌روزرسانی",
+        lastUpdate: "آخرین بروزرسانی",
+        popularCryptocurrencies: "ارزهای دیجیتال محبوب",
+        basedOn: "بر اساس",
+        high: "بالا",
+        low: "پایین",
+        change24h: "تغییر 24h",
+        volume24h: "حجم 24h",
+        numberOfTrades: "تعداد معاملات",
+        recommended: "توصیه‌شده",
+        forMostPairs: "برای بیشترین جفت‌ها",
+        selectBaseCurrency: "انتخاب ارز مبنا",
+        selectCurrencyPair: "انتخاب جفت‌ارز",
+        selectCondition: "انتخاب شرط",
+        setPriceAlert: "تنظیم هشدار قیمت",
+        calculator: "ماشین حساب",
+        conversion: "تبدیل",
+        allCalculations: "تمام محاسبات",
+        useRealtimePrices: "با استفاده از قیمت‌های لحظه‌ای",
+        cryptocurrency: "ارز دیجیتال",
+        cryptocurrencies: "ارزهای دیجیتال",
+        market: "بازار",
+        dashboard: "داشبورد",
+        live: "زنده",
+        compatibleWith: "مناسب",
+        only: "فقط",
+        and: "و",
+        binance: "Binance",
+        githubPages: "GitHub Pages"
+      },
+      en: {
+        pageTitle: "Live Market Dashboard",
+        title: "Live Market Dashboard",
+        badge: "Only Binance • GitHub Pages Compatible",
+        homeButton: "Home",
+        toolsButton: "Tools",
+        toggleTheme: "Theme",
+        refreshAll: "Refresh",
+        cryptoTitle: "Crypto from Binance (24h)",
+        cryptoStatus: "Loading…",
+        quoteLabel: "Select Base Currency:",
+        pairLabel: "Select Pair:",
+        pairHint: "USDT recommended",
+        noneOption: "None",
+        priceLabel: "Price:",
+        changeLabel: "24h Change:",
+        volumeLabel: "24h Volume:",
+        tradesLabel: "Trades:",
+        updatedLabel: "Updated:",
+        popularTitle: "Popular Crypto (USDT)",
+        highLabel: "High:",
+        lowLabel: "Low:",
+        calcTitle: "Converter",
+        calcFromLabel: "From:",
+        calcToLabel: "To:",
+        calcAmountLabel: "Amount:",
+        calcAmountPlaceholder: "Amount",
+        calcConvert: "Convert",
+        calcResultLabel: "Result:",
+        calcInfo: "Uses real-time Binance prices",
+        alertTitle: "Price Alert",
+        alertPairLabel: "Pair:",
+        selectPairOption: "Select pair",
+        alertPriceLabel: "Target:",
+        alertPricePlaceholder: "Target price",
+        alertConditionLabel: "Condition:",
+        alertConditionAbove: "Above",
+        alertConditionBelow: "Below",
+        setAlert: "Set Alert",
+        clearAlerts: "Clear All",
+        activeAlertsTitle: "Active Alerts",
+        noAlertsText: "No alerts",
+        alertsInfo: "Stored in browser",
+        activeLabel: "Active",
+        inactiveLabel: "Inactive",
+        aboveLabel: "Above",
+        belowLabel: "Below",
+        deleteLabel: "Delete",
+        enableLabel: "Enable",
+        disableLabel: "Disable",
+        USDT: "USDT",
+        BTC: "BTC",
+        ETH: "ETH",
+        BNB: "BNB",
+        XRP: "XRP",
+        ADA: "ADA",
+        SOL: "SOL",
+        DOT: "DOT",
+        DOGE: "DOGE",
+        langName_fa: "Persian",
+        langName_en: "English",
+        langName_ar: "Arabic",
+        langName_ru: "Russian",
+        errorConnection: "Error connecting",
+        errorFetch: "Error fetching",
+        loading: "Loading…",
+        successAlertSet: "Alert set",
+        successAlertDeleted: "Alert deleted",
+        successAlertsCleared: "Alerts cleared",
+        successAlertToggled: "Status changed",
+        errorAmount: "Enter valid amount",
+        errorSameCurrency: "Same currency",
+        errorCalculation: "Calculation error",
+        errorAlertFields: "Fill all fields",
+        errorAlertExists: "Alert exists",
+        confirmClearAlerts: "Clear all alerts?",
+        themeDark: "Dark theme",
+        themeLight: "Light theme",
+        updating: "Updating...",
+        ready: "Dashboard ready!",
+        alertTriggered: "Alert! Price:",
+        currency: "Currency",
+        target: "Target",
+        condition: "Condition",
+        status: "Status",
+        actions: "Actions",
+        time: "Time",
+        date: "Date",
+        search: "Search",
+        select: "Select",
+        all: "All",
+        none: "None",
+        loadingData: "Loading...",
+        noData: "No data",
+        error: "Error",
+        success: "Success",
+        warning: "Warning",
+        info: "Info",
+        from: "From",
+        to: "To",
+        amount: "Amount",
+        convert: "Convert",
+        result: "Result",
+        baseCurrency: "Base",
+        currencyPair: "Pair",
+        targetPrice: "Target",
+        priceAlert: "Alert",
+        clearAll: "Clear All",
+        activeAlerts: "Alerts",
+        storedInBrowser: "Browser storage",
+        lightDarkTheme: "Theme",
+        update: "Update",
+        lastUpdate: "Updated",
+        popularCryptocurrencies: "Popular Crypto",
+        basedOn: "on",
+        high: "High",
+        low: "Low",
+        change24h: "24h Chg",
+        volume24h: "24h Vol",
+        numberOfTrades: "Trades",
+        recommended: "rec",
+        forMostPairs: "most pairs",
+        selectBaseCurrency: "Select Base",
+        selectCurrencyPair: "Select Pair",
+        selectCondition: "Condition",
+        setPriceAlert: "Set Alert",
+        calculator: "Calculator",
+        conversion: "Convert",
+        allCalculations: "Calculations",
+        useRealtimePrices: "real-time prices",
+        cryptocurrency: "Crypto",
+        cryptocurrencies: "Cryptos",
+        market: "Market",
+        dashboard: "Dashboard",
+        live: "Live",
+        compatibleWith: "For",
+        only: "Only",
+        and: "&",
+        binance: "Binance",
+        githubPages: "GitHub"
+      },
+      ar: {
+        pageTitle: "لوحة الأسواق",
+        title: "لوحة الأسواق",
+        badge: "Binance فقط • GitHub مناسب",
+        homeButton: "الرئيسية",
+        toolsButton: "الأدوات",
+        toggleTheme: "المظهر",
+        refreshAll: "تحديث",
+        cryptoTitle: "العملات (24h)",
+        cryptoStatus: "جار التحميل…",
+        quoteLabel: "العملة الأساس:",
+        pairLabel: "اختر زوج:",
+        pairHint: "USDT موصى به",
+        noneOption: "لا شيء",
+        priceLabel: "السعر:",
+        changeLabel: "تغيير 24h:",
+        volumeLabel: "حجم 24h:",
+        tradesLabel: "الصفقات:",
+        updatedLabel: "آخر تحديث:",
+        popularTitle: "العملات الشائعة",
+        highLabel: "عالي:",
+        lowLabel: "منخفض:",
+        calcTitle: "المحول",
+        calcFromLabel: "من:",
+        calcToLabel: "إلى:",
+        calcAmountLabel: "المبلغ:",
+        calcAmountPlaceholder: "المبلغ",
+        calcConvert: "تحويل",
+        calcResultLabel: "النتيجة:",
+        calcInfo: "باستخدام أسعار Binance",
+        alertTitle: "تنبيه السعر",
+        alertPairLabel: "الزوج:",
+        selectPairOption: "اختر زوج",
+        alertPriceLabel: "الهدف:",
+        alertPricePlaceholder: "السعر المستهدف",
+        alertConditionLabel: "الشرط:",
+        alertConditionAbove: "أعلى",
+        alertConditionBelow: "أقل",
+        setAlert: "تعيين",
+        clearAlerts: "مسح الكل",
+        activeAlertsTitle: "التنبيهات",
+        noAlertsText: "لا تنبيهات",
+        alertsInfo: "في المتصفح",
+        activeLabel: "نشط",
+        inactiveLabel: "غير نشط",
+        aboveLabel: "أعلى",
+        belowLabel: "أقل",
+        deleteLabel: "حذف",
+        enableLabel: "تفعيل",
+        disableLabel: "تعطيل",
+        USDT: "USDT",
+        BTC: "BTC",
+        ETH: "ETH",
+        BNB: "BNB",
+        XRP: "XRP",
+        ADA: "ADA",
+        SOL: "SOL",
+        DOT: "DOT",
+        DOGE: "DOGE",
+        langName_fa: "فارسي",
+        langName_en: "إنجليزي",
+        langName_ar: "عربي",
+        langName_ru: "روسي",
+        errorConnection: "خطأ اتصال",
+        errorFetch: "خطأ جلب",
+        loading: "جار التحميل…",
+        successAlertSet: "تم التعيين",
+        successAlertDeleted: "تم الحذف",
+        successAlertsCleared: "تم المسح",
+        successAlertToggled: "تم التغيير",
+        errorAmount: "أدخل مبلغاً",
+        errorSameCurrency: "نفس العملة",
+        errorCalculation: "خطأ حساب",
+        errorAlertFields: "املأ الحقول",
+        errorAlertExists: "التنبيه موجود",
+        confirmClearAlerts: "مسح الكل؟",
+        themeDark: "داكن",
+        themeLight: "فاتح",
+        updating: "جار التحديث...",
+        ready: "اللوحة جاهزة!",
+        alertTriggered: "تنبيه! السعر:",
+        currency: "العملة",
+        target: "الهدف",
+        condition: "الشرط",
+        status: "الحالة",
+        actions: "الإجراءات",
+        time: "الوقت",
+        date: "التاريخ",
+        search: "بحث",
+        select: "اختر",
+        all: "الكل",
+        none: "لا شيء",
+        loadingData: "جار التحميل...",
+        noData: "لا بيانات",
+        error: "خطأ",
+        success: "نجاح",
+        warning: "تحذير",
+        info: "معلومات",
+        from: "من",
+        to: "إلى",
+        amount: "المبلغ",
+        convert: "تحويل",
+        result: "النتيجة",
+        baseCurrency: "الأساس",
+        currencyPair: "الزوج",
+        targetPrice: "الهدف",
+        priceAlert: "تنبيه",
+        clearAll: "مسح الكل",
+        activeAlerts: "التنبيهات",
+        storedInBrowser: "في المتصفح",
+        lightDarkTheme: "المظهر",
+        update: "تحديث",
+        lastUpdate: "محدث",
+        popularCryptocurrencies: "العملات",
+        basedOn: "على",
+        high: "عالي",
+        low: "منخفض",
+        change24h: "24h تغيير",
+        volume24h: "24h حجم",
+        numberOfTrades: "الصفقات",
+        recommended: "موصى",
+        forMostPairs: "معظم الأزواج",
+        selectBaseCurrency: "اختر الأساس",
+        selectCurrencyPair: "اختر الزوج",
+        selectCondition: "الشرط",
+        setPriceAlert: "تعيين",
+        calculator: "الحاسبة",
+        conversion: "تحويل",
+        allCalculations: "الحسابات",
+        useRealtimePrices: "أسعار لحظية",
+        cryptocurrency: "عملة",
+        cryptocurrencies: "العملات",
+        market: "السوق",
+        dashboard: "لوحة",
+        live: "مباشر",
+        compatibleWith: "لـ",
+        only: "فقط",
+        and: "و",
+        binance: "Binance",
+        githubPages: "GitHub"
+      },
+      ru: {
+        pageTitle: "Панель рынков",
+        title: "Панель рынков",
+        badge: "Только Binance • Для GitHub",
+        homeButton: "Главная",
+        toolsButton: "Инструменты",
+        toggleTheme: "Тема",
+        refreshAll: "Обновить",
+        cryptoTitle: "Крипта (24ч)",
+        cryptoStatus: "Загрузка…",
+        quoteLabel: "Базовая валюта:",
+        pairLabel: "Выберите пару:",
+        pairHint: "USDT рекомендуется",
+        noneOption: "Нет",
+        priceLabel: "Цена:",
+        changeLabel: "Изменение 24ч:",
+        volumeLabel: "Объем 24ч:",
+        tradesLabel: "Сделки:",
+        updatedLabel: "Обновлено:",
+        popularTitle: "Популярные крипты",
+        highLabel: "Верх:",
+        lowLabel: "Низ:",
+        calcTitle: "Конвертер",
+        calcFromLabel: "Из:",
+        calcToLabel: "В:",
+        calcAmountLabel: "Сумма:",
+        calcAmountPlaceholder: "Сумма",
+        calcConvert: "Конвертировать",
+        calcResultLabel: "Результат:",
+        calcInfo: "Цены Binance",
+        alertTitle: "Оповещение",
+        alertPairLabel: "Пара:",
+        selectPairOption: "Выбрать пару",
+        alertPriceLabel: "Цель:",
+        alertPricePlaceholder: "Целевая цена",
+        alertConditionLabel: "Условие:",
+        alertConditionAbove: "Выше",
+        alertConditionBelow: "Ниже",
+        setAlert: "Установить",
+        clearAlerts: "Очистить",
+        activeAlertsTitle: "Оповещения",
+        noAlertsText: "Нет оповещений",
+        alertsInfo: "В браузере",
+        activeLabel: "Активно",
+        inactiveLabel: "Неактивно",
+        aboveLabel: "Выше",
+        belowLabel: "Ниже",
+        deleteLabel: "Удалить",
+        enableLabel: "Включить",
+        disableLabel: "Выключить",
+        USDT: "USDT",
+        BTC: "BTC",
+        ETH: "ETH",
+        BNB: "BNB",
+        XRP: "XRP",
+        ADA: "ADA",
+        SOL: "SOL",
+        DOT: "DOT",
+        DOGE: "DOGE",
+        langName_fa: "Персидский",
+        langName_en: "Английский",
+        langName_ar: "Арабский",
+        langName_ru: "Русский",
+        errorConnection: "Ошибка связи",
+        errorFetch: "Ошибка данных",
+        loading: "Загрузка…",
+        successAlertSet: "Установлено",
+        successAlertDeleted: "Удалено",
+        successAlertsCleared: "Очищено",
+        successAlertToggled: "Статус изменен",
+        errorAmount: "Введите сумму",
+        errorSameCurrency: "Одинаковые валюты",
+        errorCalculation: "Ошибка расчета",
+        errorAlertFields: "Заполните поля",
+        errorAlertExists: "Оповещение есть",
+        confirmClearAlerts: "Очистить все?",
+        themeDark: "Темная",
+        themeLight: "Светлая",
+        updating: "Обновление...",
+        ready: "Панель готова!",
+        alertTriggered: "Оповещение! Цена:",
+        currency: "Валюта",
+        target: "Цель",
+        condition: "Условие",
+        status: "Статус",
+        actions: "Действия",
+        time: "Время",
+        date: "Дата",
+        search: "Поиск",
+        select: "Выбрать",
+        all: "Все",
+        none: "Нет",
+        loadingData: "Загрузка...",
+        noData: "Нет данных",
+        error: "Ошибка",
+        success: "Успех",
+        warning: "Внимание",
+        info: "Инфо",
+        from: "Из",
+        to: "В",
+        amount: "Сумма",
+        convert: "Конвертировать",
+        result: "Результат",
+        baseCurrency: "База",
+        currencyPair: "Пара",
+        targetPrice: "Цель",
+        priceAlert: "Оповещение",
+        clearAll: "Очистить",
+        activeAlerts: "Оповещения",
+        storedInBrowser: "В браузере",
+        lightDarkTheme: "Тема",
+        update: "Обновить",
+        lastUpdate: "Обновлено",
+        popularCryptocurrencies: "Крипты",
+        basedOn: "на",
+        high: "Верх",
+        low: "Низ",
+        change24h: "24ч изм",
+        volume24h: "24ч объем",
+        numberOfTrades: "Сделки",
+        recommended: "рекоменд",
+        forMostPairs: "большинство пар",
+        selectBaseCurrency: "Выбрать базу",
+        selectCurrencyPair: "Выбрать пару",
+        selectCondition: "Условие",
+        setPriceAlert: "Установить",
+        calculator: "Калькулятор",
+        conversion: "Конвертация",
+        allCalculations: "Расчеты",
+        useRealtimePrices: "цены онлайн",
+        cryptocurrency: "Крипта",
+        cryptocurrencies: "Крипты",
+        market: "Рынок",
+        dashboard: "Панель",
+        live: "Онлайн",
+        compatibleWith: "Для",
+        only: "Только",
+        and: "и",
+        binance: "Binance",
+        githubPages: "GitHub"
+      }
+    };
 
     function iconUrl(base){ 
       return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; 
     }
-    
-    function formatNum(n, opts){ 
-      if (n === undefined || n === null) return '—';
-      try { 
-        return Number(n).toLocaleString('fa-IR', opts || {}); 
-      } catch(e){ 
+
+    function formatNum(n, opts, lang = state.currentLang){ 
+      try{ 
+        const localeMap = {
+          'fa': 'fa-IR',
+          'ar': 'ar-SA',
+          'ru': 'ru-RU',
+          'en': 'en-US'
+        };
+        return Number(n).toLocaleString(localeMap[lang] || 'en-US', opts || {});
+      } catch{ 
         return n; 
       } 
     }
-    
-    function formatCurrency(num) {
-      // فرمت اعداد برای نمایش قیمت‌های بزرگ
-      if (num >= 1000000000) {
-        return formatNum((num / 1000000000).toFixed(2)) + ' میلیارد';
-      } else if (num >= 1000000) {
-        return formatNum((num / 1000000).toFixed(2)) + ' میلیون';
-      } else {
-        return formatNum(num);
-      }
+
+    function showNotification(message, type = 'info') {
+      const t = translations[state.currentLang];
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = message;
+      notification.style.background = type === 'success' ? 'var(--up)' : 
+                                     type === 'error' ? 'var(--down)' : 
+                                     'var(--accent)';
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease reverse';
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
     }
 
-    // تابع برای دریافت نرخ دلار به ریال
-    async function loadUsdToIrr(){
-      try{
-        // از API ایرانی برای دریافت نرخ دلار استفاده می‌کنیم
-        await loadCurrencyRates();
-        // بعد از بارگذاری نرخ ارزها، نرخ دلار به ریال را از داده‌ها استخراج می‌کنیم
-        if (state.currencyRates.USD) {
-          state.usdToIrr = state.currencyRates.USD.price;
+    function updateLanguage() {
+      const lang = state.currentLang;
+      const t = translations[lang];
+      
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'fa' || lang === 'ar') ? 'rtl' : 'ltr';
+      document.body.lang = lang;
+      document.body.dir = (lang === 'fa' || lang === 'ar') ? 'rtl' : 'ltr';
+      document.title = t.pageTitle;
+      
+      const elements = {
+        'title': t.title,
+        'badge': t.badge,
+        'homeButton': t.homeButton,
+        'toolsButton': t.toolsButton,
+        'toggleTheme': t.toggleTheme,
+        'refreshAll': t.refreshAll,
+        'cryptoTitle': t.cryptoTitle,
+        'cryptoStatus': t.cryptoStatus,
+        'quoteLabel': t.quoteLabel,
+        'pairLabel': t.pairLabel,
+        'pairHint': t.pairHint,
+        'popularTitle': t.popularTitle,
+        'calcTitle': t.calcTitle,
+        'calcFromLabel': t.calcFromLabel,
+        'calcToLabel': t.calcToLabel,
+        'calcAmountLabel': t.calcAmountLabel,
+        'calcConvert': t.calcConvert,
+        'calcResultLabel': t.calcResultLabel,
+        'calcInfo': t.calcInfo,
+        'alertTitle': t.alertTitle,
+        'alertPairLabel': t.alertPairLabel,
+        'alertPriceLabel': t.alertPriceLabel,
+        'alertConditionLabel': t.alertConditionLabel,
+        'setAlert': t.setAlert,
+        'clearAlerts': t.clearAlerts,
+        'activeAlertsTitle': t.activeAlertsTitle,
+        'noAlertsText': t.noAlertsText,
+        'alertsInfo': t.alertsInfo
+      };
+      
+      Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = elements[id];
+      });
+      
+      document.getElementById('calcAmount').placeholder = t.calcAmountPlaceholder;
+      document.getElementById('alertPrice').placeholder = t.alertPricePlaceholder;
+      
+      updateLangSelectOptions();
+      updateQuoteSelectOptions();
+      updateCalculatorSelectOptions();
+      updateAlertConditionOptions();
+      updateAlertsList();
+      updateDynamicTexts();
+      updatePopularCryptos();
+      
+      if (state.binanceAll.length > 0) {
+        populatePairs();
+        updateAlertPairs();
+      }
+      
+      localStorage.setItem('dashboardLang', lang);
+      
+      adjustFontSizeForLanguage(lang);
+    }
+
+    function adjustFontSizeForLanguage(lang) {
+      const toolbarButtons = document.querySelectorAll('.toolbar button, .home-btn, .tools-btn');
+      const toolbarButtonsArray = Array.from(toolbarButtons);
+      
+      toolbarButtonsArray.forEach(btn => {
+        if (lang === 'ru' || lang === 'ar') {
+          btn.style.fontSize = window.innerWidth <= 480 ? '9px' : 
+                              window.innerWidth <= 600 ? '10px' : 
+                              window.innerWidth <= 768 ? '11px' : '12px';
+          btn.style.lineHeight = '1.2';
         } else {
-          state.usdToIrr = 0;
+          btn.style.fontSize = '';
+          btn.style.lineHeight = '';
         }
-      }catch(e){ 
-        state.usdToIrr = 0; 
-        console.error('خطا در دریافت نرخ دلار:', e);
+      });
+    }
+
+    function updateLangSelectOptions() {
+      const langSelect = document.getElementById('langSelect');
+      const t = translations[state.currentLang];
+      
+      const options = [
+        { value: 'fa', label: t.langName_fa },
+        { value: 'en', label: t.langName_en },
+        { value: 'ar', label: t.langName_ar },
+        { value: 'ru', label: t.langName_ru }
+      ];
+      
+      langSelect.innerHTML = '';
+      options.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option.value;
+        optElement.textContent = option.label;
+        if (option.value === state.currentLang) {
+          optElement.selected = true;
+        }
+        langSelect.appendChild(optElement);
+      });
+      
+      if (state.langSelectChoices) state.langSelectChoices.destroy();
+      state.langSelectChoices = new Choices(langSelect, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom',
+        callbackOnCreateTemplates: function(template) {
+          return {
+            option: (classNames, data) => {
+              return template(`<div class="${classNames.item} ${classNames.itemSelectable}" data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
+            },
+            item: (classNames, data) => {
+              return template(`<div class="${classNames.item} ${classNames.itemChoice}" data-item data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
+            }
+          };
+        }
+      });
+    }
+
+    function updateQuoteSelectOptions() {
+      const quoteSelect = document.getElementById('quoteSelect');
+      const t = translations[state.currentLang];
+      
+      const options = [
+        { value: 'USDT', label: t.USDT },
+        { value: 'BTC', label: t.BTC },
+        { value: 'ETH', label: t.ETH },
+        { value: 'BNB', label: t.BNB }
+      ];
+      
+      const currentValue = quoteSelect.value;
+      quoteSelect.innerHTML = '';
+      options.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option.value;
+        optElement.textContent = option.label;
+        if (option.value === currentValue || (!currentValue && option.value === 'USDT')) {
+          optElement.selected = true;
+        }
+        quoteSelect.appendChild(optElement);
+      });
+      
+      if (state.quoteChoices) state.quoteChoices.destroy();
+      state.quoteChoices = new Choices(quoteSelect, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom'
+      });
+    }
+
+    function updateCalculatorSelectOptions() {
+      const t = translations[state.currentLang];
+      
+      const calcFrom = document.getElementById('calcFrom');
+      const fromOptions = [
+        { value: 'BTC', label: t.BTC },
+        { value: 'ETH', label: t.ETH },
+        { value: 'BNB', label: t.BNB },
+        { value: 'USDT', label: t.USDT },
+        { value: 'XRP', label: t.XRP },
+        { value: 'ADA', label: t.ADA },
+        { value: 'SOL', label: t.SOL },
+        { value: 'DOT', label: t.DOT }
+      ];
+      
+      const currentFromValue = calcFrom.value || 'BTC';
+      calcFrom.innerHTML = '';
+      fromOptions.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option.value;
+        optElement.textContent = option.label;
+        if (option.value === currentFromValue) optElement.selected = true;
+        calcFrom.appendChild(optElement);
+      });
+      
+      if (state.calcFromChoices) state.calcFromChoices.destroy();
+      state.calcFromChoices = new Choices(calcFrom, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom'
+      });
+      
+      const calcTo = document.getElementById('calcTo');
+      const toOptions = [
+        { value: 'USDT', label: t.USDT },
+        { value: 'BTC', label: t.BTC },
+        { value: 'ETH', label: t.ETH },
+        { value: 'BNB', label: t.BNB },
+        { value: 'XRP', label: t.XRP },
+        { value: 'ADA', label: t.ADA },
+        { value: 'SOL', label: t.SOL },
+        { value: 'DOT', label: t.DOT }
+      ];
+      
+      const currentToValue = calcTo.value || 'USDT';
+      calcTo.innerHTML = '';
+      toOptions.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option.value;
+        optElement.textContent = option.label;
+        if (option.value === currentToValue) optElement.selected = true;
+        calcTo.appendChild(optElement);
+      });
+      
+      if (state.calcToChoices) state.calcToChoices.destroy();
+      state.calcToChoices = new Choices(calcTo, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom'
+      });
+    }
+
+    function updateAlertConditionOptions() {
+      const alertCondition = document.getElementById('alertCondition');
+      const t = translations[state.currentLang];
+      
+      const currentValue = alertCondition.value || 'above';
+      alertCondition.innerHTML = '';
+      
+      const aboveOption = document.createElement('option');
+      aboveOption.value = 'above';
+      aboveOption.textContent = t.alertConditionAbove;
+      if (currentValue === 'above') aboveOption.selected = true;
+      alertCondition.appendChild(aboveOption);
+      
+      const belowOption = document.createElement('option');
+      belowOption.value = 'below';
+      belowOption.textContent = t.alertConditionBelow;
+      if (currentValue === 'below') belowOption.selected = true;
+      alertCondition.appendChild(belowOption);
+      
+      if (state.alertConditionChoices) state.alertConditionChoices.destroy();
+      state.alertConditionChoices = new Choices(alertCondition, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom'
+      });
+    }
+
+    function updateDynamicTexts() {
+      const t = translations[state.currentLang];
+      
+      const pairPrice = document.getElementById('pairPrice').textContent;
+      if (pairPrice.includes(':')) {
+        const priceValue = pairPrice.split(':')[1] || '';
+        document.getElementById('pairPrice').textContent = `${t.priceLabel} ${priceValue.trim()}`;
+      }
+      
+      const pairChange = document.getElementById('pairChange').textContent;
+      if (pairChange.includes(':')) {
+        const changeValue = pairChange.split(':')[1] || '';
+        document.getElementById('pairChange').textContent = `${t.changeLabel} ${changeValue.trim()}`;
+      }
+      
+      const pairVolume = document.getElementById('pairVolume').textContent;
+      if (pairVolume.includes(':')) {
+        const volumeValue = pairVolume.split(':')[1] || '';
+        document.getElementById('pairVolume').textContent = `${t.volumeLabel} ${volumeValue.trim()}`;
+      }
+      
+      const pairTrades = document.getElementById('pairTrades').textContent;
+      if (pairTrades.includes(':')) {
+        const tradesValue = pairTrades.split(':')[1] || '';
+        document.getElementById('pairTrades').textContent = `${t.tradesLabel} ${tradesValue.trim()}`;
       }
     }
 
-    // تابع برای دریافت داده‌های Binance
-    async function loadBinance(){
-      document.getElementById('cryptoStatus').textContent = 'در حال دریافت از Binance…';
+    async function loadBinance() {
+      const t = translations[state.currentLang];
+      document.getElementById('cryptoStatus').textContent = t.loading;
       try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache:'no-store'});
-        if (!res.ok) { 
-          document.getElementById('cryptoStatus').textContent = 'خطا در دریافت داده‌های Binance'; 
-          return; 
-        }
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache: 'no-store'});
+        if (!res.ok) throw new Error(t.errorFetch);
         state.binanceAll = await res.json();
         populatePairs();
-        document.getElementById('cryptoUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
-      } catch(e) {
-        document.getElementById('cryptoStatus').textContent = 'خطا در اتصال به Binance';
-        console.error('خطا در دریافت Binance:', e);
+        updatePopularCryptos();
+        checkAlerts();
+        const now = new Date().toLocaleTimeString(state.currentLang === 'fa' ? 'fa-IR' : 
+                                                 state.currentLang === 'ar' ? 'ar-SA' : 
+                                                 state.currentLang === 'ru' ? 'ru-RU' : 'en-US');
+        document.getElementById('cryptoUpdated').textContent = `${t.updatedLabel} ${now}`;
+        document.getElementById('popularUpdated').textContent = `${t.updatedLabel} ${now}`;
+        document.getElementById('cryptoStatus').textContent = '';
+      } catch (error) {
+        document.getElementById('cryptoStatus').textContent = t.errorConnection;
+        console.error('Binance API Error:', error);
       }
     }
 
-    // تابع برای دریافت نرخ ارزهای جهانی از API ایرانی
-    async function loadCurrencyRates(){
-      document.getElementById('currencyStatus').textContent = 'در حال دریافت نرخ ارزها از سرور ایرانی...';
-      
-      try {
-        const res = await fetch(TGJU_API_URL, {cache: 'no-store'});
-        
-        if (!res.ok) {
-          throw new Error(`خطای HTTP: ${res.status}`);
-        }
-        
-        const data = await res.json();
-        
-        if (data && data.sana) {
-          // پردازش داده‌های دریافتی از API ایرانی
-          const rates = {};
-          
-          // استخراج ارزهای مختلف از داده‌های API
-          const currencyMappings = {
-            'USD': ['sana_buy_usd', 'price_dollar_rl'],
-            'EUR': ['sana_buy_eur', 'price_eur'],
-            'GBP': ['sana_buy_gbp', 'price_gbp'],
-            'AED': ['sana_buy_aed', 'price_aed'],
-            'TRY': ['sana_buy_try', 'price_try'],
-            'CNY': ['sana_buy_cny', 'price_cny'],
-            'CAD': ['sana_buy_cad', 'price_cad'],
-            'AUD': ['sana_buy_aud', 'price_aud'],
-            'JPY': ['sana_buy_jpy', 'price_jpy'],
-            'CHF': ['sana_buy_chf', 'price_chf'],
-            'RUB': ['sana_buy_rub', 'price_rub'],
-            'INR': ['sana_buy_inr', 'price_inr']
-          };
-          
-          // تبدیل داده‌های API به فرمت مورد نظر
-          Object.entries(currencyMappings).forEach(([currencyCode, apiKeys]) => {
-            for (const apiKey of apiKeys) {
-              if (data.sana[apiKey]) {
-                const item = data.sana[apiKey];
-                let price = 0;
-                let change = 0;
-                let percentChange = 0;
-                
-                // پردازش بسته به ساختار داده
-                if (typeof item === 'object' && item !== null) {
-                  if (item.p) price = parseFloat(item.p.replace(/,/g, ''));
-                  if (item.d) change = parseFloat(item.d.replace(/,/g, ''));
-                  if (item.dp) percentChange = parseFloat(item.dp.replace('%', ''));
-                  
-                  // اگر هنوز قیمت نداریم، از فیلدهای دیگر تلاش می‌کنیم
-                  if (!price && item.value) price = parseFloat(item.value.replace(/,/g, ''));
-                } else if (typeof item === 'string') {
-                  price = parseFloat(item.replace(/,/g, ''));
-                }
-                
-                if (price > 0) {
-                  rates[currencyCode] = {
-                    price: price,
-                    change: change,
-                    percentChange: percentChange,
-                    timestamp: new Date().toISOString()
-                  };
-                  break; // اولین مقدار معتبر را می‌گیریم
-                }
-              }
-            }
-          });
-          
-          // افزودن ریال ایران
-          rates['IRR'] = {
-            price: 1,
-            change: 0,
-            percentChange: 0,
-            timestamp: new Date().toISOString()
-          };
-          
-          state.currencyRates = rates;
-          
-          // نمایش داده‌ها
-          displayCurrencyData(rates);
-          document.getElementById('currencyUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
-          document.getElementById('currencyStatus').textContent = `نرخ ${Object.keys(rates).length} ارز با موفقیت دریافت شد`;
-          document.getElementById('currencyStatus').style.color = 'var(--up)';
-          
-        } else {
-          throw new Error('ساختار داده نامعتبر است');
-        }
-      } catch(e) {
-        console.error('خطا در دریافت نرخ ارزها:', e);
-        document.getElementById('currencyStatus').textContent = 'خطا در دریافت نرخ ارزها - نمایش داده‌های نمونه';
-        document.getElementById('currencyStatus').style.color = 'var(--down)';
-        
-        // نمایش داده‌های نمونه در صورت خطا
-        displaySampleCurrencyData();
-      }
-    }
-
-    // تابع برای نمایش داده‌های ارزی
-    function displayCurrencyData(rates) {
-      const cardsView = document.getElementById('cardsView');
-      const tableBody = document.getElementById('currencyTableBody');
-      
-      // پاکسازی محتوای قبلی (به جز ریال ایران)
-      const existingCards = cardsView.querySelectorAll('.currency-card:not(.irr-card)');
-      existingCards.forEach(card => card.remove());
-      
-      // پاکسازی ردیف‌های جدول (به جز ریال ایران)
-      const existingRows = tableBody.querySelectorAll('tr:not(.irr-row)');
-      existingRows.forEach(row => row.remove());
-      
-      // پرچم کشورها
-      const flags = {
-        'USD': 'https://flagcdn.com/w20/us.png',
-        'EUR': 'https://flagcdn.com/w20/eu.png',
-        'GBP': 'https://flagcdn.com/w20/gb.png',
-        'CNY': 'https://flagcdn.com/w20/cn.png',
-        'TRY': 'https://flagcdn.com/w20/tr.png',
-        'AED': 'https://flagcdn.com/w20/ae.png',
-        'CAD': 'https://flagcdn.com/w20/ca.png',
-        'AUD': 'https://flagcdn.com/w20/au.png',
-        'JPY': 'https://flagcdn.com/w20/jp.png',
-        'CHF': 'https://flagcdn.com/w20/ch.png',
-        'RUB': 'https://flagcdn.com/w20/ru.png',
-        'INR': 'https://flagcdn.com/w20/in.png',
-        'IRR': 'https://flagcdn.com/w20/ir.png'
-      };
-      
-      // نام ارزها
-      const currencyNames = {
-        'USD': 'دلار آمریکا',
-        'EUR': 'یورو اروپا',
-        'GBP': 'پوند انگلیس',
-        'CNY': 'یوان چین',
-        'TRY': 'لیر ترکیه',
-        'AED': 'درهم امارات',
-        'CAD': 'دلار کانادا',
-        'AUD': 'دلار استرالیا',
-        'JPY': 'ین ژاپن',
-        'CHF': 'فرانک سوئیس',
-        'RUB': 'روبل روسیه',
-        'INR': 'روپیه هند',
-        'IRR': 'ریال ایران'
-      };
-      
-      // ترتیب نمایش ارزها
-      const displayOrder = ['USD', 'EUR', 'GBP', 'AED', 'TRY', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'RUB', 'INR'];
-      
-      // ایجاد کارت‌ها و ردیف‌های جدول
-      displayOrder.forEach(currencyCode => {
-        const rate = rates[currencyCode];
-        if (!rate) return;
-        
-        const changePercent = rate.percentChange;
-        const changeClass = changePercent >= 0 ? 'delta-up' : 'delta-down';
-        const changeSign = changePercent >= 0 ? '+' : '';
-        const timeStr = new Date(rate.timestamp).toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'});
-        
-        // ایجاد کارت
-        const card = document.createElement('div');
-        card.className = 'currency-card';
-        if (currencyCode === 'IRR') card.classList.add('irr-card');
-        
-        card.innerHTML = `
-          <div class="currency-card-header">
-            <div class="currency-card-title">
-              <img src="${flags[currencyCode] || 'https://flagcdn.com/w20/un.png'}" 
-                   alt="${currencyCode}" 
-                   class="currency-flag"
-                   onerror="this.style.display='none'">
-              <span>${currencyCode} - ${currencyNames[currencyCode] || currencyCode}</span>
-            </div>
-          </div>
-          <div class="currency-price">${formatCurrency(rate.price)} ریال</div>
-          <div class="currency-change">
-            <span class="${changeClass}">${changeSign}${formatNum(changePercent, {maximumFractionDigits: 2})}%</span>
-            <span>(${changeSign}${formatNum(rate.change)} ریال)</span>
-          </div>
-          <div class="currency-time">${timeStr}</div>
-        `;
-        
-        if (currencyCode !== 'IRR') {
-          cardsView.appendChild(card);
-        }
-        
-        // ایجاد ردیف جدول
-        const row = document.createElement('tr');
-        if (currencyCode === 'IRR') row.classList.add('irr-row');
-        
-        row.innerHTML = `
-          <td>
-            <img src="${flags[currencyCode] || 'https://flagcdn.com/w20/un.png'}" 
-                 alt="${currencyCode}" 
-                 class="currency-flag"
-                 onerror="this.style.display='none'">
-          </td>
-          <td>
-            <div style="display:flex; align-items:center; gap:5px;">
-              <strong>${currencyCode}</strong>
-              <span style="font-size:12px; color:var(--muted)">${currencyNames[currencyCode] || currencyCode}</span>
-            </div>
-          </td>
-          <td><strong>${formatCurrency(rate.price)}</strong></td>
-          <td>${changeSign}${formatNum(rate.change)}</td>
-          <td><span class="${changeClass}">${changeSign}${formatNum(changePercent, {maximumFractionDigits: 2})}%</span></td>
-          <td style="font-size:12px;">${timeStr}</td>
-        `;
-        
-        if (currencyCode !== 'IRR') {
-          tableBody.appendChild(row);
-        }
-      });
-    }
-
-    // تابع برای نمایش داده‌های نمونه (در صورت خطا در API)
-    function displaySampleCurrencyData() {
-      const sampleRates = {
-        'USD': { price: 420000, change: 1250, percentChange: 0.3, timestamp: new Date().toISOString() },
-        'EUR': { price: 450000, change: -800, percentChange: -0.18, timestamp: new Date().toISOString() },
-        'GBP': { price: 530000, change: 1500, percentChange: 0.28, timestamp: new Date().toISOString() },
-        'TRY': { price: 13000, change: 150, percentChange: 1.17, timestamp: new Date().toISOString() },
-        'AED': { price: 114000, change: 300, percentChange: 0.26, timestamp: new Date().toISOString() },
-        'CAD': { price: 310000, change: 800, percentChange: 0.26, timestamp: new Date().toISOString() },
-        'CNY': { price: 58000, change: -200, percentChange: -0.34, timestamp: new Date().toISOString() },
-        'IRR': { price: 1, change: 0, percentChange: 0, timestamp: new Date().toISOString() }
-      };
-      
-      displayCurrencyData(sampleRates);
-    }
-
-    // تابع برای تغییر نمایش (کارت/جدول)
-    function setupViewToggle() {
-      const cardsView = document.getElementById('cardsView');
-      const tableView = document.getElementById('tableView');
-      const viewCardsBtn = document.getElementById('viewCards');
-      const viewTableBtn = document.getElementById('viewTable');
-      
-      viewCardsBtn.addEventListener('click', () => {
-        cardsView.style.display = 'grid';
-        tableView.style.display = 'none';
-        viewCardsBtn.classList.add('active');
-        viewTableBtn.classList.remove('active');
-        state.currentView = 'cards';
-      });
-      
-      viewTableBtn.addEventListener('click', () => {
-        cardsView.style.display = 'none';
-        tableView.style.display = 'block';
-        viewCardsBtn.classList.remove('active');
-        viewTableBtn.classList.add('active');
-        state.currentView = 'table';
-      });
-    }
-
-    function populatePairs(){
+    function populatePairs() {
       const select = document.getElementById('pairSelect');
       const quote = state.quote;
+      const t = translations[state.currentLang];
       const pairs = state.binanceAll.filter(d => d.symbol.endsWith(quote));
 
-      select.innerHTML = `<option value="">— هیچ‌کدام —</option>` + pairs.map(p=>{
+      select.innerHTML = `<option value="">— ${t.noneOption} —</option>` + 
+                         pairs.map(p => {
         const base = p.symbol.slice(0, p.symbol.length - quote.length);
         return `<option value="${p.symbol}" data-custom-properties="${iconUrl(base)}">${base}/${quote}</option>`;
       }).join('');
 
       if (state.pairChoices) state.pairChoices.destroy();
       state.pairChoices = new Choices(select, {
-        searchEnabled:true, itemSelectText:'', shouldSort:true, position:'bottom',
+        searchEnabled: true,
+        itemSelectText: '',
+        shouldSort: true,
+        position: 'bottom',
         callbackOnCreateTemplates: function(template) {
           return {
             option: (classNames, data) => {
@@ -580,9 +1963,12 @@
       select.addEventListener('change', e => renderPairInfo(e.target.value, pairs));
       select.value = '';
       select.dispatchEvent(new Event('change'));
+      
+      updateAlertPairs();
     }
 
-    function renderPairInfo(symbol, pairs){
+    function renderPairInfo(symbol, pairs) {
+      const t = translations[state.currentLang];
       const nameEl = document.getElementById('pairName');
       const priceEl = document.getElementById('pairPrice');
       const changeEl = document.getElementById('pairChange');
@@ -591,12 +1977,13 @@
 
       if (!symbol) {
         nameEl.innerHTML = '<span class="coin-name">—</span>';
-        priceEl.textContent = 'قیمت: —';
-        changeEl.textContent = 'تغییر 24h: —';
-        volEl.textContent = 'حجم 24h: —';
-        tradesEl.textContent = 'تعداد معاملات: —';
+        priceEl.textContent = `${t.priceLabel} —`;
+        changeEl.textContent = `${t.changeLabel} —`;
+        volEl.textContent = `${t.volumeLabel} —`;
+        tradesEl.textContent = `${t.tradesLabel} —`;
         return;
       }
+      
       const info = pairs.find(p => p.symbol === symbol);
       if (!info) return;
 
@@ -606,61 +1993,434 @@
       const volNum = Number(info.quoteVolume);
       const tradesNum = Number(info.count || 0);
 
-      const priceIRR = state.usdToIrr ? priceUSD * state.usdToIrr : 0;
-
       nameEl.innerHTML = `<span class="coin-name">${base}/${state.quote}</span>`;
-      priceEl.textContent = `قیمت: $${formatNum(priceUSD, {maximumFractionDigits: 8})}` + (state.usdToIrr ? ` | ریال ${formatNum(priceIRR)}` : '');
-      changeEl.innerHTML = `تغییر 24h: <span class="${chgNum>=0?'delta-up':'delta-down'}">${formatNum(chgNum, {maximumFractionDigits: 2})}%</span>`;
-      volEl.textContent = `حجم 24h: $${formatNum(volNum)}`;
-      tradesEl.textContent = `تعداد معاملات: ${formatNum(tradesNum)}`;
+      priceEl.textContent = `${t.priceLabel} $${formatNum(priceUSD, {maximumFractionDigits: 8})}`;
+      changeEl.innerHTML = `${t.changeLabel} <span class="${chgNum >= 0 ? 'delta-up' : 'delta-down'}">` +
+        `${chgNum >= 0 ? '+' : ''}${formatNum(chgNum, {maximumFractionDigits: 2})}%</span>`;
+      volEl.textContent = `${t.volumeLabel} $${formatNum(volNum)}`;
+      tradesEl.textContent = `${t.tradesLabel} ${formatNum(tradesNum)}`;
     }
 
-    function initQuoteChoices(){
+    function updatePopularCryptos() {
+      const container = document.getElementById('popularCryptoContainer');
+      const t = translations[state.currentLang];
+      
+      if (!state.binanceAll.length) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--muted);">${t.loadingData}</div>`;
+        return;
+      }
+
+      let html = '';
+      for (const symbol of state.popularCryptos) {
+        const pairInfo = state.binanceAll.find(p => p.symbol === symbol);
+        if (pairInfo) {
+          const price = Number(pairInfo.lastPrice);
+          const change = Number(pairInfo.priceChangePercent);
+          const base = symbol.replace('USDT', '');
+          const high24h = Number(pairInfo.highPrice);
+          const low24h = Number(pairInfo.lowPrice);
+          
+          html += `
+            <div class="popular-crypto-item">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                  <img src="${iconUrl(base)}" alt="${base}" style="width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;" onerror="this.style.display='none'">
+                  <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${base}</strong>
+                </div>
+                <span class="${change >= 0 ? 'delta-up' : 'delta-down'}" style="flex-shrink: 0;">
+                  ${change >= 0 ? '+' : ''}${formatNum(change, {maximumFractionDigits: 2})}%
+                </span>
+              </div>
+              <div style="font-size: 16px; margin: 6px 0; font-weight: bold; text-align: center; direction: ltr;">
+                $${formatNum(price, {maximumFractionDigits: price > 1000 ? 2 : price > 100 ? 3 : 4})}
+              </div>
+              <div style="font-size: 11px; color: var(--muted); display: flex; justify-content: space-between;">
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${t.highLabel} $${formatNum(high24h, {maximumFractionDigits: 2})}
+                </span>
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 4px;">
+                  ${t.lowLabel} $${formatNum(low24h, {maximumFractionDigits: 2})}
+                </span>
+              </div>
+            </div>
+          `;
+        }
+      }
+      
+      container.innerHTML = html;
+    }
+
+    function initQuoteChoices() {
       const select = document.getElementById('quoteSelect');
       if (state.quoteChoices) state.quoteChoices.destroy();
-      state.quoteChoices = new Choices(select, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
-      select.addEventListener('change', ()=>{
+      state.quoteChoices = new Choices(select, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        position: 'bottom'
+      });
+      
+      select.addEventListener('change', () => {
         state.quote = select.value;
         populatePairs();
       });
     }
 
-    // تغییر تم
-    document.getElementById('toggleTheme').addEventListener('click', ()=>{
+    function getPriceFromBinance(symbol) {
+      if (!state.binanceAll.length) return null;
+      const pair = state.binanceAll.find(p => p.symbol === symbol);
+      return pair ? Number(pair.lastPrice) : null;
+    }
+
+    function initCalculator() {
+      document.getElementById('calcConvert').addEventListener('click', () => {
+        const t = translations[state.currentLang];
+        const from = document.getElementById('calcFrom').value;
+        const to = document.getElementById('calcTo').value;
+        const amount = parseFloat(document.getElementById('calcAmount').value);
+        
+        if (!amount || amount <= 0) {
+          showNotification(t.errorAmount, 'error');
+          return;
+        }
+        
+        if (from === to) {
+          showNotification(t.errorSameCurrency, 'error');
+          return;
+        }
+        
+        const result = calculateConversionUsingBinance(from, to, amount);
+        if (result === null) {
+          showNotification(t.errorCalculation, 'error');
+          return;
+        }
+        
+        document.getElementById('calcResult').innerHTML = `
+          <span id="calcResultLabel">${t.calcResultLabel}</span>
+          ${formatNum(amount, {maximumFractionDigits: 8})} ${from} = 
+          <strong>${formatNum(result, {maximumFractionDigits: 8})} ${to}</strong>
+        `;
+      });
+      
+      document.getElementById('calcAmount').addEventListener('input', function() {
+        if (this.value && parseFloat(this.value) > 0) {
+          const from = document.getElementById('calcFrom').value;
+          const to = document.getElementById('calcTo').value;
+          const amount = parseFloat(this.value);
+          const result = calculateConversionUsingBinance(from, to, amount);
+          
+          if (result !== null) {
+            document.getElementById('calcResult').innerHTML = `
+              <span id="calcResultLabel">${translations[state.currentLang].calcResultLabel}</span>
+              ${formatNum(amount, {maximumFractionDigits: 8})} ${from} = 
+              <strong>${formatNum(result, {maximumFractionDigits: 8})} ${to}</strong>
+            `;
+          }
+        }
+      });
+    }
+
+    function calculateConversionUsingBinance(from, to, amount) {
+      if (!state.binanceAll.length) return null;
+      
+      if (from === to) return amount;
+      
+      const fromPrice = getPriceFromBinance(from + 'USDT');
+      const toPrice = getPriceFromBinance(to + 'USDT');
+      
+      if (fromPrice && toPrice) {
+        const inUsdt = amount * fromPrice;
+        return inUsdt / toPrice;
+      }
+      
+      const directPair1 = getPriceFromBinance(from + to);
+      if (directPair1) {
+        return amount * directPair1;
+      }
+      
+      const directPair2 = getPriceFromBinance(to + from);
+      if (directPair2) {
+        return amount / directPair2;
+      }
+      
+      const intermediateCurrencies = ['BTC', 'ETH', 'BNB', 'USDT'];
+      
+      for (const intermediate of intermediateCurrencies) {
+        if (intermediate === from || intermediate === to) continue;
+        
+        const fromToIntermediate = getPriceFromBinance(from + intermediate) || 
+                                  (intermediate + from ? 1 / getPriceFromBinance(intermediate + from) : null);
+        
+        const intermediateToTo = getPriceFromBinance(intermediate + to) || 
+                                (to + intermediate ? 1 / getPriceFromBinance(to + intermediate) : null);
+        
+        if (fromToIntermediate && intermediateToTo) {
+          const inIntermediate = amount * fromToIntermediate;
+          return inIntermediate * intermediateToTo;
+        }
+      }
+      
+      return null;
+    }
+
+    function initAlerts() {
+      updateAlertPairs();
+      updateAlertsList();
+      
+      document.getElementById('setAlert').addEventListener('click', () => {
+        const t = translations[state.currentLang];
+        const pair = document.getElementById('alertPair').value;
+        const price = parseFloat(document.getElementById('alertPrice').value);
+        const condition = document.getElementById('alertCondition').value;
+        
+        if (!pair || !price || price <= 0) {
+          showNotification(t.errorAlertFields, 'error');
+          return;
+        }
+        
+        const existingAlert = state.alerts.find(a => 
+          a.pair === pair && a.targetPrice === price && a.condition === condition && a.active
+        );
+        
+        if (existingAlert) {
+          showNotification(t.errorAlertExists, 'error');
+          return;
+        }
+        
+        const base = pair.replace('USDT', '');
+        const newAlert = {
+          id: Date.now(),
+          pair,
+          base,
+          targetPrice: price,
+          condition,
+          active: true,
+          createdAt: new Date().toLocaleString(state.currentLang === 'fa' ? 'fa-IR' : 
+                                             state.currentLang === 'ar' ? 'ar-SA' : 
+                                             state.currentLang === 'ru' ? 'ru-RU' : 'en-US'),
+          triggered: false
+        };
+        
+        state.alerts.push(newAlert);
+        saveAlerts();
+        updateAlertsList();
+        showNotification(t.successAlertSet, 'success');
+        
+        document.getElementById('alertPrice').value = '';
+      });
+      
+      document.getElementById('clearAlerts').addEventListener('click', () => {
+        const t = translations[state.currentLang];
+        if (state.alerts.length === 0) {
+          showNotification(t.noAlertsText, 'info');
+          return;
+        }
+        
+        if (confirm(t.confirmClearAlerts)) {
+          state.alerts = [];
+          saveAlerts();
+          updateAlertsList();
+          showNotification(t.successAlertsCleared, 'success');
+        }
+      });
+      
+      if ('Notification' in window && Notification.permission === 'default') {
+        setTimeout(() => {
+          Notification.requestPermission();
+        }, 2000);
+      }
+    }
+
+    function updateAlertPairs() {
+      if (!state.binanceAll.length) return;
+      
+      const select = document.getElementById('alertPair');
+      const t = translations[state.currentLang];
+      const pairs = state.binanceAll
+        .filter(p => p.symbol.endsWith('USDT'))
+        .slice(0, 50);
+      
+      const currentValue = select.value || '';
+      select.innerHTML = `<option value="">${t.selectPairOption}</option>` + 
+                        pairs.map(p => {
+        const base = p.symbol.replace('USDT', '');
+        const currentPrice = Number(p.lastPrice);
+        const optionText = `${base}/USDT ($${formatNum(currentPrice, {maximumFractionDigits: currentPrice > 1000 ? 2 : 4})})`;
+        const isSelected = p.symbol === currentValue;
+        return `<option value="${p.symbol}" ${isSelected ? 'selected' : ''}>${optionText}</option>`;
+      }).join('');
+      
+      if (state.alertPairChoices) state.alertPairChoices.destroy();
+      state.alertPairChoices = new Choices(select, {
+        searchEnabled: true,
+        itemSelectText: '',
+        shouldSort: true,
+        position: 'bottom',
+        callbackOnCreateTemplates: function(template) {
+          return {
+            option: (classNames, data) => {
+              return template(`<div class="${classNames.item} ${classNames.itemSelectable}" data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
+            },
+            item: (classNames, data) => {
+              return template(`<div class="${classNames.item} ${classNames.itemChoice}" data-item data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
+            }
+          };
+        }
+      });
+    }
+
+    function updateAlertsList() {
+      const t = translations[state.currentLang];
+      const container = document.getElementById('alertsList');
+      
+      if (state.alerts.length === 0) {
+        container.innerHTML = `<div style="color: var(--muted); text-align: center; padding: 20px;">${t.noAlertsText}</div>`;
+        return;
+      }
+      
+      container.innerHTML = state.alerts.map(alert => `
+        <div class="alert-item ${alert.triggered ? 'triggered' : ''}">
+          <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 0;">
+              <strong style="display: block; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${alert.base}/USDT</strong>
+              <div>${t.alertPriceLabel} $${formatNum(alert.targetPrice)}</div>
+              <div>${t.alertConditionLabel} ${alert.condition === 'above' ? t.aboveLabel : t.belowLabel}</div>
+              <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
+                ${alert.createdAt}
+              </div>
+            </div>
+            <div style="color: ${alert.active ? 'var(--up)' : 'var(--muted)'}; font-size: 12px; white-space: nowrap; margin-right: 8px;">
+              ${alert.active ? t.activeLabel : t.inactiveLabel}
+            </div>
+          </div>
+          <div class="alert-actions">
+            <button onclick="toggleAlert(${alert.id})" style="background: none; border: none; color: var(--accent); cursor: pointer; font-size: 12px; padding: 6px; border-radius: 4px; background: var(--bg);">
+              ${alert.active ? t.disableLabel : t.enableLabel}
+            </button>
+            <button onclick="removeAlert(${alert.id})" style="background: none; border: none; color: var(--down); cursor: pointer; font-size: 12px; padding: 6px; border-radius: 4px; background: var(--bg);">
+              ${t.deleteLabel}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleAlert(id) {
+      const t = translations[state.currentLang];
+      const alert = state.alerts.find(a => a.id === id);
+      if (alert) {
+        alert.active = !alert.active;
+        saveAlerts();
+        updateAlertsList();
+        showNotification(t.successAlertToggled, 'info');
+      }
+    }
+
+    function removeAlert(id) {
+      const t = translations[state.currentLang];
+      state.alerts = state.alerts.filter(a => a.id !== id);
+      saveAlerts();
+      updateAlertsList();
+      showNotification(t.successAlertDeleted, 'success');
+    }
+
+    function checkAlerts() {
+      if (!state.binanceAll.length || state.alerts.length === 0) return;
+      
+      let triggeredAlerts = [];
+      
+      state.alerts.forEach(alert => {
+        if (!alert.active || alert.triggered) return;
+        
+        const currentData = state.binanceAll.find(p => p.symbol === alert.pair);
+        if (!currentData) return;
+        
+        const currentPrice = Number(currentData.lastPrice);
+        const triggered = alert.condition === 'above' 
+          ? currentPrice >= alert.targetPrice
+          : currentPrice <= alert.targetPrice;
+        
+        if (triggered) {
+          alert.triggered = true;
+          alert.triggeredAt = new Date().toLocaleString(state.currentLang === 'fa' ? 'fa-IR' : 
+                                                       state.currentLang === 'ar' ? 'ar-SA' : 
+                                                       state.currentLang === 'ru' ? 'ru-RU' : 'en-US');
+          alert.triggeredPrice = currentPrice;
+          triggeredAlerts.push(alert);
+        }
+      });
+      
+      triggeredAlerts.forEach(alert => {
+        const t = translations[state.currentLang];
+        const message = `🚨 ${t.alertTriggered} $${formatNum(alert.triggeredPrice)} (${t.alertPriceLabel}: $${formatNum(alert.targetPrice)})`;
+        
+        if (Notification.permission === 'granted') {
+          new Notification(`${t.alertTitle} ${alert.base}`, {
+            body: `${t.priceLabel} $${formatNum(alert.triggeredPrice)}!`,
+            icon: iconUrl(alert.base)
+          });
+        }
+        
+        showNotification(message, 'success');
+      });
+      
+      if (triggeredAlerts.length > 0) {
+        saveAlerts();
+        updateAlertsList();
+      }
+    }
+
+    function saveAlerts() {
+      localStorage.setItem('cryptoAlerts', JSON.stringify(state.alerts));
+    }
+
+    function initLanguageSelector() {
+      const langSelect = document.getElementById('langSelect');
+      if (state.langSelectChoices) state.langSelectChoices.destroy();
+      
+      langSelect.addEventListener('change', () => {
+        state.currentLang = langSelect.value;
+        updateLanguage();
+      });
+      
+      updateLanguage();
+      
+      window.addEventListener('resize', () => {
+        adjustFontSizeForLanguage(state.currentLang);
+      });
+    }
+
+    document.getElementById('toggleTheme').addEventListener('click', () => {
       const body = document.body;
-      body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+      const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      const t = translations[state.currentLang];
+      showNotification(newTheme === 'dark' ? t.themeDark : t.themeLight);
     });
     
-    // رفرش همه داده‌ها
-    document.getElementById('refreshAll').addEventListener('click', ()=>{
-      document.getElementById('refreshAll').textContent = '⏳ در حال به‌روزرسانی...';
-      loadCurrencyRates().then(() => {
-        loadUsdToIrr();
-        loadBinance();
-        setTimeout(() => {
-          document.getElementById('refreshAll').textContent = '🔄 به‌روزرسانی';
-        }, 1000);
-      });
+    document.getElementById('refreshAll').addEventListener('click', () => {
+      const t = translations[state.currentLang];
+      loadBinance();
+      showNotification(t.updating, 'info');
     });
 
-    // مقداردهی اولیه
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      new Choices('#langSelect', {searchEnabled:false, itemSelectText:''});
+    document.addEventListener('DOMContentLoaded', async () => {
+      initLanguageSelector();
       initQuoteChoices();
-      setupViewToggle();
+      initCalculator();
+      initAlerts();
       
-      // بارگذاری همه داده‌ها
-      await Promise.all([
-        loadCurrencyRates(),
-        loadUsdToIrr(),
-        loadBinance()
-      ]);
+      await loadBinance();
       
-      // تنظیم بازه‌های رفرش خودکار
-      setInterval(loadUsdToIrr, 5*60*1000); // هر 5 دقیقه
-      setInterval(loadBinance, 60*1000); // هر دقیقه
-      setInterval(loadCurrencyRates, 2*60*1000); // هر 2 دقیقه
+      setInterval(loadBinance, 60000);
+      setInterval(checkAlerts, 30000);
+      
+      const t = translations[state.currentLang];
+      showNotification(t.ready, 'success');
     });
+
+    window.toggleAlert = toggleAlert;
+    window.removeAlert = removeAlert;
   </script>
 </body>
 </html>
