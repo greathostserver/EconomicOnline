@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>داشبور زنده بازارها</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
@@ -11,430 +11,108 @@
       --accent:#4cc9f0; --up:#1db954; --down:#ff3b30; --border:#222636;
       --card:#12141c; --shadow:0 8px 18px rgba(0,0,0,0.35);
       --field-w:220px;
+      --dropdown-bg:#1e2230;
     }
-    
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
       --accent:#1f7ae0; --up:#1ea865; --down:#c0392b; --border:#dfe4ea;
       --card:#fff; --shadow:0 8px 18px rgba(0,0,0,0.08);
+      --dropdown-bg:#fff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-    
-    body {
-      margin: 0; 
-      background: var(--bg); 
-      color: var(--text); 
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", Tahoma, Arial;
-      font-size: 14px;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
+    body {margin:0; background:var(--bg); color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Naskh Arabic",Tahoma,Arial;}
 
-    /* Header Styles */
-    header {
-      position: sticky; 
-      top: 0; 
-      z-index: 50; 
-      background: color-mix(in oklab, var(--bg) 85%, transparent 15%); 
-      border-bottom: 1px solid var(--border); 
-      backdrop-filter: saturate(1.2) blur(6px);
-      width: 100%;
-    }
-    
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 16px;
-      width: 100%;
-    }
-    
-    .toolbar {
-      display: flex; 
-      align-items: center; 
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    
-    .toolbar .spacer {
-      flex: 1;
-      min-width: 20px;
-    }
-    
-    .toolbar button {
-      background: var(--panel); 
-      color: var(--text); 
-      border: 1px solid var(--border); 
-      border-radius: 8px; 
-      padding: 8px 12px; 
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s ease;
-    }
-    
-    .toolbar button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    header {position:sticky; top:0; z-index:50; background: color-mix(in oklab, var(--bg) 85%, transparent 15%); border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px);}
+    .wrap {max-width:1200px; margin:0 auto; padding:14px;}
+    .toolbar {display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .toolbar .spacer {flex:1;}
+    .toolbar button {background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 10px; cursor:pointer;}
 
-    /* Card Styles */
-    .card {
-      background: var(--card); 
-      border: 1px solid var(--border); 
-      border-radius: 12px; 
-      box-shadow: var(--shadow); 
-      overflow: hidden; 
-      margin: 16px 0;
-      width: 100%;
-    }
-    
-    .card h3 {
-      margin: 0; 
-      padding: 14px 16px; 
-      border-bottom: 1px solid var(--border); 
-      font-size: 16px;
-      font-weight: 600;
-    }
-    
-    .card .content {
-      padding: 16px;
-    }
-    
-    .status {
-      font-size: 13px; 
-      color: var(--muted); 
-      margin-top: 8px;
-    }
+    .card {background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; margin:12px 0;}
+    .card h3 {margin:0; padding:10px 14px; border-bottom:1px solid var(--border); font-size:16px;}
+    .card .content {padding:10px 14px;}
+    .status {font-size:13px; color:var(--muted); margin-top:6px;}
 
-    /* Grid System */
-    .grid-2 {
-      display: grid;
-      gap: 12px;
-      width: 100%;
-    }
-    
-    .grid-3 {
-      display: grid;
-      gap: 12px;
-      width: 100%;
-    }
-    
-    /* Desktop: 2 columns */
-    @media (min-width: 768px) {
-      .grid-2 {
-        grid-template-columns: 1fr 1fr;
-      }
-      .grid-3 {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-    }
-    
-    /* Mobile: 1 column */
-    @media (max-width: 767px) {
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-    }
+    /* دو ستون ثابت حتی روی موبایل */
+    .grid-2 {display:grid; gap:10px; grid-template-columns:1fr 1fr !important;}
+    .grid-3 {display:grid; gap:10px; grid-template-columns:1fr 1fr 1fr !important;}
+    .grid-4 {display:grid; gap:10px; grid-template-columns:1fr 1fr 1fr 1fr !important;}
 
-    /* Info Box */
-    .info-box {
-      border: 1px solid var(--border); 
-      border-radius: 10px; 
-      padding: 16px; 
-      background: var(--panel);
-      width: 100%;
-    }
-    
-    .delta-up {
-      color: var(--up); 
-      font-weight: 600;
-    }
-    
-    .delta-down {
-      color: var(--down); 
-      font-weight: 600;
-    }
-    
-    .currency-flag {
-      width: 24px;
-      height: 16px;
-      border-radius: 3px;
-      object-fit: cover;
-      border: 1px solid var(--border);
-    }
-    
-    .currency-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-    }
-    
-    .currency-item .name {
-      font-weight: 600;
-      flex: 1;
-    }
-    
-    .currency-item .rate {
-      font-family: monospace;
-      font-weight: 600;
-    }
+    .info-box {border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--panel);}
+    .delta-up {color:var(--up); font-weight:600;}
+    .delta-down {color:var(--down); font-weight:600;}
 
-    /* Form Fields */
-    .field {
-      display: inline-block; 
-      width: 100%;
-      max-width: var(--field-w);
-    }
-    
-    .choices {
-      width: 100%;
-      max-width: var(--field-w);
-    }
-    
-    .choices__inner {
-      background: var(--panel); 
-      border: 1px solid var(--border); 
-      border-radius: 10px; 
-      color: var(--text); 
-      padding: 10px 12px;
-      font-size: 14px;
-      min-height: 42px;
-    }
-    
-    .choices__list--dropdown {
-      background: #fff; 
-      border: 1px solid var(--border); 
-      border-radius: 10px; 
-      box-shadow: var(--shadow);
-      z-index: 100;
-    }
+    .iframe-box {border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel);}
+    .iframe-box iframe {width:100%; height:280px; border:0;}
 
-    /* Choice Items with Icons */
-    .choice-with-icon {
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      padding: 8px 10px;
-    }
+    /* فیلدهای جمع‌وجور و یکسان‌سازی ظاهر */
+    .field {display:inline-block; width:var(--field-w);}
+    .choices {width:var(--field-w);}
+    .choices__inner {background:var(--panel); border:1px solid var(--border); border-radius:10px; color:var(--text); padding:8px;}
     
-    .choice-with-icon img {
-      width: 20px; 
-      height: 20px; 
-      border-radius: 50%; 
-      object-fit: contain;
+    /* منوی dropdown با رنگ تیره */
+    .choices__list--dropdown {background:var(--dropdown-bg) !important; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);}
+    [data-theme="dark"] .choices__list--dropdown .choices__item,
+    [data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
+      color:var(--text) !important;
     }
-    
-    .choice-with-icon .label {
-      color: #000 !important; 
-      font-weight: 600;
-      font-size: 14px;
-    }
-    
-    .choices__list--dropdown .choices__item--selectable.is-highlighted {
-      background: var(--accent);
-    }
-    
-    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {
-      color: #fff !important;
-    }
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {background:var(--accent);}
+    .choices__list--dropdown .choices__item--selectable.is-highlighted .label {color:#fff !important;}
 
-    /* Selected Item */
-    .selected-with-icon {
-      display: inline-flex; 
-      align-items: center; 
-      gap: 8px;
-    }
-    
-    .selected-with-icon img {
-      width: 18px; 
-      height: 18px; 
-      border-radius: 50%; 
-      object-fit: contain;
-    }
-    
-    .selected-with-icon .label {
-      color: var(--text); 
-      font-weight: 600;
-      font-size: 14px;
-    }
+    /* آیتم‌ها با آیکن و فونت مشکی (Pair) */
+    .choice-with-icon {display:flex; align-items:center; gap:8px; padding:8px 10px;}
+    .choice-with-icon img {width:20px; height:20px; border-radius:50%; object-fit:contain;}
+    .choice-with-icon .label {color:#1a2230 !important; font-weight:600;}
+    [data-theme="dark"] .choice-with-icon .label {color:var(--text) !important;}
 
-    /* Quote Select Specific Styles */
-    #quoteSelect + .choices .choices__list--dropdown .choices__item span,
-    #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-      color: #1a2230 !important; 
-      font-weight: 600;
-    }
+    /* آیتم انتخاب‌شده داخل کنترل */
+    .selected-with-icon {display:inline-flex; align-items:center; gap:8px;}
+    .selected-with-icon img {width:18px; height:18px; border-radius:50%; object-fit:contain;}
+    .selected-with-icon .label {color:var(--text); font-weight:600;}
 
-    /* Coin Name */
-    .coin-name {
-      color: #ffd166; 
-      font-weight: 700; 
-      letter-spacing: 0.2px;
-      font-size: 16px;
-    }
-    
-    [data-theme="light"] .coin-name {
-      color: #1a2230;
-    }
+    /* نام ارز در کارت اطلاعات */
+    .coin-name {color:#ffd166; font-weight:700; letter-spacing:0.2px;}
+    [data-theme="light"] .coin-name {color:#1a2230;}
 
-    /* Dropdown Dark Theme */
-    body[data-theme="dark"] .choices__list--dropdown {
-      background-color: var(--panel) !important;
-      border-color: var(--border) !important;
-    }
-
-    body[data-theme="dark"] .choices__list--dropdown .choices__item {
-      color: var(--text) !important;
-      font-size: 14px;
-    }
-
-    body[data-theme="dark"] .choices__list--dropdown .choice-with-icon .label {
-      color: var(--text) !important;
-      font-size: 14px;
-    }
-
-    body[data-theme="light"] .choices__list--dropdown .choices__item {
-      color: #1a2230 !important;
-      font-size: 14px;
-    }
-
-    .choices__list--dropdown .choices__item--selectable.is-highlighted {
-      background-color: var(--accent) !important;
-      color: white !important;
-    }
-
-    body[data-theme="light"] #quoteSelect + .choices .choices__list--dropdown .choices__item {
-      color: #1a2230 !important;
-    }
-
-    body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choices__item span,
-    body[data-theme="dark"] #quoteSelect + .choices .choices__list--dropdown .choice-with-icon .label {
-      color: var(--text) !important;
-    }
+    /* کارت‌های نرخ ارز */
+    .currency-cards {display:grid; gap:12px; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));}
+    .currency-card {border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--panel); transition:transform 0.2s;}
+    .currency-card:hover {transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+    .currency-card-header {display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+    .currency-card-title {display:flex; align-items:center; gap:8px; font-weight:600;}
+    .currency-flag {width:24px; height:18px; border-radius:3px; object-fit:cover;}
+    .currency-price {font-size:18px; font-weight:700; margin:4px 0;}
+    .currency-change {font-size:14px; display:flex; align-items:center; gap:6px;}
+    .currency-time {font-size:12px; color:var(--muted); margin-top:4px;}
     
-    /* Data Display */
-    #pairName, #pairPrice, #pairChange, #pairVolume, #pairTrades {
-      font-size: 14px;
-      margin: 6px 0;
-      line-height: 1.4;
-    }
+    /* ریال ایران - هایلایت ویژه */
+    .irr-card {border:2px solid #ffd166; background:color-mix(in oklab, var(--panel) 90%, #ffd166 10%);}
+    .irr-card .currency-price {color:#ffd166;}
+    [data-theme="light"] .irr-card .currency-price {color:#d4a017;}
     
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 500;
-    }
+    /* جدول نرخ ارزها */
+    .currency-table {width:100%; border-collapse:collapse; margin-top:10px;}
+    .currency-table th, .currency-table td {padding:10px; text-align:center; border-bottom:1px solid var(--border);}
+    .currency-table th {background:color-mix(in oklab, var(--panel) 80%, var(--accent) 20%); font-weight:600;}
+    .currency-table tr:hover {background:color-mix(in oklab, var(--panel) 90%, transparent);}
     
-    /* Loading Spinner */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--muted);
-      border-radius: 50%;
-      border-top-color: var(--accent);
-      animation: spin 1s ease-in-out infinite;
-    }
+    /* ریال ایران در جدول */
+    .irr-row {background:color-mix(in oklab, var(--panel) 90%, #ffd166 10%) !important;}
+    .irr-row:hover {background:color-mix(in oklab, var(--panel) 80%, #ffd166 20%) !important;}
     
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    /* دکمه‌های نمایش */
+    .view-toggle {display:flex; gap:10px; margin-bottom:12px;}
+    .view-toggle button {background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer; color:var(--text);}
+    .view-toggle button.active {background:var(--accent); color:white; border-color:var(--accent);}
     
-    /* Mobile Responsive Adjustments */
-    @media (max-width: 767px) {
-      .wrap {
-        padding: 10px 12px;
-      }
-      
-      .toolbar {
-        gap: 8px;
-      }
-      
-      .toolbar button {
-        padding: 6px 10px;
-        font-size: 13px;
-      }
-      
-      #title {
-        font-size: 16px;
-      }
-      
-      .card h3 {
-        padding: 12px 14px;
-        font-size: 15px;
-      }
-      
-      .card .content {
-        padding: 12px;
-      }
-      
-      .info-box {
-        padding: 12px;
-      }
-      
-      .choices__inner {
-        padding: 8px 10px;
-        min-height: 38px;
-      }
-      
-      .field {
-        max-width: 100%;
-      }
-      
-      .choices {
-        max-width: 100%;
-      }
-    }
-    
-    /* Tablet Responsive Adjustments */
-    @media (min-width: 768px) and (max-width: 1024px) {
-      .wrap {
-        padding: 14px 20px;
-        max-width: 100%;
-      }
-      
-      .field {
-        max-width: 200px;
-      }
-      
-      .choices {
-        max-width: 200px;
-      }
-    }
-    
-    /* Small Mobile (iPhone SE size) */
-    @media (max-width: 375px) {
-      .toolbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .toolbar .spacer {
-        display: none;
-      }
-      
-      .toolbar button, .toolbar select {
-        width: 100%;
-        max-width: none;
-      }
-      
-      #badge {
-        font-size: 11px;
-      }
-    }
+    /* لوگوی ایران */
+    .iran-logo {color:#ffd166; font-weight:700;}
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
-      <strong id="title">داشبور زنده بازارها</strong>
+      <strong id="title">📊 داشبور زنده بازارها <span class="iran-logo">ایران</span></strong>
       <span class="status" id="badge">بدون‌سرور • مناسب GitHub Pages</span>
       <div class="spacer"></div>
       <select id="langSelect" class="field">
@@ -442,18 +120,78 @@
         <option value="en">English</option>
       </select>
       <button id="toggleTheme">تم روشن/تاریک</button>
-      <button id="refreshAll">به‌روزرسانی</button>
+      <button id="refreshAll">🔄 به‌روزرسانی</button>
     </div>
   </header>
 
   <main class="wrap">
+    <!-- نرخ ارزهای ایرانی -->
+    <section class="card" id="currencyCard">
+      <h3>💰 نرخ ارزهای جهانی به ریال ایران</h3>
+      <div class="content">
+        <div class="view-toggle">
+          <button id="viewCards" class="active">کارت‌ها</button>
+          <button id="viewTable">جدول</button>
+        </div>
+        
+        <div class="status" id="currencyStatus">در حال دریافت نرخ ارزها از سرور ایرانی...</div>
+        
+        <!-- نمایش کارت‌ها -->
+        <div id="cardsView" class="currency-cards">
+          <div class="currency-card irr-card">
+            <div class="currency-card-header">
+              <div class="currency-card-title">
+                <img src="https://flagcdn.com/w20/ir.png" alt="ایران" class="currency-flag" onerror="this.style.display='none'">
+                <span>ریال ایران</span>
+              </div>
+            </div>
+            <div class="currency-price">1 ریال</div>
+            <div class="currency-change">
+              <span>واحد پول ایران</span>
+            </div>
+            <div class="currency-time">پایه محاسبات</div>
+          </div>
+          <!-- کارت‌های ارزها اینجا اضافه می‌شوند -->
+        </div>
+        
+        <!-- نمایش جدول -->
+        <div id="tableView" style="display:none;">
+          <table class="currency-table">
+            <thead>
+              <tr>
+                <th>پرچم</th>
+                <th>ارز</th>
+                <th>نرخ (ریال)</th>
+                <th>تغییر (ریال)</th>
+                <th>درصد تغییر</th>
+                <th>به روزرسانی</th>
+              </tr>
+            </thead>
+            <tbody id="currencyTableBody">
+              <tr class="irr-row">
+                <td><img src="https://flagcdn.com/w20/ir.png" alt="ایران" class="currency-flag"></td>
+                <td><strong>ریال ایران</strong></td>
+                <td><strong>1</strong></td>
+                <td>0</td>
+                <td>0%</td>
+                <td>پایه</td>
+              </tr>
+              <!-- ردیف‌های ارزها اینجا اضافه می‌شوند -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="status" id="currencyUpdated">آخرین بروزرسانی: —</div>
+      </div>
+    </section>
+
     <!-- کریپتو -->
     <section class="card" id="cryptoCard">
-      <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
+      <h3 id="cryptoTitle">🪙 کریپتو از Binance (24h)</h3>
       <div class="content">
         <div class="status" id="cryptoStatus">در حال دریافت…</div>
 
-        <div class="grid-2" style="margin-top:12px;">
+        <div class="grid-2" style="margin-top:8px;">
           <div class="info-box">
             <label id="quoteLabel" for="quoteSelect">انتخاب ارز مبنا (Quote):</label>
             <select id="quoteSelect" class="field">
@@ -470,7 +208,7 @@
           </div>
         </div>
 
-        <div class="grid-2" style="margin-top:12px;">
+        <div class="grid-2" style="margin-top:8px;">
           <div class="info-box">
             <strong id="pairName">—</strong>
             <div id="pairPrice">قیمت: —</div>
@@ -484,136 +222,65 @@
         </div>
       </div>
     </section>
-
-    <!-- ارزهای کشورهای دنیا -->
-    <section class="card" id="forexCard">
-      <h3>نرخ ارز جهانی (به دلار آمریکا)</h3>
-      <div class="content">
-        <div class="status" id="forexStatus">در حال دریافت نرخ ارزها…</div>
-        
-        <div class="info-box" style="margin-top:12px;">
-          <label for="forexBaseSelect">انتخاب ارز پایه:</label>
-          <select id="forexBaseSelect" class="field">
-            <option value="USD">دلار آمریکا (USD)</option>
-            <option value="EUR">یورو اروپا (EUR)</option>
-            <option value="GBP">پوند انگلیس (GBP)</option>
-            <option value="IRR">ریال ایران (IRR)</option>
-            <option value="TRY">لیر ترکیه (TRY)</option>
-            <option value="AED">درهم امارات (AED)</option>
-          </select>
-          <div class="status" style="margin-top:8px;">نرخ ارزها نسبت به ارز پایه محاسبه می‌شود</div>
-        </div>
-
-        <div class="grid-3" style="margin-top:16px;">
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/eu.png" class="currency-flag" alt="EU">
-              <span class="name">یورو اروپا</span>
-              <span class="rate" id="eurRate">—</span>
-            </div>
-            <div id="eurToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-          
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/gb.png" class="currency-flag" alt="UK">
-              <span class="name">پوند انگلیس</span>
-              <span class="rate" id="gbpRate">—</span>
-            </div>
-            <div id="gbpToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-          
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/ae.png" class="currency-flag" alt="UAE">
-              <span class="name">درهم امارات</span>
-              <span class="rate" id="aedRate">—</span>
-            </div>
-            <div id="aedToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-          
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/tr.png" class="currency-flag" alt="Turkey">
-              <span class="name">لیر ترکیه</span>
-              <span class="rate" id="tryRate">—</span>
-            </div>
-            <div id="tryToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-          
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/cn.png" class="currency-flag" alt="China">
-              <span class="name">یوان چین</span>
-              <span class="rate" id="cnyRate">—</span>
-            </div>
-            <div id="cnyToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-          
-          <div class="info-box">
-            <div class="currency-item">
-              <img src="https://flagcdn.com/w20/jp.png" class="currency-flag" alt="Japan">
-              <span class="name">ین ژاپن</span>
-              <span class="rate" id="jpyRate">—</span>
-            </div>
-            <div id="jpyToIrr" class="status" style="margin-top:4px;">—</div>
-          </div>
-        </div>
-        
-        <div class="status" id="forexUpdated" style="margin-top:12px;">—</div>
-      </div>
-    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <script>
     const state = { 
-      quote: 'USDT', 
-      binanceAll: [], 
-      pairChoices: null, 
-      quoteChoices: null, 
-      usdToIrr: 0,
-      forexRates: {},
-      forexBase: 'USD',
-      forexChoices: null
+      quote:'USDT', 
+      binanceAll:[], 
+      pairChoices:null, 
+      quoteChoices:null, 
+      usdToIrr:0,
+      currencyRates: [],
+      currentView: 'cards'
     };
 
-    function iconUrl(base){ return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; }
+    // API ایرانی TGJU - بدون نیاز به API Key
+    const TGJU_API_URL = 'https://api.tgju.online/v1/data/sana/json';
+
+    function iconUrl(base){ 
+      return `https://cryptoicon-api.vercel.app/api/icon/${base.toLowerCase()}`; 
+    }
     
     function formatNum(n, opts){ 
-      try{ 
+      if (n === undefined || n === null) return '—';
+      try { 
         return Number(n).toLocaleString('fa-IR', opts || {}); 
-      } catch{ 
+      } catch(e){ 
         return n; 
       } 
     }
     
-    function formatCurrency(n, currency = 'USD') {
-      try {
-        return Number(n).toLocaleString('fa-IR', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 4
-        });
-      } catch {
-        return n;
+    function formatCurrency(num) {
+      // فرمت اعداد برای نمایش قیمت‌های بزرگ
+      if (num >= 1000000000) {
+        return formatNum((num / 1000000000).toFixed(2)) + ' میلیارد';
+      } else if (num >= 1000000) {
+        return formatNum((num / 1000000).toFixed(2)) + ' میلیون';
+      } else {
+        return formatNum(num);
       }
     }
 
+    // تابع برای دریافت نرخ دلار به ریال
     async function loadUsdToIrr(){
       try{
-        const res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=IRR', {cache:'no-store'});
-        const data = await res.json();
-        state.usdToIrr = Number(data.rates?.IRR || 0);
-        // بعد از دریافت نرخ دلار، نرخ ارزها را هم بروزرسانی می‌کنیم
-        if (Object.keys(state.forexRates).length > 0) {
-          updateForexDisplay();
+        // از API ایرانی برای دریافت نرخ دلار استفاده می‌کنیم
+        await loadCurrencyRates();
+        // بعد از بارگذاری نرخ ارزها، نرخ دلار به ریال را از داده‌ها استخراج می‌کنیم
+        if (state.currencyRates.USD) {
+          state.usdToIrr = state.currencyRates.USD.price;
+        } else {
+          state.usdToIrr = 0;
         }
       }catch(e){ 
-        console.error('Error loading USD to IRR:', e);
         state.usdToIrr = 0; 
+        console.error('خطا در دریافت نرخ دلار:', e);
       }
     }
 
+    // تابع برای دریافت داده‌های Binance
     async function loadBinance(){
       document.getElementById('cryptoStatus').textContent = 'در حال دریافت از Binance…';
       try {
@@ -625,86 +292,262 @@
         state.binanceAll = await res.json();
         populatePairs();
         document.getElementById('cryptoUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
-        document.getElementById('cryptoStatus').textContent = 'داده‌ها دریافت شد';
-      } catch (error) {
+      } catch(e) {
         document.getElementById('cryptoStatus').textContent = 'خطا در اتصال به Binance';
-        console.error('Error loading Binance data:', error);
+        console.error('خطا در دریافت Binance:', e);
       }
     }
 
-    async function loadForexRates() {
-      document.getElementById('forexStatus').textContent = 'در حال دریافت نرخ ارزها…';
+    // تابع برای دریافت نرخ ارزهای جهانی از API ایرانی
+    async function loadCurrencyRates(){
+      document.getElementById('currencyStatus').textContent = 'در حال دریافت نرخ ارزها از سرور ایرانی...';
+      
       try {
-        // لیست ارزهای مورد نیاز
-        const symbols = 'EUR,GBP,AED,TRY,CNY,JPY,IRR,USD';
-        const base = state.forexBase;
-        
-        const res = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`, {cache:'no-store'});
+        const res = await fetch(TGJU_API_URL, {cache: 'no-store'});
         
         if (!res.ok) {
-          document.getElementById('forexStatus').textContent = 'خطا در دریافت نرخ ارزها';
-          return;
+          throw new Error(`خطای HTTP: ${res.status}`);
         }
         
         const data = await res.json();
-        state.forexRates = data.rates || {};
         
-        updateForexDisplay();
-        document.getElementById('forexUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
-        document.getElementById('forexStatus').textContent = 'داده‌ها دریافت شد';
+        if (data && data.sana) {
+          // پردازش داده‌های دریافتی از API ایرانی
+          const rates = {};
+          
+          // استخراج ارزهای مختلف از داده‌های API
+          const currencyMappings = {
+            'USD': ['sana_buy_usd', 'price_dollar_rl'],
+            'EUR': ['sana_buy_eur', 'price_eur'],
+            'GBP': ['sana_buy_gbp', 'price_gbp'],
+            'AED': ['sana_buy_aed', 'price_aed'],
+            'TRY': ['sana_buy_try', 'price_try'],
+            'CNY': ['sana_buy_cny', 'price_cny'],
+            'CAD': ['sana_buy_cad', 'price_cad'],
+            'AUD': ['sana_buy_aud', 'price_aud'],
+            'JPY': ['sana_buy_jpy', 'price_jpy'],
+            'CHF': ['sana_buy_chf', 'price_chf'],
+            'RUB': ['sana_buy_rub', 'price_rub'],
+            'INR': ['sana_buy_inr', 'price_inr']
+          };
+          
+          // تبدیل داده‌های API به فرمت مورد نظر
+          Object.entries(currencyMappings).forEach(([currencyCode, apiKeys]) => {
+            for (const apiKey of apiKeys) {
+              if (data.sana[apiKey]) {
+                const item = data.sana[apiKey];
+                let price = 0;
+                let change = 0;
+                let percentChange = 0;
+                
+                // پردازش بسته به ساختار داده
+                if (typeof item === 'object' && item !== null) {
+                  if (item.p) price = parseFloat(item.p.replace(/,/g, ''));
+                  if (item.d) change = parseFloat(item.d.replace(/,/g, ''));
+                  if (item.dp) percentChange = parseFloat(item.dp.replace('%', ''));
+                  
+                  // اگر هنوز قیمت نداریم، از فیلدهای دیگر تلاش می‌کنیم
+                  if (!price && item.value) price = parseFloat(item.value.replace(/,/g, ''));
+                } else if (typeof item === 'string') {
+                  price = parseFloat(item.replace(/,/g, ''));
+                }
+                
+                if (price > 0) {
+                  rates[currencyCode] = {
+                    price: price,
+                    change: change,
+                    percentChange: percentChange,
+                    timestamp: new Date().toISOString()
+                  };
+                  break; // اولین مقدار معتبر را می‌گیریم
+                }
+              }
+            }
+          });
+          
+          // افزودن ریال ایران
+          rates['IRR'] = {
+            price: 1,
+            change: 0,
+            percentChange: 0,
+            timestamp: new Date().toISOString()
+          };
+          
+          state.currencyRates = rates;
+          
+          // نمایش داده‌ها
+          displayCurrencyData(rates);
+          document.getElementById('currencyUpdated').textContent = `آخرین بروزرسانی: ${new Date().toLocaleTimeString('fa-IR')}`;
+          document.getElementById('currencyStatus').textContent = `نرخ ${Object.keys(rates).length} ارز با موفقیت دریافت شد`;
+          document.getElementById('currencyStatus').style.color = 'var(--up)';
+          
+        } else {
+          throw new Error('ساختار داده نامعتبر است');
+        }
+      } catch(e) {
+        console.error('خطا در دریافت نرخ ارزها:', e);
+        document.getElementById('currencyStatus').textContent = 'خطا در دریافت نرخ ارزها - نمایش داده‌های نمونه';
+        document.getElementById('currencyStatus').style.color = 'var(--down)';
         
-      } catch (error) {
-        console.error('Error loading forex rates:', error);
-        document.getElementById('forexStatus').textContent = 'خطا در اتصال به سرور ارز';
+        // نمایش داده‌های نمونه در صورت خطا
+        displaySampleCurrencyData();
       }
     }
 
-    function updateForexDisplay() {
-      const rates = state.forexRates;
-      const base = state.forexBase;
+    // تابع برای نمایش داده‌های ارزی
+    function displayCurrencyData(rates) {
+      const cardsView = document.getElementById('cardsView');
+      const tableBody = document.getElementById('currencyTableBody');
       
-      // نمایش نرخ‌ها
-      document.getElementById('eurRate').textContent = rates.EUR ? `${formatCurrency(rates.EUR)} EUR` : '—';
-      document.getElementById('gbpRate').textContent = rates.GBP ? `${formatCurrency(rates.GBP)} GBP` : '—';
-      document.getElementById('aedRate').textContent = rates.AED ? `${formatCurrency(rates.AED)} AED` : '—';
-      document.getElementById('tryRate').textContent = rates.TRY ? `${formatCurrency(rates.TRY)} TRY` : '—';
-      document.getElementById('cnyRate').textContent = rates.CNY ? `${formatCurrency(rates.CNY)} CNY` : '—';
-      document.getElementById('jpyRate').textContent = rates.JPY ? `${formatCurrency(rates.JPY)} JPY` : '—';
+      // پاکسازی محتوای قبلی (به جز ریال ایران)
+      const existingCards = cardsView.querySelectorAll('.currency-card:not(.irr-card)');
+      existingCards.forEach(card => card.remove());
       
-      // اگر نرخ دلار به ریال موجود باشد، محاسبه و نمایش ریال
-      if (state.usdToIrr > 0) {
-        // محاسبه هر ارز به ریال
-        // ابتدا باید ارز را به USD تبدیل کنیم (اگر ارز پایه USD نیست)
-        let usdRate = 1;
-        if (base !== 'USD' && rates.USD) {
-          usdRate = rates.USD; // نرخ ارز پایه به USD
+      // پاکسازی ردیف‌های جدول (به جز ریال ایران)
+      const existingRows = tableBody.querySelectorAll('tr:not(.irr-row)');
+      existingRows.forEach(row => row.remove());
+      
+      // پرچم کشورها
+      const flags = {
+        'USD': 'https://flagcdn.com/w20/us.png',
+        'EUR': 'https://flagcdn.com/w20/eu.png',
+        'GBP': 'https://flagcdn.com/w20/gb.png',
+        'CNY': 'https://flagcdn.com/w20/cn.png',
+        'TRY': 'https://flagcdn.com/w20/tr.png',
+        'AED': 'https://flagcdn.com/w20/ae.png',
+        'CAD': 'https://flagcdn.com/w20/ca.png',
+        'AUD': 'https://flagcdn.com/w20/au.png',
+        'JPY': 'https://flagcdn.com/w20/jp.png',
+        'CHF': 'https://flagcdn.com/w20/ch.png',
+        'RUB': 'https://flagcdn.com/w20/ru.png',
+        'INR': 'https://flagcdn.com/w20/in.png',
+        'IRR': 'https://flagcdn.com/w20/ir.png'
+      };
+      
+      // نام ارزها
+      const currencyNames = {
+        'USD': 'دلار آمریکا',
+        'EUR': 'یورو اروپا',
+        'GBP': 'پوند انگلیس',
+        'CNY': 'یوان چین',
+        'TRY': 'لیر ترکیه',
+        'AED': 'درهم امارات',
+        'CAD': 'دلار کانادا',
+        'AUD': 'دلار استرالیا',
+        'JPY': 'ین ژاپن',
+        'CHF': 'فرانک سوئیس',
+        'RUB': 'روبل روسیه',
+        'INR': 'روپیه هند',
+        'IRR': 'ریال ایران'
+      };
+      
+      // ترتیب نمایش ارزها
+      const displayOrder = ['USD', 'EUR', 'GBP', 'AED', 'TRY', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'RUB', 'INR'];
+      
+      // ایجاد کارت‌ها و ردیف‌های جدول
+      displayOrder.forEach(currencyCode => {
+        const rate = rates[currencyCode];
+        if (!rate) return;
+        
+        const changePercent = rate.percentChange;
+        const changeClass = changePercent >= 0 ? 'delta-up' : 'delta-down';
+        const changeSign = changePercent >= 0 ? '+' : '';
+        const timeStr = new Date(rate.timestamp).toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'});
+        
+        // ایجاد کارت
+        const card = document.createElement('div');
+        card.className = 'currency-card';
+        if (currencyCode === 'IRR') card.classList.add('irr-card');
+        
+        card.innerHTML = `
+          <div class="currency-card-header">
+            <div class="currency-card-title">
+              <img src="${flags[currencyCode] || 'https://flagcdn.com/w20/un.png'}" 
+                   alt="${currencyCode}" 
+                   class="currency-flag"
+                   onerror="this.style.display='none'">
+              <span>${currencyCode} - ${currencyNames[currencyCode] || currencyCode}</span>
+            </div>
+          </div>
+          <div class="currency-price">${formatCurrency(rate.price)} ریال</div>
+          <div class="currency-change">
+            <span class="${changeClass}">${changeSign}${formatNum(changePercent, {maximumFractionDigits: 2})}%</span>
+            <span>(${changeSign}${formatNum(rate.change)} ریال)</span>
+          </div>
+          <div class="currency-time">${timeStr}</div>
+        `;
+        
+        if (currencyCode !== 'IRR') {
+          cardsView.appendChild(card);
         }
         
-        // محاسبه هر ارز به ریال
-        const calculateToIrr = (rate) => {
-          if (!rate) return '—';
-          // تبدیل ارز به USD (اگر ارز پایه USD نیست)
-          const inUsd = base === 'USD' ? rate : rate / usdRate;
-          // تبدیل USD به ریال
-          const inIrr = inUsd * state.usdToIrr;
-          return `ریال ${formatNum(inIrr, {maximumFractionDigits: 0})}`;
-        };
+        // ایجاد ردیف جدول
+        const row = document.createElement('tr');
+        if (currencyCode === 'IRR') row.classList.add('irr-row');
         
-        document.getElementById('eurToIrr').textContent = calculateToIrr(rates.EUR);
-        document.getElementById('gbpToIrr').textContent = calculateToIrr(rates.GBP);
-        document.getElementById('aedToIrr').textContent = calculateToIrr(rates.AED);
-        document.getElementById('tryToIrr').textContent = calculateToIrr(rates.TRY);
-        document.getElementById('cnyToIrr').textContent = calculateToIrr(rates.CNY);
-        document.getElementById('jpyToIrr').textContent = calculateToIrr(rates.JPY);
-      } else {
-        // اگر نرخ دلار به ریال موجود نیست
-        document.getElementById('eurToIrr').textContent = 'نرخ ریال در دسترس نیست';
-        document.getElementById('gbpToIrr').textContent = 'نرخ ریال در دسترس نیست';
-        document.getElementById('aedToIrr').textContent = 'نرخ ریال در دسترس نیست';
-        document.getElementById('tryToIrr').textContent = 'نرخ ریال در دسترس نیست';
-        document.getElementById('cnyToIrr').textContent = 'نرخ ریال در دسترس نیست';
-        document.getElementById('jpyToIrr').textContent = 'نرخ ریال در دسترس نیست';
-      }
+        row.innerHTML = `
+          <td>
+            <img src="${flags[currencyCode] || 'https://flagcdn.com/w20/un.png'}" 
+                 alt="${currencyCode}" 
+                 class="currency-flag"
+                 onerror="this.style.display='none'">
+          </td>
+          <td>
+            <div style="display:flex; align-items:center; gap:5px;">
+              <strong>${currencyCode}</strong>
+              <span style="font-size:12px; color:var(--muted)">${currencyNames[currencyCode] || currencyCode}</span>
+            </div>
+          </td>
+          <td><strong>${formatCurrency(rate.price)}</strong></td>
+          <td>${changeSign}${formatNum(rate.change)}</td>
+          <td><span class="${changeClass}">${changeSign}${formatNum(changePercent, {maximumFractionDigits: 2})}%</span></td>
+          <td style="font-size:12px;">${timeStr}</td>
+        `;
+        
+        if (currencyCode !== 'IRR') {
+          tableBody.appendChild(row);
+        }
+      });
+    }
+
+    // تابع برای نمایش داده‌های نمونه (در صورت خطا در API)
+    function displaySampleCurrencyData() {
+      const sampleRates = {
+        'USD': { price: 420000, change: 1250, percentChange: 0.3, timestamp: new Date().toISOString() },
+        'EUR': { price: 450000, change: -800, percentChange: -0.18, timestamp: new Date().toISOString() },
+        'GBP': { price: 530000, change: 1500, percentChange: 0.28, timestamp: new Date().toISOString() },
+        'TRY': { price: 13000, change: 150, percentChange: 1.17, timestamp: new Date().toISOString() },
+        'AED': { price: 114000, change: 300, percentChange: 0.26, timestamp: new Date().toISOString() },
+        'CAD': { price: 310000, change: 800, percentChange: 0.26, timestamp: new Date().toISOString() },
+        'CNY': { price: 58000, change: -200, percentChange: -0.34, timestamp: new Date().toISOString() },
+        'IRR': { price: 1, change: 0, percentChange: 0, timestamp: new Date().toISOString() }
+      };
+      
+      displayCurrencyData(sampleRates);
+    }
+
+    // تابع برای تغییر نمایش (کارت/جدول)
+    function setupViewToggle() {
+      const cardsView = document.getElementById('cardsView');
+      const tableView = document.getElementById('tableView');
+      const viewCardsBtn = document.getElementById('viewCards');
+      const viewTableBtn = document.getElementById('viewTable');
+      
+      viewCardsBtn.addEventListener('click', () => {
+        cardsView.style.display = 'grid';
+        tableView.style.display = 'none';
+        viewCardsBtn.classList.add('active');
+        viewTableBtn.classList.remove('active');
+        state.currentView = 'cards';
+      });
+      
+      viewTableBtn.addEventListener('click', () => {
+        cardsView.style.display = 'none';
+        tableView.style.display = 'block';
+        viewCardsBtn.classList.remove('active');
+        viewTableBtn.classList.add('active');
+        state.currentView = 'table';
+      });
     }
 
     function populatePairs(){
@@ -719,10 +562,7 @@
 
       if (state.pairChoices) state.pairChoices.destroy();
       state.pairChoices = new Choices(select, {
-        searchEnabled:true, 
-        itemSelectText:'', 
-        shouldSort:true, 
-        position:'auto',
+        searchEnabled:true, itemSelectText:'', shouldSort:true, position:'bottom',
         callbackOnCreateTemplates: function(template) {
           return {
             option: (classNames, data) => {
@@ -778,89 +618,48 @@
     function initQuoteChoices(){
       const select = document.getElementById('quoteSelect');
       if (state.quoteChoices) state.quoteChoices.destroy();
-      state.quoteChoices = new Choices(select, {
-        searchEnabled:false, 
-        itemSelectText:'', 
-        shouldSort:false, 
-        position:'auto'
-      });
+      state.quoteChoices = new Choices(select, {searchEnabled:false, itemSelectText:'', shouldSort:false, position:'bottom'});
       select.addEventListener('change', ()=>{
         state.quote = select.value;
         populatePairs();
       });
     }
-    
-    function initForexChoices() {
-      const select = document.getElementById('forexBaseSelect');
-      if (state.forexChoices) state.forexChoices.destroy();
-      state.forexChoices = new Choices(select, {
-        searchEnabled: false,
-        itemSelectText: '',
-        shouldSort: false,
-        position: 'auto'
-      });
-      select.addEventListener('change', () => {
-        state.forexBase = select.value;
-        loadForexRates();
-      });
-    }
 
-    // Theme toggle
+    // تغییر تم
     document.getElementById('toggleTheme').addEventListener('click', ()=>{
       const body = document.body;
       body.setAttribute('data-theme', body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
     });
     
+    // رفرش همه داده‌ها
     document.getElementById('refreshAll').addEventListener('click', ()=>{
-      loadUsdToIrr(); 
-      loadBinance();
-      loadForexRates();
+      document.getElementById('refreshAll').textContent = '⏳ در حال به‌روزرسانی...';
+      loadCurrencyRates().then(() => {
+        loadUsdToIrr();
+        loadBinance();
+        setTimeout(() => {
+          document.getElementById('refreshAll').textContent = '🔄 به‌روزرسانی';
+        }, 1000);
+      });
     });
 
-    // Init
+    // مقداردهی اولیه
     document.addEventListener('DOMContentLoaded', async ()=>{
       new Choices('#langSelect', {searchEnabled:false, itemSelectText:''});
       initQuoteChoices();
-      initForexChoices();
+      setupViewToggle();
       
+      // بارگذاری همه داده‌ها
       await Promise.all([
+        loadCurrencyRates(),
         loadUsdToIrr(),
-        loadBinance(),
-        loadForexRates()
+        loadBinance()
       ]);
       
-      // refresh intervals
-      setInterval(loadUsdToIrr, 5*60*1000);
-      setInterval(loadBinance, 60*1000);
-      setInterval(loadForexRates, 5*60*1000);
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-      if (state.pairChoices) {
-        state.pairChoices.destroy();
-        setTimeout(() => {
-          const select = document.getElementById('pairSelect');
-          state.pairChoices = new Choices(select, {
-            searchEnabled:true, 
-            itemSelectText:'', 
-            shouldSort:true, 
-            position:'auto',
-            callbackOnCreateTemplates: function(template) {
-              return {
-                option: (classNames, data) => {
-                  const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
-                  return template(`<div class="${classNames.item} ${classNames.itemSelectable} choice-with-icon" data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
-                },
-                item: (classNames, data) => {
-                  const icon = data.customProperties ? `<img src="${data.customProperties}" alt="" onerror="this.style.display='none'">` : '';
-                  return template(`<div class="${classNames.item} ${classNames.itemChoice} selected-with-icon" data-item data-id="${data.id}" data-value="${data.value}">${icon}<span class="label">${data.label}</span></div>`);
-                }
-              };
-            }
-          });
-        }, 100);
-      }
+      // تنظیم بازه‌های رفرش خودکار
+      setInterval(loadUsdToIrr, 5*60*1000); // هر 5 دقیقه
+      setInterval(loadBinance, 60*1000); // هر دقیقه
+      setInterval(loadCurrencyRates, 2*60*1000); // هر 2 دقیقه
     });
   </script>
 </body>
