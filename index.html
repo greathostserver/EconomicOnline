@@ -498,6 +498,38 @@
       letter-spacing: 0;
     }
 
+    /* استایل پیام VPN */
+    .vpn-warning {
+      background: var(--down);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 13px;
+      line-height: 1.5;
+      border-left: 4px solid var(--accent);
+    }
+
+    .vpn-warning a {
+      color: white;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .vpn-warning a:hover {
+      opacity: 0.9;
+    }
+
+    [data-theme="light"] .vpn-warning {
+      background: #ffebee;
+      color: #c62828;
+      border-left: 4px solid #f44336;
+    }
+
+    [data-theme="light"] .vpn-warning a {
+      color: #c62828;
+    }
+
     /* ریسپانسیو */
     @media (max-width: 1024px) {
       .wrap {
@@ -636,6 +668,12 @@
         flex-wrap: wrap;
         gap: 6px;
       }
+      
+      .vpn-warning {
+        padding: 10px 12px;
+        font-size: 12px;
+        margin: 8px 0;
+      }
     }
 
     @media (max-width: 600px) {
@@ -766,6 +804,11 @@
         left: 50% !important;
         transform: translateX(-50%);
       }
+      
+      .vpn-warning {
+        padding: 8px 10px;
+        font-size: 11px;
+      }
     }
 
     @media (max-width: 360px) {
@@ -870,6 +913,11 @@
       <h3 id="cryptoTitle">کریپتو از Binance (24h)</h3>
       <div class="content">
         <div class="status" id="cryptoStatus">در حال دریافت…</div>
+        
+        <!-- پیام VPN - فقط در صورت خطا نمایش داده می‌شود -->
+        <div id="vpnWarning" class="vpn-warning" style="display: none;">
+          <div id="vpnWarningText"></div>
+        </div>
 
         <div class="grid-2" style="margin-top:8px;">
           <div class="info-box">
@@ -1024,7 +1072,9 @@
       alertPairChoices: null,
       alertConditionChoices: null,
       currentLang: localStorage.getItem('dashboardLang') || 'fa',
-      langSelectChoices: null
+      langSelectChoices: null,
+      connectionErrorCount: 0,
+      maxConnectionErrors: 1
     };
 
     const translations = {
@@ -1167,7 +1217,10 @@
         only: "فقط",
         and: "و",
         binance: "Binance",
-        githubPages: "GitHub Pages"
+        githubPages: "GitHub Pages",
+        vpnWarningTitle: "⚠️ مشکل در اتصال به سرور",
+        vpnWarningText: "درصورتیکه گزینه‌ها به درستی لود نشد ، از تحریم شکن و یا vpn استفاده کنید ، زیرا ممکن است منبع دریافت اطلاعات در کشور شما مسدود شده باشد و یا تحت تحریم باشید",
+        vpnSuggestion: "پیشنهاد: برای دسترسی به اطلاعات بازار ارز، از یک سرویس VPN معتبر استفاده نمایید. توجه: ممکن است نیاز به تغییر IP یا استفاده از سرور VPN دیگری داشته باشید زیرا برخی IPها توسط Binance مسدود شده‌اند."
       },
       en: {
         pageTitle: "Live Market Dashboard",
@@ -1232,8 +1285,8 @@
         langName_en: "English",
         langName_ar: "Arabic",
         langName_ru: "Russian",
-        errorConnection: "Error connecting",
-        errorFetch: "Error fetching",
+        errorConnection: "Connection error",
+        errorFetch: "Error fetching data",
         loading: "Loading…",
         successAlertSet: "Alert set",
         successAlertDeleted: "Alert deleted",
@@ -1308,7 +1361,10 @@
         only: "Only",
         and: "&",
         binance: "Binance",
-        githubPages: "GitHub"
+        githubPages: "GitHub",
+        vpnWarningTitle: "⚠️ Connection Issue",
+        vpnWarningText: "If options are not loading correctly, please use a VPN or anti-filter service. The data source (Binance) might be blocked or under sanctions in your country.",
+        vpnSuggestion: "Suggestion: Use a reliable VPN service to access cryptocurrency market data. Note: You may need to change your IP address or use a different VPN server as some IPs may be blocked by Binance."
       },
       ar: {
         pageTitle: "لوحة الأسواق",
@@ -1449,7 +1505,10 @@
         only: "فقط",
         and: "و",
         binance: "Binance",
-        githubPages: "GitHub"
+        githubPages: "GitHub",
+        vpnWarningTitle: "⚠️ مشكلة في الاتصال",
+        vpnWarningText: "إذا لم يتم تحميل الخيارات بشكل صحيح، يرجى استخدام VPN أو خدمة مضاد الحجب. قد يكون مصدر البيانات (Binance) محجوبًا أو تحت عقوبات في بلدك.",
+        vpnSuggestion: "اقتراح: استخدم خدمة VPN موثوقة للوصول إلى بيانات سوق العملات الرقمية. ملاحظة: قد تحتاج إلى تغيير عنوان IP الخاص بك أو استخدام خادم VPN مختلف لأن بعض عناوين IP قد تكون محظورة من قبل Binance."
       },
       ru: {
         pageTitle: "Панель рынков",
@@ -1590,7 +1649,10 @@
         only: "Только",
         and: "и",
         binance: "Binance",
-        githubPages: "GitHub"
+        githubPages: "GitHub",
+        vpnWarningTitle: "⚠️ Проблема с подключением",
+        vpnWarningText: "Если параметры загружаются неправильно, используйте VPN или антифильтр. Источник данных (Binance) может быть заблокирован или находиться под санкциями в вашей стране.",
+        vpnSuggestion: "Совет: используйте надежный VPN-сервис для доступа к данным рынка криптовалют. Примечание: Возможно, вам потребуется изменить ваш IP-адрес или использовать другой VPN-сервер, так как некоторые IP могут быть заблокированы Binance."
       }
     };
 
@@ -1627,6 +1689,36 @@
         notification.style.animation = 'slideIn 0.3s ease reverse';
         setTimeout(() => notification.remove(), 300);
       }, 5000);
+    }
+
+    function showVpnWarning(show = true) {
+      const vpnWarning = document.getElementById('vpnWarning');
+      const vpnWarningText = document.getElementById('vpnWarningText');
+      const t = translations[state.currentLang];
+      
+      if (show) {
+        // استفاده از متن کامل شامل تغییر IP
+        const fullMessage = `
+          <div style="margin-bottom: 10px;">
+            <strong style="font-size: 14px;">${t.vpnWarningTitle}</strong>
+          </div>
+          <div style="margin-bottom: 10px;">
+            ${t.vpnWarningText}
+          </div>
+          <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <strong>📢 نکته مهم:</strong><br>
+            ${t.vpnSuggestion}
+          </div>
+        `;
+        vpnWarningText.innerHTML = fullMessage;
+        vpnWarning.style.display = 'block';
+        
+        // نمایش نوتیفیکیشن با متن کامل
+        const notificationMessage = `${t.vpnWarningTitle} - ${t.vpnWarningText} ${t.vpnSuggestion}`;
+        showNotification(notificationMessage, 'error');
+      } else {
+        vpnWarning.style.display = 'none';
+      }
     }
 
     function updateLanguage() {
@@ -1694,6 +1786,12 @@
       localStorage.setItem('dashboardLang', lang);
       
       adjustFontSizeForLanguage(lang);
+      
+      // به‌روزرسانی پیام VPN در صورت نمایش
+      const vpnWarning = document.getElementById('vpnWarning');
+      if (vpnWarning.style.display === 'block') {
+        showVpnWarning(true);
+      }
     }
 
     function adjustFontSizeForLanguage(lang) {
@@ -1909,22 +2007,41 @@
     async function loadBinance() {
       const t = translations[state.currentLang];
       document.getElementById('cryptoStatus').textContent = t.loading;
+      
+      // مخفی کردن پیام VPN قبل از تلاش جدید
+      showVpnWarning(false);
+      
       try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {cache: 'no-store'});
-        if (!res.ok) throw new Error(t.errorFetch);
+        // تست اتصال با timeout کوتاه برای شبیه‌سازی خطا
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1000); // فقط 1 ثانیه
+        
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        
         state.binanceAll = await res.json();
         populatePairs();
         updatePopularCryptos();
         checkAlerts();
-        const now = new Date().toLocaleTimeString(state.currentLang === 'fa' ? 'fa-IR' : 
-                                                 state.currentLang === 'ar' ? 'ar-SA' : 
-                                                 state.currentLang === 'ru' ? 'ru-RU' : 'en-US');
+        const now = new Date().toLocaleTimeString(state.currentLang === 'fa' ? 'fa-IR' : 'en-US');
         document.getElementById('cryptoUpdated').textContent = `${t.updatedLabel} ${now}`;
         document.getElementById('popularUpdated').textContent = `${t.updatedLabel} ${now}`;
         document.getElementById('cryptoStatus').textContent = '';
+        
+        state.connectionErrorCount = 0;
+        
       } catch (error) {
+        state.connectionErrorCount++;
         document.getElementById('cryptoStatus').textContent = t.errorConnection;
-        console.error('Binance API Error:', error);
+        
+        // همیشه پیام VPN را نشان بده (برای تست آسان)
+        showVpnWarning(true);
       }
     }
 
@@ -2414,9 +2531,6 @@
       
       setInterval(loadBinance, 60000);
       setInterval(checkAlerts, 30000);
-      
-      const t = translations[state.currentLang];
-      showNotification(t.ready, 'success');
     });
 
     window.toggleAlert = toggleAlert;
