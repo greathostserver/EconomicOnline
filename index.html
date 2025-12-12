@@ -15,6 +15,7 @@
       --dropdown-text: #e7edf2;
       --home-btn: #1db954;
       --tools-btn: #1f7ae0;
+      --similar-btn: #9b59b6;
     }
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
@@ -24,6 +25,7 @@
       --dropdown-text: #1a2230;
       --home-btn: #1ea865;
       --tools-btn: #1f7ae0;
+      --similar-btn: #8e44ad;
     }
 
     * {
@@ -122,7 +124,21 @@
       transition: opacity 0.2s;
     }
 
-    .home-btn:hover, .tools-btn:hover {
+    .similar-btn {
+      background: var(--similar-btn) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .home-btn:hover, .tools-btn:hover, .similar-btn:hover {
       opacity: 0.9;
     }
 
@@ -488,13 +504,15 @@
     /* بهبود نمایش در حالت‌های مختلف زبان */
     body[lang="ru"] .toolbar button,
     body[lang="ru"] .home-btn,
-    body[lang="ru"] .tools-btn {
+    body[lang="ru"] .tools-btn,
+    body[lang="ru"] .similar-btn {
       letter-spacing: -0.2px;
     }
 
     body[lang="ar"] .toolbar button,
     body[lang="ar"] .home-btn,
-    body[lang="ar"] .tools-btn {
+    body[lang="ar"] .tools-btn,
+    body[lang="ar"] .similar-btn {
       letter-spacing: 0;
     }
 
@@ -530,6 +548,70 @@
       color: #c62828;
     }
 
+    /* استایل جدید برای نوار ابزار */
+    .toolbar-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+      min-width: 250px;
+    }
+    
+    .utility-buttons {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    
+    .color-buttons {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: flex-end;
+    }
+    
+    /* کاهش عرض انتخابگر زبان */
+    #langSelect.field {
+      max-width: 100px !important;
+      min-width: 90px;
+      font-size: 12px;
+    }
+
+    /* استایل دکمه‌های زبان */
+    .lang-buttons {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    
+    .lang-btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.2s;
+      min-width: 50px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    
+    .lang-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    
+    .lang-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    
     /* ریسپانسیو */
     @media (max-width: 1024px) {
       .wrap {
@@ -538,6 +620,12 @@
       
       .popular-crypto-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+      
+      .lang-btn {
+        min-width: 35px;
+        padding: 2px 4px;
+        font-size: 9px;
       }
     }
 
@@ -552,7 +640,8 @@
       
       .toolbar button,
       .home-btn,
-      .tools-btn {
+      .tools-btn,
+      .similar-btn {
         padding: 6px 8px;
         font-size: 11px;
         white-space: normal;
@@ -616,7 +705,7 @@
         font-size: 13px;
       }
       
-      button.primary, button.danger, .home-btn, .tools-btn {
+      button.primary, button.danger, .home-btn, .tools-btn, .similar-btn {
         padding: 8px 10px;
         font-size: 12px;
         max-width: none;
@@ -637,7 +726,7 @@
         padding: 5px;
       }
       
-      .field, .choices, .input-field, button.primary, button.danger, .home-btn, .tools-btn {
+      .field, .choices, .input-field, button.primary, button.danger, .home-btn, .tools-btn, .similar-btn {
         max-width: 100% !important;
       }
       
@@ -655,7 +744,7 @@
       }
       
       #langSelect.field {
-        max-width: 100px;
+        max-width: 90px !important;
         font-size: 11px;
       }
       
@@ -664,9 +753,18 @@
       }
       
       .toolbar-buttons {
-        display: flex;
+        min-width: auto;
+        width: 100%;
+        align-items: stretch;
+      }
+      
+      .utility-buttons {
+        gap: 4px;
+      }
+      
+      .color-buttons {
+        justify-content: center;
         flex-wrap: wrap;
-        gap: 6px;
       }
       
       .vpn-warning {
@@ -674,17 +772,33 @@
         font-size: 12px;
         margin: 8px 0;
       }
+      
+      .lang-buttons {
+        gap: 2px;
+      }
+      
+      .lang-btn {
+        min-width: 30px;
+        padding: 2px 3px;
+        font-size: 8px;
+      }
     }
 
     @media (max-width: 600px) {
-      .toolbar-buttons {
+      .utility-buttons {
         width: 100%;
-        justify-content: flex-start;
+        justify-content: center;
+      }
+      
+      .color-buttons {
+        width: 100%;
+        justify-content: center;
       }
       
       .toolbar button,
       .home-btn,
-      .tools-btn {
+      .tools-btn,
+      .similar-btn {
         flex: 1;
         min-width: calc(33.333% - 8px);
         font-size: 10px;
@@ -692,7 +806,7 @@
       }
       
       #langSelect.field {
-        max-width: 90px;
+        max-width: 80px !important;
         font-size: 10px;
       }
       
@@ -709,11 +823,23 @@
       body[lang="ru"] .toolbar button,
       body[lang="ru"] .home-btn,
       body[lang="ru"] .tools-btn,
+      body[lang="ru"] .similar-btn,
       body[lang="ar"] .toolbar button,
       body[lang="ar"] .home-btn,
-      body[lang="ar"] .tools-btn {
+      body[lang="ar"] .tools-btn,
+      body[lang="ar"] .similar-btn {
         font-size: 9px;
         padding: 4px 5px;
+      }
+      
+      .lang-buttons {
+        gap: 1px;
+      }
+      
+      .lang-btn {
+        min-width: 25px;
+        padding: 1px 2px;
+        font-size: 7px;
       }
     }
 
@@ -724,7 +850,7 @@
       
       .toolbar {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 6px;
       }
       
@@ -736,25 +862,31 @@
         display: flex;
         gap: 6px;
         width: 100%;
-        justify-content: space-between;
+        align-items: stretch;
+      }
+      
+      .utility-buttons, .color-buttons {
+        gap: 6px;
+        justify-content: center;
         flex-wrap: wrap;
       }
       
       .toolbar button,
       .home-btn,
-      .tools-btn {
-        flex: 1;
+      .tools-btn,
+      .similar-btn {
+        flex: none;
         text-align: center;
-        min-width: calc(50% - 6px);
+        min-width: calc(33.333% - 6px);
         font-size: 10px;
         padding: 5px 6px;
         min-height: 30px;
       }
       
       #langSelect.field {
-        width: 100%;
-        margin-top: 4px;
-        max-width: 100%;
+        width: auto;
+        margin-top: 0;
+        max-width: 80px !important;
         font-size: 10px;
       }
       
@@ -809,6 +941,20 @@
         padding: 8px 10px;
         font-size: 11px;
       }
+      
+      .lang-buttons {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 4px;
+        gap: 1px;
+      }
+      
+      .lang-btn {
+        min-width: 20px;
+        padding: 1px 1px;
+        font-size: 6px;
+        flex: 0 1 auto;
+      }
     }
 
     @media (max-width: 360px) {
@@ -816,13 +962,14 @@
         grid-template-columns: 1fr;
       }
       
-      .toolbar-buttons {
+      .utility-buttons, .color-buttons {
         flex-wrap: wrap;
       }
       
       .toolbar button,
       .home-btn,
-      .tools-btn {
+      .tools-btn,
+      .similar-btn {
         min-width: calc(50% - 3px);
         font-size: 9px;
         padding: 4px 5px;
@@ -830,6 +977,7 @@
       
       #langSelect.field {
         font-size: 9px;
+        max-width: 70px !important;
       }
       
       .choices__inner {
@@ -839,6 +987,12 @@
       .choices__list--dropdown .choices__item,
       .choices__list[aria-expanded] .choices__item {
         font-size: 9px;
+      }
+      
+      .lang-btn {
+        min-width: 18px;
+        padding: 0.5px 0.5px;
+        font-size: 5.5px;
       }
     }
 
@@ -889,21 +1043,32 @@
       </div>
       <div class="spacer"></div>
       <div class="toolbar-buttons">
-        <a href="https://khoobeha.ir" target="_blank" class="home-btn" id="homeButton">
-          خانه
-        </a>
-        <a href="https://khoobeha.ir" target="_blank" class="tools-btn" id="toolsButton">
-          ابزارها
-        </a>
+        <!-- ردیف بالا: ابزارهای کاربردی -->
+        <div class="utility-buttons">
+          <!-- دکمه‌های زبان -->
+          <div class="lang-buttons">
+            <button class="lang-btn active" data-lang="fa">فارسی</button>
+            <button class="lang-btn" data-lang="en">English</button>
+            <button class="lang-btn" data-lang="ar">العربية</button>
+            <button class="lang-btn" data-lang="ru">Русский</button>
+          </div>
+          
+          <button id="toggleTheme">تم روشن/تاریک</button>
+          <button id="refreshAll">به‌روزرسانی</button>
+        </div>
         
-        <select id="langSelect" class="field" style="max-width: 120px;">
-          <option value="fa">فارسی</option>
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-          <option value="ru">Русский</option>
-        </select>
-        <button id="toggleTheme">تم روشن/تاریک</button>
-        <button id="refreshAll">به‌روزرسانی</button>
+        <!-- ردیف پایین: دکمه‌های رنگی -->
+        <div class="color-buttons">
+          <a href="https://khoobeha.ir" target="_blank" class="home-btn" id="homeButton">
+            خانه
+          </a>
+          <a href="https://khoobeha.ir" target="_blank" class="tools-btn" id="toolsButton">
+            ابزارها
+          </a>
+          <a href="https://khoobeha.ir/similar-tools" target="_blank" class="similar-btn" id="similarButton">
+            ابزار مشابه
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -1072,7 +1237,6 @@
       alertPairChoices: null,
       alertConditionChoices: null,
       currentLang: localStorage.getItem('dashboardLang') || 'fa',
-      langSelectChoices: null,
       connectionErrorCount: 0,
       maxConnectionErrors: 1
     };
@@ -1084,6 +1248,7 @@
         badge: "فقط Binance • مناسب GitHub Pages",
         homeButton: "خانه",
         toolsButton: "ابزارها",
+        similarButton: "ابزار مشابه",
         toggleTheme: "تم روشن/تاریک",
         refreshAll: "به‌روزرسانی",
         cryptoTitle: "کریپتو از Binance (24h)",
@@ -1159,68 +1324,9 @@
         updating: "در حال به‌روزرسانی داده‌ها از Binance...",
         ready: "داشبورد آماده است! تمام داده‌ها از Binance دریافت می‌شوند.",
         alertTriggered: "هشدار قیمت فعال شد! قیمت فعلی:",
-        currency: "ارز",
-        target: "هدف",
-        condition: "شرط",
-        status: "وضعیت",
-        actions: "عملیات",
-        time: "زمان",
-        date: "تاریخ",
-        search: "جستجو",
-        select: "انتخاب",
-        all: "همه",
-        none: "هیچ",
-        loadingData: "در حال دریافت داده‌ها...",
-        noData: "داده‌ای موجود نیست",
-        error: "خطا",
-        success: "موفقیت",
-        warning: "هشدار",
-        info: "اطلاعات",
-        from: "از",
-        to: "به",
-        amount: "مقدار",
-        convert: "تبدیل",
-        result: "نتیجه",
-        baseCurrency: "ارز مبنا",
-        currencyPair: "جفت ارز",
-        targetPrice: "قیمت هدف",
-        priceAlert: "هشدار قیمت",
-        clearAll: "پاک کردن همه",
-        activeAlerts: "هشدارهای فعال",
-        storedInBrowser: "در مرورگر ذخیره می‌شوند",
-        lightDarkTheme: "تم روشن/تاریک",
-        update: "به‌روزرسانی",
-        lastUpdate: "آخرین بروزرسانی",
-        popularCryptocurrencies: "ارزهای دیجیتال محبوب",
-        basedOn: "بر اساس",
-        high: "بالا",
-        low: "پایین",
-        change24h: "تغییر 24h",
-        volume24h: "حجم 24h",
-        numberOfTrades: "تعداد معاملات",
-        recommended: "توصیه‌شده",
-        forMostPairs: "برای بیشترین جفت‌ها",
-        selectBaseCurrency: "انتخاب ارز مبنا",
-        selectCurrencyPair: "انتخاب جفت‌ارز",
-        selectCondition: "انتخاب شرط",
-        setPriceAlert: "تنظیم هشدار قیمت",
-        calculator: "ماشین حساب",
-        conversion: "تبدیل",
-        allCalculations: "تمام محاسبات",
-        useRealtimePrices: "با استفاده از قیمت‌های لحظه‌ای",
-        cryptocurrency: "ارز دیجیتال",
-        cryptocurrencies: "ارزهای دیجیتال",
-        market: "بازار",
-        dashboard: "داشبورد",
-        live: "زنده",
-        compatibleWith: "مناسب",
-        only: "فقط",
-        and: "و",
-        binance: "Binance",
-        githubPages: "GitHub Pages",
         vpnWarningTitle: "⚠️ مشکل در اتصال به سرور",
         vpnWarningText: "درصورتیکه گزینه‌ها به درستی لود نشد ، از تحریم شکن و یا vpn استفاده کنید ، زیرا ممکن است منبع دریافت اطلاعات در کشور شما مسدود شده باشد و یا تحت تحریم باشید",
-        vpnSuggestion: "پیشنهاد: برای دسترسی به اطلاعات بازار ارز، از یک سرویس VPN معتبر استفاده نمایید. توجه: ممکن است نیاز به تغییر IP یا استفاده از سرور VPN دیگری داشته باشید زیرا برخی IPها توسط Binance مسدود شده‌اند."
+        vpnSuggestion: "پیشنهاد: برای دسترسی به اطلاعات بازار ارز، از یک سرویس VPN معتبر استفاده نمایید. همچنین می‌توانید با کلیک روی دکمه 'به‌روزرسانی' (آیکن فلش دایره‌ای) دوباره تلاش کنید."
       },
       en: {
         pageTitle: "Live Market Dashboard",
@@ -1228,6 +1334,7 @@
         badge: "Only Binance • GitHub Pages Compatible",
         homeButton: "Home",
         toolsButton: "Tools",
+        similarButton: "Similar Tools",
         toggleTheme: "Theme",
         refreshAll: "Refresh",
         cryptoTitle: "Crypto from Binance (24h)",
@@ -1303,68 +1410,9 @@
         updating: "Updating...",
         ready: "Dashboard ready!",
         alertTriggered: "Alert! Price:",
-        currency: "Currency",
-        target: "Target",
-        condition: "Condition",
-        status: "Status",
-        actions: "Actions",
-        time: "Time",
-        date: "Date",
-        search: "Search",
-        select: "Select",
-        all: "All",
-        none: "None",
-        loadingData: "Loading...",
-        noData: "No data",
-        error: "Error",
-        success: "Success",
-        warning: "Warning",
-        info: "Info",
-        from: "From",
-        to: "To",
-        amount: "Amount",
-        convert: "Convert",
-        result: "Result",
-        baseCurrency: "Base",
-        currencyPair: "Pair",
-        targetPrice: "Target",
-        priceAlert: "Alert",
-        clearAll: "Clear All",
-        activeAlerts: "Alerts",
-        storedInBrowser: "Browser storage",
-        lightDarkTheme: "Theme",
-        update: "Update",
-        lastUpdate: "Updated",
-        popularCryptocurrencies: "Popular Crypto",
-        basedOn: "on",
-        high: "High",
-        low: "Low",
-        change24h: "24h Chg",
-        volume24h: "24h Vol",
-        numberOfTrades: "Trades",
-        recommended: "rec",
-        forMostPairs: "most pairs",
-        selectBaseCurrency: "Select Base",
-        selectCurrencyPair: "Select Pair",
-        selectCondition: "Condition",
-        setPriceAlert: "Set Alert",
-        calculator: "Calculator",
-        conversion: "Convert",
-        allCalculations: "Calculations",
-        useRealtimePrices: "real-time prices",
-        cryptocurrency: "Crypto",
-        cryptocurrencies: "Cryptos",
-        market: "Market",
-        dashboard: "Dashboard",
-        live: "Live",
-        compatibleWith: "For",
-        only: "Only",
-        and: "&",
-        binance: "Binance",
-        githubPages: "GitHub",
         vpnWarningTitle: "⚠️ Connection Issue",
         vpnWarningText: "If options are not loading correctly, please use a VPN or anti-filter service. The data source (Binance) might be blocked or under sanctions in your country.",
-        vpnSuggestion: "Suggestion: Use a reliable VPN service to access cryptocurrency market data. Note: You may need to change your IP address or use a different VPN server as some IPs may be blocked by Binance."
+        vpnSuggestion: "Suggestion: Use a reliable VPN service to access cryptocurrency market data. You can also try again by clicking the 'Refresh' button (circular arrow icon)."
       },
       ar: {
         pageTitle: "لوحة الأسواق",
@@ -1372,6 +1420,7 @@
         badge: "Binance فقط • GitHub مناسب",
         homeButton: "الرئيسية",
         toolsButton: "الأدوات",
+        similarButton: "أدوات مشابهة",
         toggleTheme: "المظهر",
         refreshAll: "تحديث",
         cryptoTitle: "العملات (24h)",
@@ -1447,68 +1496,9 @@
         updating: "جار التحديث...",
         ready: "اللوحة جاهزة!",
         alertTriggered: "تنبيه! السعر:",
-        currency: "العملة",
-        target: "الهدف",
-        condition: "الشرط",
-        status: "الحالة",
-        actions: "الإجراءات",
-        time: "الوقت",
-        date: "التاريخ",
-        search: "بحث",
-        select: "اختر",
-        all: "الكل",
-        none: "لا شيء",
-        loadingData: "جار التحميل...",
-        noData: "لا بيانات",
-        error: "خطأ",
-        success: "نجاح",
-        warning: "تحذير",
-        info: "معلومات",
-        from: "من",
-        to: "إلى",
-        amount: "المبلغ",
-        convert: "تحويل",
-        result: "النتيجة",
-        baseCurrency: "الأساس",
-        currencyPair: "الزوج",
-        targetPrice: "الهدف",
-        priceAlert: "تنبيه",
-        clearAll: "مسح الكل",
-        activeAlerts: "التنبيهات",
-        storedInBrowser: "في المتصفح",
-        lightDarkTheme: "المظهر",
-        update: "تحديث",
-        lastUpdate: "محدث",
-        popularCryptocurrencies: "العملات",
-        basedOn: "على",
-        high: "عالي",
-        low: "منخفض",
-        change24h: "24h تغيير",
-        volume24h: "24h حجم",
-        numberOfTrades: "الصفقات",
-        recommended: "موصى",
-        forMostPairs: "معظم الأزواج",
-        selectBaseCurrency: "اختر الأساس",
-        selectCurrencyPair: "اختر الزوج",
-        selectCondition: "الشرط",
-        setPriceAlert: "تعيين",
-        calculator: "الحاسبة",
-        conversion: "تحويل",
-        allCalculations: "الحسابات",
-        useRealtimePrices: "أسعار لحظية",
-        cryptocurrency: "عملة",
-        cryptocurrencies: "العملات",
-        market: "السوق",
-        dashboard: "لوحة",
-        live: "مباشر",
-        compatibleWith: "لـ",
-        only: "فقط",
-        and: "و",
-        binance: "Binance",
-        githubPages: "GitHub",
         vpnWarningTitle: "⚠️ مشكلة في الاتصال",
         vpnWarningText: "إذا لم يتم تحميل الخيارات بشكل صحيح، يرجى استخدام VPN أو خدمة مضاد الحجب. قد يكون مصدر البيانات (Binance) محجوبًا أو تحت عقوبات في بلدك.",
-        vpnSuggestion: "اقتراح: استخدم خدمة VPN موثوقة للوصول إلى بيانات سوق العملات الرقمية. ملاحظة: قد تحتاج إلى تغيير عنوان IP الخاص بك أو استخدام خادم VPN مختلف لأن بعض عناوين IP قد تكون محظورة من قبل Binance."
+        vpnSuggestion: "اقتراح: استخدم خدمة VPN موثوقة للوصول إلى بيانات سوق العملات الرقمية. يمكنك أيضًا المحاولة مرة أخرى بالنقر على زر 'تحديث' (أيقونة السهم الدائري)."
       },
       ru: {
         pageTitle: "Панель рынков",
@@ -1516,6 +1506,7 @@
         badge: "Только Binance • Для GitHub",
         homeButton: "Главная",
         toolsButton: "Инструменты",
+        similarButton: "Похожие инструменты",
         toggleTheme: "Тема",
         refreshAll: "Обновить",
         cryptoTitle: "Крипта (24ч)",
@@ -1591,68 +1582,9 @@
         updating: "Обновление...",
         ready: "Панель готова!",
         alertTriggered: "Оповещение! Цена:",
-        currency: "Валюта",
-        target: "Цель",
-        condition: "Условие",
-        status: "Статус",
-        actions: "Действия",
-        time: "Время",
-        date: "Дата",
-        search: "Поиск",
-        select: "Выбрать",
-        all: "Все",
-        none: "Нет",
-        loadingData: "Загрузка...",
-        noData: "Нет данных",
-        error: "Ошибка",
-        success: "Успех",
-        warning: "Внимание",
-        info: "Инфо",
-        from: "Из",
-        to: "В",
-        amount: "Сумма",
-        convert: "Конвертировать",
-        result: "Результат",
-        baseCurrency: "База",
-        currencyPair: "Пара",
-        targetPrice: "Цель",
-        priceAlert: "Оповещение",
-        clearAll: "Очистить",
-        activeAlerts: "Оповещения",
-        storedInBrowser: "В браузере",
-        lightDarkTheme: "Тема",
-        update: "Обновить",
-        lastUpdate: "Обновлено",
-        popularCryptocurrencies: "Крипты",
-        basedOn: "на",
-        high: "Верх",
-        low: "Низ",
-        change24h: "24ч изм",
-        volume24h: "24ч объем",
-        numberOfTrades: "Сделки",
-        recommended: "рекоменд",
-        forMostPairs: "большинство пар",
-        selectBaseCurrency: "Выбрать базу",
-        selectCurrencyPair: "Выбрать пару",
-        selectCondition: "Условие",
-        setPriceAlert: "Установить",
-        calculator: "Калькулятор",
-        conversion: "Конвертация",
-        allCalculations: "Расчеты",
-        useRealtimePrices: "цены онлайн",
-        cryptocurrency: "Крипта",
-        cryptocurrencies: "Крипты",
-        market: "Рынок",
-        dashboard: "Панель",
-        live: "Онлайн",
-        compatibleWith: "Для",
-        only: "Только",
-        and: "и",
-        binance: "Binance",
-        githubPages: "GitHub",
         vpnWarningTitle: "⚠️ Проблема с подключением",
         vpnWarningText: "Если параметры загружаются неправильно, используйте VPN или антифильтр. Источник данных (Binance) может быть заблокирован или находиться под санкциями в вашей стране.",
-        vpnSuggestion: "Совет: используйте надежный VPN-сервис для доступа к данным рынка криптовалют. Примечание: Возможно, вам потребуется изменить ваш IP-адрес или использовать другой VPN-сервер, так как некоторые IP могут быть заблокированы Binance."
+        vpnSuggestion: "Совет: используйте надежный VPN-сервис для доступа к данным рынка криптовалют. Вы также можете попробовать еще раз, нажав кнопку 'Обновить' (круглая стрелка)."
       }
     };
 
@@ -1697,7 +1629,6 @@
       const t = translations[state.currentLang];
       
       if (show) {
-        // استفاده از متن کامل شامل تغییر IP
         const fullMessage = `
           <div style="margin-bottom: 10px;">
             <strong style="font-size: 14px;">${t.vpnWarningTitle}</strong>
@@ -1713,7 +1644,6 @@
         vpnWarningText.innerHTML = fullMessage;
         vpnWarning.style.display = 'block';
         
-        // نمایش نوتیفیکیشن با متن کامل
         const notificationMessage = `${t.vpnWarningTitle} - ${t.vpnWarningText} ${t.vpnSuggestion}`;
         showNotification(notificationMessage, 'error');
       } else {
@@ -1736,6 +1666,7 @@
         'badge': t.badge,
         'homeButton': t.homeButton,
         'toolsButton': t.toolsButton,
+        'similarButton': t.similarButton,
         'toggleTheme': t.toggleTheme,
         'refreshAll': t.refreshAll,
         'cryptoTitle': t.cryptoTitle,
@@ -1770,7 +1701,7 @@
       document.getElementById('calcAmount').placeholder = t.calcAmountPlaceholder;
       document.getElementById('alertPrice').placeholder = t.alertPricePlaceholder;
       
-      updateLangSelectOptions();
+      updateLangButtons();
       updateQuoteSelectOptions();
       updateCalculatorSelectOptions();
       updateAlertConditionOptions();
@@ -1785,69 +1716,20 @@
       
       localStorage.setItem('dashboardLang', lang);
       
-      adjustFontSizeForLanguage(lang);
-      
-      // به‌روزرسانی پیام VPN در صورت نمایش
       const vpnWarning = document.getElementById('vpnWarning');
       if (vpnWarning.style.display === 'block') {
         showVpnWarning(true);
       }
     }
 
-    function adjustFontSizeForLanguage(lang) {
-      const toolbarButtons = document.querySelectorAll('.toolbar button, .home-btn, .tools-btn');
-      const toolbarButtonsArray = Array.from(toolbarButtons);
-      
-      toolbarButtonsArray.forEach(btn => {
-        if (lang === 'ru' || lang === 'ar') {
-          btn.style.fontSize = window.innerWidth <= 480 ? '9px' : 
-                              window.innerWidth <= 600 ? '10px' : 
-                              window.innerWidth <= 768 ? '11px' : '12px';
-          btn.style.lineHeight = '1.2';
+    function updateLangButtons() {
+      const langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(btn => {
+        const lang = btn.getAttribute('data-lang');
+        if (lang === state.currentLang) {
+          btn.classList.add('active');
         } else {
-          btn.style.fontSize = '';
-          btn.style.lineHeight = '';
-        }
-      });
-    }
-
-    function updateLangSelectOptions() {
-      const langSelect = document.getElementById('langSelect');
-      const t = translations[state.currentLang];
-      
-      const options = [
-        { value: 'fa', label: t.langName_fa },
-        { value: 'en', label: t.langName_en },
-        { value: 'ar', label: t.langName_ar },
-        { value: 'ru', label: t.langName_ru }
-      ];
-      
-      langSelect.innerHTML = '';
-      options.forEach(option => {
-        const optElement = document.createElement('option');
-        optElement.value = option.value;
-        optElement.textContent = option.label;
-        if (option.value === state.currentLang) {
-          optElement.selected = true;
-        }
-        langSelect.appendChild(optElement);
-      });
-      
-      if (state.langSelectChoices) state.langSelectChoices.destroy();
-      state.langSelectChoices = new Choices(langSelect, {
-        searchEnabled: false,
-        itemSelectText: '',
-        shouldSort: false,
-        position: 'bottom',
-        callbackOnCreateTemplates: function(template) {
-          return {
-            option: (classNames, data) => {
-              return template(`<div class="${classNames.item} ${classNames.itemSelectable}" data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
-            },
-            item: (classNames, data) => {
-              return template(`<div class="${classNames.item} ${classNames.itemChoice}" data-item data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
-            }
-          };
+          btn.classList.remove('active');
         }
       });
     }
@@ -2008,20 +1890,12 @@
       const t = translations[state.currentLang];
       document.getElementById('cryptoStatus').textContent = t.loading;
       
-      // مخفی کردن پیام VPN قبل از تلاش جدید
       showVpnWarning(false);
       
       try {
-        // تست اتصال با timeout کوتاه برای شبیه‌سازی خطا
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1000); // فقط 1 ثانیه
-        
         const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', {
-          cache: 'no-store',
-          signal: controller.signal
+          cache: 'no-store'
         });
-        
-        clearTimeout(timeoutId);
         
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         
@@ -2040,7 +1914,6 @@
         state.connectionErrorCount++;
         document.getElementById('cryptoStatus').textContent = t.errorConnection;
         
-        // همیشه پیام VPN را نشان بده (برای تست آسان)
         showVpnWarning(true);
       }
     }
@@ -2123,7 +1996,7 @@
       const t = translations[state.currentLang];
       
       if (!state.binanceAll.length) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--muted);">${t.loadingData}</div>`;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--muted);">${t.loading}</div>`;
         return;
       }
 
@@ -2218,23 +2091,6 @@
           <strong>${formatNum(result, {maximumFractionDigits: 8})} ${to}</strong>
         `;
       });
-      
-      document.getElementById('calcAmount').addEventListener('input', function() {
-        if (this.value && parseFloat(this.value) > 0) {
-          const from = document.getElementById('calcFrom').value;
-          const to = document.getElementById('calcTo').value;
-          const amount = parseFloat(this.value);
-          const result = calculateConversionUsingBinance(from, to, amount);
-          
-          if (result !== null) {
-            document.getElementById('calcResult').innerHTML = `
-              <span id="calcResultLabel">${translations[state.currentLang].calcResultLabel}</span>
-              ${formatNum(amount, {maximumFractionDigits: 8})} ${from} = 
-              <strong>${formatNum(result, {maximumFractionDigits: 8})} ${to}</strong>
-            `;
-          }
-        }
-      });
     }
 
     function calculateConversionUsingBinance(from, to, amount) {
@@ -2248,33 +2104,6 @@
       if (fromPrice && toPrice) {
         const inUsdt = amount * fromPrice;
         return inUsdt / toPrice;
-      }
-      
-      const directPair1 = getPriceFromBinance(from + to);
-      if (directPair1) {
-        return amount * directPair1;
-      }
-      
-      const directPair2 = getPriceFromBinance(to + from);
-      if (directPair2) {
-        return amount / directPair2;
-      }
-      
-      const intermediateCurrencies = ['BTC', 'ETH', 'BNB', 'USDT'];
-      
-      for (const intermediate of intermediateCurrencies) {
-        if (intermediate === from || intermediate === to) continue;
-        
-        const fromToIntermediate = getPriceFromBinance(from + intermediate) || 
-                                  (intermediate + from ? 1 / getPriceFromBinance(intermediate + from) : null);
-        
-        const intermediateToTo = getPriceFromBinance(intermediate + to) || 
-                                (to + intermediate ? 1 / getPriceFromBinance(to + intermediate) : null);
-        
-        if (fromToIntermediate && intermediateToTo) {
-          const inIntermediate = amount * fromToIntermediate;
-          return inIntermediate * intermediateToTo;
-        }
       }
       
       return null;
@@ -2372,17 +2201,7 @@
         searchEnabled: true,
         itemSelectText: '',
         shouldSort: true,
-        position: 'bottom',
-        callbackOnCreateTemplates: function(template) {
-          return {
-            option: (classNames, data) => {
-              return template(`<div class="${classNames.item} ${classNames.itemSelectable}" data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
-            },
-            item: (classNames, data) => {
-              return template(`<div class="${classNames.item} ${classNames.itemChoice}" data-item data-id="${data.id}" data-value="${data.value}"><span class="label">${data.label}</span></div>`);
-            }
-          };
-        }
+        position: 'bottom'
       });
     }
 
@@ -2492,19 +2311,17 @@
     }
 
     function initLanguageSelector() {
-      const langSelect = document.getElementById('langSelect');
-      if (state.langSelectChoices) state.langSelectChoices.destroy();
+      const langButtons = document.querySelectorAll('.lang-btn');
       
-      langSelect.addEventListener('change', () => {
-        state.currentLang = langSelect.value;
-        updateLanguage();
+      langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          state.currentLang = lang;
+          updateLanguage();
+        });
       });
       
       updateLanguage();
-      
-      window.addEventListener('resize', () => {
-        adjustFontSizeForLanguage(state.currentLang);
-      });
     }
 
     document.getElementById('toggleTheme').addEventListener('click', () => {
