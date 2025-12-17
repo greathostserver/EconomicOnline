@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>داشبورد زنده بازارها</title>
+  <title>داشبورد زنده بازار کریپتو</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <style>
     :root {
@@ -406,50 +406,16 @@
       right: 20px;
       background: var(--accent);
       color: white;
-      padding: 20px 24px; /* افزایش padding */
-      border-radius: 12px; /* افزایش شعاع */
-      z-index: 10000; /* افزایش z-index برای نمایش بالای همه */
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      animation: slideIn 0.4s ease;
-      max-width: 450px; /* افزایش عرض */
-      font-size: 16px; /* افزایش سایز فونت */
+      padding: 16px 20px;
+      border-radius: 10px;
+      z-index: 10000;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease;
+      max-width: 400px;
+      font-size: 15px;
       line-height: 1.5;
       font-weight: 500;
-      border-left: 6px solid rgba(255,255,255,0.3);
-    }
-
-    .notification.success {
-      background: var(--up) !important;
-      border-left: 6px solid rgba(255,255,255,0.5);
-    }
-
-    .notification.error {
-      background: var(--down) !important;
-      border-left: 6px solid rgba(255,255,255,0.5);
-    }
-
-    .notification.warning {
-      background: #ffa726 !important;
-      color: #333 !important;
-      border-left: 6px solid rgba(0,0,0,0.2);
-    }
-
-    .notification.info {
-      background: var(--accent) !important;
-    }
-
-    .notification .notification-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .notification .notification-content {
-      font-size: 15px;
-      line-height: 1.6;
+      border-left: 5px solid rgba(255,255,255,0.4);
     }
 
     @keyframes slideIn {
@@ -695,9 +661,9 @@
       }
       
       .notification {
-        max-width: 400px;
-        padding: 18px 20px;
-        font-size: 15px;
+        max-width: 350px;
+        padding: 14px 18px;
+        font-size: 14px;
       }
     }
 
@@ -765,15 +731,7 @@
         max-width: none;
         top: 15px;
         font-size: 14px;
-        padding: 16px 18px;
-      }
-      
-      .notification .notification-title {
-        font-size: 16px;
-      }
-      
-      .notification .notification-content {
-        font-size: 14px;
+        padding: 14px 16px;
       }
       
       .choices__inner {
@@ -869,91 +827,6 @@
         font-size: 10px;
         padding: 5px 8px;
         min-width: 70px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .utility-buttons {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      
-      .color-buttons {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      
-      .toolbar button,
-      .home-btn,
-      .tools-btn,
-      .similar-btn,
-      #toggleTheme,
-      #refreshAll {
-        flex: 1;
-        min-width: calc(33.333% - 8px);
-        font-size: 10px;
-        padding: 5px 6px;
-      }
-      
-      #langSelect.field {
-        max-width: 80px !important;
-        font-size: 10px;
-      }
-      
-      .choices__inner {
-        font-size: 10px;
-      }
-      
-      .choices__list--dropdown .choices__item,
-      .choices__list[aria-expanded] .choices__item {
-        font-size: 10px;
-        padding: 6px 8px;
-      }
-      
-      body[lang="ru"] .toolbar button,
-      body[lang="ru"] .home-btn,
-      body[lang="ru"] .tools-btn,
-      body[lang="ru"] .similar-btn,
-      body[lang="ar"] .toolbar button,
-      body[lang="ar"] .home-btn,
-      body[lang="ar"] .tools-btn,
-      body[lang="ar"] .similar-btn {
-        font-size: 9px;
-        padding: 4px 5px;
-      }
-      
-      .notification {
-        padding: 14px 16px;
-        font-size: 13px;
-        border-radius: 10px;
-      }
-      
-      .notification .notification-title {
-        font-size: 15px;
-      }
-      
-      .notification .notification-content {
-        font-size: 13px;
-      }
-      
-      .lang-buttons {
-        gap: 2px;
-      }
-      
-      .lang-btn {
-        min-width: 35px;
-        padding: 2px 3px;
-        font-size: 8px;
-        height: 22px;
-        flex: 0 0 auto;
-      }
-      
-      #toggleTheme, #refreshAll {
-        min-width: 60px;
-        font-size: 9px;
-        padding: 4px 6px;
       }
     }
 
@@ -1063,17 +936,8 @@
         right: 10px;
         top: 10px;
         padding: 12px 14px;
-        font-size: 12px;
+        font-size: 13px;
         border-radius: 8px;
-      }
-      
-      .notification .notification-title {
-        font-size: 14px;
-        margin-bottom: 8px;
-      }
-      
-      .notification .notification-content {
-        font-size: 12px;
       }
       
       .lang-buttons {
@@ -1104,109 +968,13 @@
         padding: 4px 5px;
       }
     }
-
-    @media (max-width: 360px) {
-      .popular-crypto-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .utility-buttons, .color-buttons {
-        flex-wrap: wrap;
-      }
-      
-      .toolbar button,
-      .home-btn,
-      .tools-btn,
-      .similar-btn,
-      #toggleTheme,
-      #refreshAll {
-        min-width: calc(50% - 3px);
-        font-size: 9px;
-        padding: 4px 5px;
-      }
-      
-      #langSelect.field {
-        font-size: 9px;
-        max-width: 70px !important;
-      }
-      
-      .choices__inner {
-        font-size: 9px;
-      }
-      
-      .choices__list--dropdown .choices__item,
-      .choices__list[aria-expanded] .choices__item {
-        font-size: 9px;
-      }
-      
-      .notification {
-        padding: 10px 12px;
-        font-size: 11px;
-      }
-      
-      .notification .notification-title {
-        font-size: 13px;
-      }
-      
-      .notification .notification-content {
-        font-size: 11px;
-      }
-      
-      .lang-btn {
-        padding: 1px 2px;
-        font-size: 7px;
-        height: 20px;
-      }
-      
-      #toggleTheme, #refreshAll {
-        font-size: 8px;
-        padding: 3px 4px;
-      }
-    }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--muted);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
-    }
-
-    .choices__list--dropdown {
-      z-index: 100;
-    }
-
-    .info-box div {
-      margin: 4px 0;
-      word-break: break-word;
-    }
-
-    #pairPrice, #pairChange, #pairVolume, #pairTrades {
-      font-size: 13px;
-    }
-
-    @media (max-width: 768px) {
-      #pairPrice, #pairChange, #pairVolume, #pairTrades {
-        font-size: 12px;
-      }
-    }
   </style>
 </head>
 <body data-theme="dark">
   <header>
     <div class="wrap toolbar">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <strong id="title">داشبورد زنده بازارها</strong>
+        <strong id="title">داشبورد زنده بازار کریپتو</strong>
         <span class="status" id="badge">فقط Binance • مناسب GitHub Pages</span>
       </div>
       <div class="spacer"></div>
@@ -1403,13 +1171,14 @@
       alertConditionChoices: null,
       currentLang: localStorage.getItem('dashboardLang') || 'fa',
       connectionErrorCount: 0,
-      maxConnectionErrors: 1
+      maxConnectionErrors: 1,
+      priceCache: {}
     };
 
     const translations = {
       fa: {
-        pageTitle: "داشبورد زنده بازارها",
-        title: "داشبورد زنده بازارها",
+        pageTitle: "داشبورد زنده بازار کریپتو",
+        title: "داشبورد زنده بازار کریپتو",
         badge: "فقط Binance • مناسب GitHub Pages",
         homeButton: "تماس با ما",
         toolsButton: "ابزارها",
@@ -1498,8 +1267,8 @@
         vpnSuggestion: "پیشنهاد: برای دسترسی به اطلاعات بازار ارز، از یک سرویس VPN معتبر استفاده نمایید. همچنین می‌توانید با کلیک روی دکمه 'به‌روزرسانی' دوباره تلاش کنید."
       },
       en: {
-        pageTitle: "Live Market Dashboard",
-        title: "Live Market Dashboard",
+        pageTitle: "Live Crypto Market Dashboard",
+        title: "Live Crypto Market Dashboard",
         badge: "Only Binance • GitHub Pages Compatible",
         homeButton: "Contact Us",
         toolsButton: "Tools",
@@ -1588,8 +1357,8 @@
         vpnSuggestion: "Suggestion: Use a reliable VPN service to access cryptocurrency market data. You can also try again by clicking the 'Refresh' button."
       },
       ar: {
-        pageTitle: "لوحة الأسواق",
-        title: "لوحة الأسواق",
+        pageTitle: "لوحة أسواق العملات الرقمية",
+        title: "لوحة أسواق العملات الرقمية",
         badge: "Binance فقط • GitHub مناسب",
         homeButton: "اتصل بنا",
         toolsButton: "الأدوات",
@@ -1678,8 +1447,8 @@
         vpnSuggestion: "اقتراح: استخدم خدمة VPN موثوقة للوصول إلى بيانات سوق العملات الرقمية. يمكنك أيضًا المحاولة مرة أخرى بالنقر على زر 'تحديث'."
       },
       ru: {
-        pageTitle: "Панель рынков",
-        title: "Панель рынков",
+        pageTitle: "Панель рынков криптовалют",
+        title: "Панель рынков криптовалют",
         badge: "Только Binance • Для GitHub",
         homeButton: "Контакты",
         toolsButton: "Инструменты",
@@ -1790,20 +1559,20 @@
     function showNotification(message, type = 'info') {
       const t = translations[state.currentLang];
       const notification = document.createElement('div');
-      notification.className = 'notification ' + type;
+      notification.className = 'notification';
+      notification.innerHTML = message;
       
-      // افزودن ساختار HTML برای نوتیفیکیشن
-      const notificationContent = `
-        <div class="notification-title">
-          ${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}
-          ${getNotificationTitle(type, t)}
-        </div>
-        <div class="notification-content">
-          ${message}
-        </div>
-      `;
-      
-      notification.innerHTML = notificationContent;
+      // تنظیم رنگ بر اساس نوع
+      if (type === 'success') {
+        notification.style.background = 'var(--up)';
+      } else if (type === 'error') {
+        notification.style.background = 'var(--down)';
+      } else if (type === 'warning') {
+        notification.style.background = '#ffa726';
+        notification.style.color = '#333';
+      } else {
+        notification.style.background = 'var(--accent)';
+      }
       
       document.body.appendChild(notification);
       
@@ -1816,19 +1585,6 @@
           }
         }, 500);
       }, 10000);
-    }
-
-    function getNotificationTitle(type, t) {
-      switch(type) {
-        case 'success':
-          return t.successAlertSet || 'موفقیت';
-        case 'error':
-          return t.errorConnection || 'خطا';
-        case 'warning':
-          return t.vpnWarningTitle || 'هشدار';
-        default:
-          return t.updating || 'اطلاعیه';
-      }
     }
 
     function showVpnWarning(show = true) {
@@ -2109,6 +1865,10 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         
         state.binanceAll = await res.json();
+        
+        // ذخیره کش قیمت‌ها برای ماشین حساب
+        updatePriceCache();
+        
         populatePairs();
         updatePopularCryptos();
         checkAlerts();
@@ -2125,6 +1885,66 @@
         
         showVpnWarning(true);
       }
+    }
+
+    function updatePriceCache() {
+      if (!state.binanceAll.length) return;
+      
+      // ریست کش
+      state.priceCache = {};
+      
+      // ذخیره همه قیمت‌ها در کش
+      state.binanceAll.forEach(pair => {
+        const symbol = pair.symbol;
+        const price = Number(pair.lastPrice);
+        state.priceCache[symbol] = price;
+        
+        // همچنین قیمت USDT به دلار را 1 در نظر بگیریم
+        if (symbol === 'USDTUSDT') {
+          state.priceCache['USDT'] = 1;
+        }
+      });
+      
+      // اضافه کردن قیمت‌های معکوس
+      for (const symbol in state.priceCache) {
+        if (symbol.endsWith('USDT')) {
+          const base = symbol.replace('USDT', '');
+          if (!state.priceCache[base]) {
+            state.priceCache[base] = 1 / state.priceCache[symbol];
+          }
+        }
+      }
+    }
+
+    function getPriceForCurrency(currency) {
+      if (currency === 'USDT') return 1;
+      
+      // اول سعی می‌کنیم جفت USDT را پیدا کنیم
+      const usdtPair = state.binanceAll.find(p => p.symbol === `${currency}USDT`);
+      if (usdtPair) return Number(usdtPair.lastPrice);
+      
+      // اگر پیدا نشد، سعی می‌کنیم از طریق BTC محاسبه کنیم
+      const btcPair = state.binanceAll.find(p => p.symbol === `${currency}BTC`);
+      const btcUsdtPair = state.binanceAll.find(p => p.symbol === 'BTCUSDT');
+      
+      if (btcPair && btcUsdtPair) {
+        const priceInBtc = Number(btcPair.lastPrice);
+        const btcPrice = Number(btcUsdtPair.lastPrice);
+        return priceInBtc * btcPrice;
+      }
+      
+      // اگر باز هم پیدا نشد، سعی می‌کنیم از طریق ETH
+      const ethPair = state.binanceAll.find(p => p.symbol === `${currency}ETH`);
+      const ethUsdtPair = state.binanceAll.find(p => p.symbol === 'ETHUSDT');
+      
+      if (ethPair && ethUsdtPair) {
+        const priceInEth = Number(ethPair.lastPrice);
+        const ethPrice = Number(ethUsdtPair.lastPrice);
+        return priceInEth * ethPrice;
+      }
+      
+      // اگر هیچکدام پیدا نشد، null برگردان
+      return null;
     }
 
     function populatePairs() {
@@ -2288,34 +2108,41 @@
           return;
         }
         
-        const result = calculateConversionUsingBinance(from, to, amount);
-        if (result === null) {
+        if (!state.binanceAll.length) {
           showNotification(t.errorCalculation, 'error');
           return;
         }
         
+        // گرفتن قیمت ارز مبدا
+        const fromPrice = getPriceForCurrency(from);
+        if (!fromPrice) {
+          showNotification(`قیمت ${from} یافت نشد`, 'error');
+          return;
+        }
+        
+        // گرفتن قیمت ارز مقصد
+        const toPrice = getPriceForCurrency(to);
+        if (!toPrice) {
+          showNotification(`قیمت ${to} یافت نشد`, 'error');
+          return;
+        }
+        
+        // محاسبه تبدیل
+        const result = (amount * fromPrice) / toPrice;
+        
         document.getElementById('calcResult').innerHTML = `
-          <span id="calcResultLabel">${t.calcResultLabel}</span>
+          <span id="calcResultLabel">${t.calcResultLabel}</span><br>
           ${formatNum(amount, {maximumFractionDigits: 8})} ${from} = 
           <strong>${formatNum(result, {maximumFractionDigits: 8})} ${to}</strong>
         `;
       });
-    }
-
-    function calculateConversionUsingBinance(from, to, amount) {
-      if (!state.binanceAll.length) return null;
       
-      if (from === to) return amount;
-      
-      const fromPrice = getPriceFromBinance(from + 'USDT');
-      const toPrice = getPriceFromBinance(to + 'USDT');
-      
-      if (fromPrice && toPrice) {
-        const inUsdt = amount * fromPrice;
-        return inUsdt / toPrice;
-      }
-      
-      return null;
+      // اضافه کردن قابلیت محاسبه با کلید Enter
+      document.getElementById('calcAmount').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          document.getElementById('calcConvert').click();
+        }
+      });
     }
 
     function initAlerts() {
@@ -2528,19 +2355,19 @@
           });
         }
         
-        // نمایش نوتیفیکیشن بزرگ و ویژه برای هشدار قیمت - 10 ثانیه
+        // نمایش نوتیفیکیشن بزرگ برای هشدار قیمت - 10 ثانیه
         const alertMessage = `
-          <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 22px;">🚨</span>
+          <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <span>🚨</span>
             ${t.alertTriggered}
           </div>
-          <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-            <div style="margin-bottom: 8px;">
-              <strong style="font-size: 16px;">${alert.base}/USDT</strong>
+          <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+            <div style="margin-bottom: 6px;">
+              <strong>${alert.base}/USDT</strong>
             </div>
             <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
               <span>${t.alertCurrentPrice}</span>
-              <strong style="color: #ffcc00; font-size: 16px;">$${formatNum(alert.triggeredPrice)}</strong>
+              <strong style="color: #ffcc00;">$${formatNum(alert.triggeredPrice)}</strong>
             </div>
             <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
               <span>${t.alertTargetPrice}</span>
@@ -2551,7 +2378,7 @@
               <strong>${alert.condition === 'above' ? t.aboveLabel : t.belowLabel}</strong>
             </div>
           </div>
-          <div style="font-size: 12px; opacity: 0.9; text-align: center; margin-top: 5px;">
+          <div style="font-size: 12px; opacity: 0.9; text-align: center;">
             ${new Date().toLocaleTimeString(state.currentLang === 'fa' ? 'fa-IR' : 'en-US')}
           </div>
         `;
@@ -2588,7 +2415,7 @@
       const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       body.setAttribute('data-theme', newTheme);
       const t = translations[state.currentLang];
-      showNotification(newTheme === 'dark' ? t.themeDark : t.themeLight, 'info');
+      showNotification(newTheme === 'dark' ? t.themeDark : t.themeLight);
     });
     
     document.getElementById('refreshAll').addEventListener('click', () => {
