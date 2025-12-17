@@ -559,7 +559,7 @@
     
     .utility-buttons {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       width: 100%;
       justify-content: flex-end;
       align-items: center;
@@ -590,13 +590,18 @@
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 3px 6px;
       cursor: pointer;
       font-size: 11px;
       transition: all 0.2s;
-      min-width: 50px;
+      min-width: 0;
       text-align: center;
       white-space: nowrap;
+      flex-shrink: 0;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .lang-btn:hover {
@@ -623,9 +628,9 @@
       }
       
       .lang-btn {
-        min-width: 35px;
-        padding: 2px 4px;
-        font-size: 9px;
+        padding: 3px 5px;
+        font-size: 10px;
+        height: 26px;
       }
     }
 
@@ -758,11 +763,7 @@
         align-items: stretch;
       }
       
-      .utility-buttons {
-        gap: 4px;
-      }
-      
-      .color-buttons {
+      .utility-buttons, .color-buttons {
         justify-content: center;
         flex-wrap: wrap;
       }
@@ -773,14 +774,25 @@
         margin: 8px 0;
       }
       
+      /* بهینه‌سازی دکمه‌های زبان در موبایل */
       .lang-buttons {
-        gap: 2px;
+        gap: 3px;
+        margin-bottom: 6px;
       }
       
       .lang-btn {
-        min-width: 30px;
-        padding: 2px 3px;
-        font-size: 8px;
+        padding: 2px 4px;
+        font-size: 9px;
+        height: 24px;
+        min-width: 40px;
+        flex: 1;
+        max-width: 60px;
+      }
+      
+      #toggleTheme, #refreshAll {
+        font-size: 10px;
+        padding: 5px 8px;
+        min-width: 70px;
       }
     }
 
@@ -788,11 +800,13 @@
       .utility-buttons {
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
       }
       
       .color-buttons {
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
       }
       
       .toolbar button,
@@ -832,14 +846,23 @@
         padding: 4px 5px;
       }
       
+      /* تنظیمات بیشتر برای دکمه‌های زبان در صفحه کوچک */
       .lang-buttons {
-        gap: 1px;
+        gap: 2px;
       }
       
       .lang-btn {
-        min-width: 25px;
-        padding: 1px 2px;
-        font-size: 7px;
+        min-width: 35px;
+        padding: 2px 3px;
+        font-size: 8px;
+        height: 22px;
+        flex: 0 0 auto;
+      }
+      
+      #toggleTheme, #refreshAll {
+        min-width: 60px;
+        font-size: 9px;
+        padding: 4px 6px;
       }
     }
 
@@ -942,18 +965,33 @@
         font-size: 11px;
       }
       
+      /* تنظیمات دکمه‌های زبان در موبایل کوچک */
       .lang-buttons {
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3px;
         width: 100%;
-        margin-bottom: 4px;
-        gap: 1px;
+        margin-bottom: 8px;
       }
       
       .lang-btn {
-        min-width: 20px;
-        padding: 1px 1px;
-        font-size: 6px;
-        flex: 0 1 auto;
+        min-width: 0;
+        padding: 2px 3px;
+        font-size: 8px;
+        height: 22px;
+        width: 100%;
+        margin: 0;
+        flex: none;
+        border-radius: 4px;
+        max-width: 100%;
+      }
+      
+      #toggleTheme, #refreshAll {
+        min-width: 0;
+        flex: 1;
+        max-width: 48%;
+        font-size: 9px;
+        padding: 4px 5px;
       }
     }
 
@@ -989,10 +1027,16 @@
         font-size: 9px;
       }
       
+      /* تنظیمات نهایی برای دکمه‌های زبان در صفحه خیلی کوچک */
       .lang-btn {
-        min-width: 18px;
-        padding: 0.5px 0.5px;
-        font-size: 5.5px;
+        padding: 1px 2px;
+        font-size: 7px;
+        height: 20px;
+      }
+      
+      #toggleTheme, #refreshAll {
+        font-size: 8px;
+        padding: 3px 4px;
       }
     }
 
@@ -1053,8 +1097,8 @@
             <button class="lang-btn" data-lang="ru">Русский</button>
           </div>
           
-          <button id="toggleTheme">تم روشن/تاریک</button>
-          <button id="refreshAll">به‌روزرسانی</button>
+          <button id="toggleTheme">تم</button>
+          <button id="refreshAll">بروز</button>
         </div>
         
         <!-- ردیف پایین: دکمه‌های رنگی -->
@@ -2354,4 +2398,4 @@
     window.removeAlert = removeAlert;
   </script>
 </body>
-</html>
+  </html>
