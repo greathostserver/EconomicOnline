@@ -16,7 +16,7 @@
       --home-btn: #1db954;
       --tools-btn: #1f7ae0;
       --similar-btn: #9b59b6;
-      --theme-refresh-btn: #FF01D5; /* رنگ جدید برای دکمه‌های تم و به‌روزرسانی */
+      --theme-refresh-btn: #FF01D5;
     }
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
@@ -27,7 +27,7 @@
       --home-btn: #1ea865;
       --tools-btn: #1f7ae0;
       --similar-btn: #8e44ad;
-      --theme-refresh-btn: #FF01D5; /* رنگ جدید برای دکمه‌های تم و به‌روزرسانی */
+      --theme-refresh-btn: #FF01D5;
     }
 
     * {
@@ -98,7 +98,6 @@
       white-space: nowrap;
     }
 
-    /* استایل دکمه‌های تم و به‌روزرسانی با رنگ جدید */
     #toggleTheme, #refreshAll {
       background: var(--theme-refresh-btn) !important;
       color: white !important;
@@ -400,152 +399,81 @@
       opacity: 0.9;
     }
 
-    /* استایل بهبودیافته برای نوتیفیکیشن */
+    /* استایل جدید برای نوتیفیکیشن - بزرگتر */
     .notification {
       position: fixed;
       top: 20px;
       right: 20px;
       background: var(--accent);
       color: white;
-      padding: 24px 28px;
-      border-radius: 14px;
-      z-index: 10000;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-      animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      max-width: 600px;
-      min-width: 400px;
-      font-size: 18px;
-      font-weight: 600;
+      padding: 20px 24px; /* افزایش padding */
+      border-radius: 12px; /* افزایش شعاع */
+      z-index: 10000; /* افزایش z-index برای نمایش بالای همه */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease;
+      max-width: 450px; /* افزایش عرض */
+      font-size: 16px; /* افزایش سایز فونت */
       line-height: 1.5;
-      border-left: 8px solid var(--up);
-      opacity: 1;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
+      font-weight: 500;
+      border-left: 6px solid rgba(255,255,255,0.3);
     }
 
-    /* استایل برای نوتیفیکیشن‌های هشدار قیمت */
-    .notification.alert-triggered {
-      background: linear-gradient(135deg, var(--up) 0%, #27ae60 100%);
-      border-left: 8px solid #2ecc71;
-      padding: 28px 32px;
-      font-size: 20px;
-      font-weight: 700;
-      box-shadow: 0 20px 50px rgba(46, 204, 113, 0.4);
-      animation: alertPulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), alertGlow 2s infinite alternate;
-      min-width: 500px;
+    .notification.success {
+      background: var(--up) !important;
+      border-left: 6px solid rgba(255,255,255,0.5);
     }
 
-    @keyframes alertPulse {
-      0% {
-        transform: translateX(100%) scale(0.9);
-        opacity: 0;
-      }
-      70% {
-        transform: translateX(0) scale(1.05);
-      }
-      100% {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-      }
+    .notification.error {
+      background: var(--down) !important;
+      border-left: 6px solid rgba(255,255,255,0.5);
     }
 
-    @keyframes alertGlow {
-      0% {
-        box-shadow: 0 20px 50px rgba(46, 204, 113, 0.4);
-      }
-      100% {
-        box-shadow: 0 25px 60px rgba(46, 204, 113, 0.6);
-      }
+    .notification.warning {
+      background: #ffa726 !important;
+      color: #333 !important;
+      border-left: 6px solid rgba(0,0,0,0.2);
+    }
+
+    .notification.info {
+      background: var(--accent) !important;
+    }
+
+    .notification .notification-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notification .notification-content {
+      font-size: 15px;
+      line-height: 1.6;
     }
 
     @keyframes slideIn {
       from {
-        transform: translateX(100%) scale(0.9);
+        transform: translateX(100%);
         opacity: 0;
       }
       to {
-        transform: translateX(0) scale(1);
+        transform: translateX(0);
         opacity: 1;
       }
     }
 
-    @keyframes slideOut {
+    @keyframes fadeOut {
       from {
-        transform: translateX(0) scale(1);
         opacity: 1;
+        transform: translateX(0);
       }
       to {
-        transform: translateX(100%) scale(0.9);
         opacity: 0;
+        transform: translateX(100%);
       }
     }
 
-    /* بهبود ظاهر نوتیفیکیشن در حالت‌های مختلف */
-    [data-theme="light"] .notification {
-      color: #1a2230;
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-      border: 2px solid var(--accent);
-      border-left: 8px solid var(--accent);
-    }
-
-    [data-theme="light"] .notification.alert-triggered {
-      background: linear-gradient(135deg, #1ea865 0%, #27ae60 100%);
-      color: white;
-      border: 2px solid #27ae60;
-      border-left: 8px solid #2ecc71;
-    }
-
-    /* انیمیشن تایمر نوتیفیکیشن */
-    @keyframes timer {
-      from {
-        width: 100%;
-      }
-      to {
-        width: 0%;
-      }
-    }
-
-    /* بهبود نمایش نوتیفیکیشن در موبایل */
-    @media (max-width: 768px) {
-      .notification {
-        left: 15px;
-        right: 15px;
-        max-width: calc(100vw - 30px);
-        min-width: 0;
-        padding: 20px 24px;
-        font-size: 16px;
-        top: 15px;
-        border-left-width: 6px;
-      }
-      
-      .notification.alert-triggered {
-        padding: 24px 28px;
-        font-size: 18px;
-        min-width: 0;
-        border-left-width: 6px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .notification {
-        left: 10px;
-        right: 10px;
-        max-width: calc(100vw - 20px);
-        padding: 18px 20px;
-        font-size: 15px;
-        top: 10px;
-        border-radius: 12px;
-        border-left-width: 5px;
-      }
-      
-      .notification.alert-triggered {
-        padding: 22px 24px;
-        font-size: 17px;
-        border-left-width: 5px;
-      }
-    }
-
-    /* حذف استایل هشدار تمام صفحه */
     .popular-crypto-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -626,7 +554,6 @@
       flex: 1;
     }
 
-    /* بهبود نمایش گزینه‌های طولانی در dropdown */
     .choices__list--dropdown .choices__item,
     .choices__list[aria-expanded] .choices__item {
       word-break: break-word;
@@ -641,7 +568,6 @@
       line-height: 1.3;
     }
 
-    /* بهبود نمایش در حالت‌های مختلف زبان */
     body[lang="ru"] .toolbar button,
     body[lang="ru"] .home-btn,
     body[lang="ru"] .tools-btn,
@@ -656,7 +582,6 @@
       letter-spacing: 0;
     }
 
-    /* استایل پیام VPN */
     .vpn-warning {
       background: var(--down);
       color: white;
@@ -688,7 +613,6 @@
       color: #c62828;
     }
 
-    /* استایل جدید برای نوار ابزار */
     .toolbar-buttons {
       display: flex;
       flex-direction: column;
@@ -712,14 +636,12 @@
       justify-content: flex-end;
     }
     
-    /* کاهش عرض انتخابگر زبان */
     #langSelect.field {
       max-width: 100px !important;
       min-width: 90px;
       font-size: 12px;
     }
 
-    /* استایل دکمه‌های زبان */
     .lang-buttons {
       display: flex;
       gap: 4px;
@@ -757,7 +679,6 @@
       font-weight: 600;
     }
     
-    /* ریسپانسیو */
     @media (max-width: 1024px) {
       .wrap {
         max-width: 95%;
@@ -771,6 +692,12 @@
         padding: 3px 5px;
         font-size: 10px;
         height: 26px;
+      }
+      
+      .notification {
+        max-width: 400px;
+        padding: 18px 20px;
+        font-size: 15px;
       }
     }
 
@@ -833,12 +760,20 @@
       }
       
       .notification {
-        left: 10px;
-        right: 10px;
+        left: 15px;
+        right: 15px;
         max-width: none;
-        top: 10px;
+        top: 15px;
         font-size: 14px;
         padding: 16px 18px;
+      }
+      
+      .notification .notification-title {
+        font-size: 16px;
+      }
+      
+      .notification .notification-content {
+        font-size: 14px;
       }
       
       .choices__inner {
@@ -916,7 +851,6 @@
         margin: 8px 0;
       }
       
-      /* بهینه‌سازی دکمه‌های زبان در موبایل */
       .lang-buttons {
         gap: 3px;
         margin-bottom: 6px;
@@ -990,7 +924,20 @@
         padding: 4px 5px;
       }
       
-      /* تنظیمات بیشتر برای دکمه‌های زبان در صفحه کوچک */
+      .notification {
+        padding: 14px 16px;
+        font-size: 13px;
+        border-radius: 10px;
+      }
+      
+      .notification .notification-title {
+        font-size: 15px;
+      }
+      
+      .notification .notification-content {
+        font-size: 13px;
+      }
+      
       .lang-buttons {
         gap: 2px;
       }
@@ -1111,7 +1058,24 @@
         font-size: 11px;
       }
       
-      /* تنظیمات دکمه‌های زبان در موبایل کوچک */
+      .notification {
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        padding: 12px 14px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+      
+      .notification .notification-title {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      
+      .notification .notification-content {
+        font-size: 12px;
+      }
+      
       .lang-buttons {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -1175,7 +1139,19 @@
         font-size: 9px;
       }
       
-      /* تنظیمات نهایی برای دکمه‌های زبان در صفحه خیلی کوچک */
+      .notification {
+        padding: 10px 12px;
+        font-size: 11px;
+      }
+      
+      .notification .notification-title {
+        font-size: 13px;
+      }
+      
+      .notification .notification-content {
+        font-size: 11px;
+      }
+      
       .lang-btn {
         padding: 1px 2px;
         font-size: 7px;
@@ -1235,9 +1211,7 @@
       </div>
       <div class="spacer"></div>
       <div class="toolbar-buttons">
-        <!-- ردیف بالا: ابزارهای کاربردی -->
         <div class="utility-buttons">
-          <!-- دکمه‌های زبان -->
           <div class="lang-buttons">
             <button class="lang-btn active" data-lang="fa">فارسی</button>
             <button class="lang-btn" data-lang="en">English</button>
@@ -1249,7 +1223,6 @@
           <button id="refreshAll">بروز</button>
         </div>
         
-        <!-- ردیف پایین: دکمه‌های رنگی -->
         <div class="color-buttons">
           <a href="https://khoobeha.ir" target="_blank" class="home-btn" id="homeButton">
             تماس با ما
@@ -1271,7 +1244,6 @@
       <div class="content">
         <div class="status" id="cryptoStatus">در حال دریافت…</div>
         
-        <!-- پیام VPN - فقط در صورت خطا نمایش داده می‌شود -->
         <div id="vpnWarning" class="vpn-warning" style="display: none;">
           <div id="vpnWarningText"></div>
         </div>
@@ -1815,109 +1787,48 @@
       } 
     }
 
-    function showNotification(message, type = 'info', duration = 10000) {
+    function showNotification(message, type = 'info') {
       const t = translations[state.currentLang];
-      
-      // حذف نوتیفیکیشن‌های قبلی برای جلوگیری از تجمع
-      const existingNotifications = document.querySelectorAll('.notification');
-      existingNotifications.forEach(notification => {
-        notification.remove();
-      });
-      
       const notification = document.createElement('div');
-      notification.className = 'notification';
+      notification.className = 'notification ' + type;
       
-      // اضافه کردن کلاس مخصوص برای هشدارهای قیمت
-      if (type === 'alert-triggered') {
-        notification.classList.add('alert-triggered');
-      }
-      
-      // تنظیم رنگ بسته به نوع نوتیفیکیشن
-      if (type === 'success') {
-        notification.style.background = 'var(--up)';
-        notification.style.borderLeftColor = '#2ecc71';
-      } else if (type === 'error') {
-        notification.style.background = 'var(--down)';
-        notification.style.borderLeftColor = '#e74c3c';
-      } else if (type === 'info') {
-        notification.style.background = 'var(--accent)';
-        notification.style.borderLeftColor = '#3498db';
-      }
-      
-      // محتوای نوتیفیکیشن با آیکون مناسب
-      let icon = 'ℹ️';
-      if (type === 'success') icon = '✅';
-      if (type === 'error') icon = '❌';
-      if (type === 'alert-triggered') icon = '🚨';
-      
-      notification.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <span style="font-size: 28px;">${icon}</span>
-          <div style="flex: 1;">
-            <div style="font-weight: 600; margin-bottom: 4px;">${type === 'alert-triggered' ? t.alertTriggered : getNotificationTitle(type, t)}</div>
-            <div>${message}</div>
-          </div>
-          <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; cursor: pointer; font-size: 24px; padding: 0; margin: 0; opacity: 0.7; line-height: 1;">×</button>
+      // افزودن ساختار HTML برای نوتیفیکیشن
+      const notificationContent = `
+        <div class="notification-title">
+          ${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}
+          ${getNotificationTitle(type, t)}
         </div>
-        <div style="margin-top: 12px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;">
-          <div class="notification-timer" style="height: 100%; width: 100%; background: white; animation: timer ${duration}ms linear forwards;"></div>
+        <div class="notification-content">
+          ${message}
         </div>
       `;
+      
+      notification.innerHTML = notificationContent;
       
       document.body.appendChild(notification);
       
-      // تایمر برای ناپدید شدن خودکار
-      const timer = setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease forwards';
+      // حذف اتوماتیک پس از 10 ثانیه (10000 میلی‌ثانیه)
+      setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.5s ease forwards';
         setTimeout(() => {
           if (notification.parentNode) {
-            notification.remove();
+            notification.parentNode.removeChild(notification);
           }
-        }, 300);
-      }, duration);
-      
-      // امکان بستن دستی
-      notification.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') return;
-        clearTimeout(timer);
-        notification.style.animation = 'slideOut 0.3s ease forwards';
-        setTimeout(() => {
-          if (notification.parentNode) {
-            notification.remove();
-          }
-        }, 300);
-      });
+        }, 500);
+      }, 10000);
     }
 
-    // تابع کمکی برای عنوان نوتیفیکیشن
     function getNotificationTitle(type, t) {
       switch(type) {
-        case 'success': return t.successAlertSet;
-        case 'error': return t.errorConnection;
-        default: return t.updating;
+        case 'success':
+          return t.successAlertSet || 'موفقیت';
+        case 'error':
+          return t.errorConnection || 'خطا';
+        case 'warning':
+          return t.vpnWarningTitle || 'هشدار';
+        default:
+          return t.updating || 'اطلاعیه';
       }
-    }
-
-    // تابع برای نمایش هشدار قیمت (مخصوص)
-    function showAlertNotification(alert, currentPrice) {
-      const t = translations[state.currentLang];
-      const message = `
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-          <img src="${iconUrl(alert.base)}" alt="${alert.base}" style="width: 36px; height: 36px; border-radius: 50%;" onerror="this.style.display='none'">
-          <div>
-            <strong style="font-size: 20px;">${alert.base}/USDT</strong>
-            <div style="font-size: 16px; margin-top: 6px;">
-              ${t.alertCurrentPrice}: <strong>$${formatNum(currentPrice, {maximumFractionDigits: 8})}</strong>
-            </div>
-          </div>
-        </div>
-        <div style="background: rgba(255,255,255,0.2); padding: 10px 14px; border-radius: 10px; margin-top: 10px;">
-          <div style="margin-bottom: 6px;">${t.alertTargetPrice}: <strong>$${formatNum(alert.targetPrice, {maximumFractionDigits: 8})}</strong></div>
-          <div>${t.alertCondition}: <strong>${alert.condition === 'above' ? t.aboveLabel : t.belowLabel}</strong></div>
-        </div>
-      `;
-      
-      showNotification(message, 'alert-triggered', 15000); // 15 ثانیه برای هشدارهای مهم
     }
 
     function showVpnWarning(show = true) {
@@ -1942,7 +1853,7 @@
         vpnWarning.style.display = 'block';
         
         const notificationMessage = `${t.vpnWarningTitle} - ${t.vpnWarningText} ${t.vpnSuggestion}`;
-        showNotification(notificationMessage, 'error');
+        showNotification(notificationMessage, 'warning');
       } else {
         vpnWarning.style.display = 'none';
       }
@@ -2583,9 +2494,6 @@
           alert.triggeredPrice = currentPrice;
           triggeredAlerts.push(alert);
           
-          // نمایش نوتیفیکیشن بزرگ و مخصوص هشدار
-          showAlertNotification(alert, currentPrice);
-          
           // پخش صدای هشدار
           try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -2609,17 +2517,46 @@
         }
       });
       
-      // نمایش نوتیفیکیشن مرورگر (اگر مجوز داده شده باشد)
       triggeredAlerts.forEach(alert => {
         const t = translations[state.currentLang];
         
+        // نمایش نوتیفیکیشن مرورگر (اگر مجوز داده شده باشد)
         if (Notification.permission === 'granted') {
           new Notification(`${t.alertTitle} ${alert.base}`, {
-            body: `${t.alertTriggered}! ${t.alertCurrentPrice}: $${formatNum(alert.triggeredPrice, {maximumFractionDigits: 4})}`,
-            icon: iconUrl(alert.base),
-            requireInteraction: true // نیاز به تعامل کاربر برای بستن
+            body: `${t.alertCurrentPrice} $${formatNum(alert.triggeredPrice)}!`,
+            icon: iconUrl(alert.base)
           });
         }
+        
+        // نمایش نوتیفیکیشن بزرگ و ویژه برای هشدار قیمت - 10 ثانیه
+        const alertMessage = `
+          <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 22px;">🚨</span>
+            ${t.alertTriggered}
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+            <div style="margin-bottom: 8px;">
+              <strong style="font-size: 16px;">${alert.base}/USDT</strong>
+            </div>
+            <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+              <span>${t.alertCurrentPrice}</span>
+              <strong style="color: #ffcc00; font-size: 16px;">$${formatNum(alert.triggeredPrice)}</strong>
+            </div>
+            <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+              <span>${t.alertTargetPrice}</span>
+              <strong>$${formatNum(alert.targetPrice)}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>${t.alertCondition}:</span>
+              <strong>${alert.condition === 'above' ? t.aboveLabel : t.belowLabel}</strong>
+            </div>
+          </div>
+          <div style="font-size: 12px; opacity: 0.9; text-align: center; margin-top: 5px;">
+            ${new Date().toLocaleTimeString(state.currentLang === 'fa' ? 'fa-IR' : 'en-US')}
+          </div>
+        `;
+        
+        showNotification(alertMessage, 'success');
       });
       
       if (triggeredAlerts.length > 0) {
@@ -2651,7 +2588,7 @@
       const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       body.setAttribute('data-theme', newTheme);
       const t = translations[state.currentLang];
-      showNotification(newTheme === 'dark' ? t.themeDark : t.themeLight);
+      showNotification(newTheme === 'dark' ? t.themeDark : t.themeLight, 'info');
     });
     
     document.getElementById('refreshAll').addEventListener('click', () => {
