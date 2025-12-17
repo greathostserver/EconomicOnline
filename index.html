@@ -16,6 +16,7 @@
       --home-btn: #1db954;
       --tools-btn: #1f7ae0;
       --similar-btn: #9b59b6;
+      --theme-refresh-btn: #FF01D5; /* رنگ جدید برای دکمه‌های تم و به‌روزرسانی */
     }
     [data-theme="light"] {
       --bg:#f6f7fb; --panel:#fff; --text:#1a2230; --muted:#5c6b7c;
@@ -26,6 +27,7 @@
       --home-btn: #1ea865;
       --tools-btn: #1f7ae0;
       --similar-btn: #8e44ad;
+      --theme-refresh-btn: #FF01D5; /* رنگ جدید برای دکمه‌های تم و به‌روزرسانی */
     }
 
     * {
@@ -94,6 +96,23 @@
       cursor:pointer;
       font-size: 13px;
       white-space: nowrap;
+    }
+
+    /* استایل دکمه‌های تم و به‌روزرسانی با رنگ جدید */
+    #toggleTheme, #refreshAll {
+      background: var(--theme-refresh-btn) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+
+    #toggleTheme:hover, #refreshAll:hover {
+      opacity: 0.9;
     }
 
     .home-btn {
@@ -406,6 +425,62 @@
       }
     }
 
+    /* استایل جدید برای هشدار تمام صفحه */
+    .fullscreen-alert {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .fullscreen-alert-content {
+      background: var(--card);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .fullscreen-alert h2 {
+      color: var(--accent);
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .fullscreen-alert p {
+      font-size: 18px;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+
+    .fullscreen-alert .alert-price {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--up);
+      margin: 10px 0;
+    }
+
+    .fullscreen-alert .alert-time {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .popular-crypto-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -646,7 +721,9 @@
       .toolbar button,
       .home-btn,
       .tools-btn,
-      .similar-btn {
+      .similar-btn,
+      #toggleTheme,
+      #refreshAll {
         padding: 6px 8px;
         font-size: 11px;
         white-space: normal;
@@ -697,6 +774,19 @@
         top: 10px;
         font-size: 13px;
         padding: 10px 12px;
+      }
+      
+      .fullscreen-alert-content {
+        padding: 20px;
+        margin: 10px;
+      }
+      
+      .fullscreen-alert h2 {
+        font-size: 20px;
+      }
+      
+      .fullscreen-alert p {
+        font-size: 16px;
       }
       
       .choices__inner {
@@ -812,7 +902,9 @@
       .toolbar button,
       .home-btn,
       .tools-btn,
-      .similar-btn {
+      .similar-btn,
+      #toggleTheme,
+      #refreshAll {
         flex: 1;
         min-width: calc(33.333% - 8px);
         font-size: 10px;
@@ -897,7 +989,9 @@
       .toolbar button,
       .home-btn,
       .tools-btn,
-      .similar-btn {
+      .similar-btn,
+      #toggleTheme,
+      #refreshAll {
         flex: none;
         text-align: center;
         min-width: calc(33.333% - 6px);
@@ -1007,7 +1101,9 @@
       .toolbar button,
       .home-btn,
       .tools-btn,
-      .similar-btn {
+      .similar-btn,
+      #toggleTheme,
+      #refreshAll {
         min-width: calc(50% - 3px);
         font-size: 9px;
         padding: 4px 5px;
@@ -1260,7 +1356,8 @@
             </div>
           </div>
           <div class="status" style="margin-top: 8px;">
-            <span id="alertsInfo">هشدارها در مرورگر شما ذخیره می‌شوند</span>
+            <div id="alertsInfo">هشدارها در مرورگر شما ذخیره می‌شوند</div>
+            <div id="alertsPageRequirement">⚠️ <strong>توجه:</strong> برای دریافت هشدارها، صفحه باید باز باشد.</div>
           </div>
         </div>
       </div>
@@ -1330,6 +1427,7 @@
         activeAlertsTitle: "هشدارهای فعال",
         noAlertsText: "هشداری تنظیم نشده است",
         alertsInfo: "هشدارها در مرورگر شما ذخیره می‌شوند",
+        alertsPageRequirement: "⚠️ توجه: برای دریافت هشدارها، صفحه باید باز باشد.",
         activeLabel: "فعال",
         inactiveLabel: "غیرفعال",
         aboveLabel: "بالاتر از",
@@ -1367,7 +1465,10 @@
         themeLight: "تم روشن فعال شد",
         updating: "در حال به‌روزرسانی داده‌ها از Binance...",
         ready: "داشبورد آماده است! تمام داده‌ها از Binance دریافت می‌شوند.",
-        alertTriggered: "هشدار قیمت فعال شد! قیمت فعلی:",
+        alertTriggered: "هشدار قیمت فعال شد!",
+        alertCurrentPrice: "قیمت فعلی:",
+        alertTargetPrice: "قیمت هدف:",
+        alertCondition: "شرط:",
         vpnWarningTitle: "⚠️ مشکل در اتصال به سرور",
         vpnWarningText: "درصورتیکه گزینه‌ها به درستی لود نشد ، از تحریم شکن و یا vpn استفاده کنید ، زیرا ممکن است منبع دریافت اطلاعات در کشور شما مسدود شده باشد و یا تحت تحریم باشید",
         vpnSuggestion: "پیشنهاد: برای دسترسی به اطلاعات بازار ارز، از یک سرویس VPN معتبر استفاده نمایید. همچنین می‌توانید با کلیک روی دکمه 'به‌روزرسانی' (آیکن فلش دایره‌ای) دوباره تلاش کنید."
@@ -1416,6 +1517,7 @@
         activeAlertsTitle: "Active Alerts",
         noAlertsText: "No alerts",
         alertsInfo: "Stored in browser",
+        alertsPageRequirement: "⚠️ Note: Page must be open to receive alerts.",
         activeLabel: "Active",
         inactiveLabel: "Inactive",
         aboveLabel: "Above",
@@ -1453,7 +1555,10 @@
         themeLight: "Light theme",
         updating: "Updating...",
         ready: "Dashboard ready!",
-        alertTriggered: "Alert! Price:",
+        alertTriggered: "Price Alert Triggered!",
+        alertCurrentPrice: "Current Price:",
+        alertTargetPrice: "Target Price:",
+        alertCondition: "Condition:",
         vpnWarningTitle: "⚠️ Connection Issue",
         vpnWarningText: "If options are not loading correctly, please use a VPN or anti-filter service. The data source (Binance) might be blocked or under sanctions in your country.",
         vpnSuggestion: "Suggestion: Use a reliable VPN service to access cryptocurrency market data. You can also try again by clicking the 'Refresh' button (circular arrow icon)."
@@ -1502,6 +1607,7 @@
         activeAlertsTitle: "التنبيهات",
         noAlertsText: "لا تنبيهات",
         alertsInfo: "في المتصفح",
+        alertsPageRequirement: "⚠️ ملاحظة: يجب أن تكون الصفحة مفتوحة لتلقي التنبيهات.",
         activeLabel: "نشط",
         inactiveLabel: "غير نشط",
         aboveLabel: "أعلى",
@@ -1539,7 +1645,10 @@
         themeLight: "فاتح",
         updating: "جار التحديث...",
         ready: "اللوحة جاهزة!",
-        alertTriggered: "تنبيه! السعر:",
+        alertTriggered: "تم تشغيل تنبيه السعر!",
+        alertCurrentPrice: "السعر الحالي:",
+        alertTargetPrice: "السعر المستهدف:",
+        alertCondition: "الشرط:",
         vpnWarningTitle: "⚠️ مشكلة في الاتصال",
         vpnWarningText: "إذا لم يتم تحميل الخيارات بشكل صحيح، يرجى استخدام VPN أو خدمة مضاد الحجب. قد يكون مصدر البيانات (Binance) محجوبًا أو تحت عقوبات في بلدك.",
         vpnSuggestion: "اقتراح: استخدم خدمة VPN موثوقة للوصول إلى بيانات سوق العملات الرقمية. يمكنك أيضًا المحاولة مرة أخرى بالنقر على زر 'تحديث' (أيقونة السهم الدائري)."
@@ -1588,6 +1697,7 @@
         activeAlertsTitle: "Оповещения",
         noAlertsText: "Нет оповещений",
         alertsInfo: "В браузере",
+        alertsPageRequirement: "⚠️ Примечание: Страница должна быть открыта для получения оповещений.",
         activeLabel: "Активно",
         inactiveLabel: "Неактивно",
         aboveLabel: "Выше",
@@ -1625,7 +1735,10 @@
         themeLight: "Светлая",
         updating: "Обновление...",
         ready: "Панель готова!",
-        alertTriggered: "Оповещение! Цена:",
+        alertTriggered: "Оповещение сработало!",
+        alertCurrentPrice: "Текущая цена:",
+        alertTargetPrice: "Целевая цена:",
+        alertCondition: "Условие:",
         vpnWarningTitle: "⚠️ Проблема с подключением",
         vpnWarningText: "Если параметры загружаются неправильно, используйте VPN или антифильтр. Источник данных (Binance) может быть заблокирован или находиться под санкциями в вашей стране.",
         vpnSuggestion: "Совет: используйте надежный VPN-сервис для доступа к данным рынка криптовалют. Вы также можете попробовать еще раз, нажав кнопку 'Обновить' (круглая стрелка)."
@@ -1665,6 +1778,62 @@
         notification.style.animation = 'slideIn 0.3s ease reverse';
         setTimeout(() => notification.remove(), 300);
       }, 5000);
+    }
+
+    // تابع جدید برای نمایش هشدار تمام صفحه
+    function showFullScreenAlert(alert, currentPrice) {
+      const t = translations[state.currentLang];
+      const alertDiv = document.createElement('div');
+      alertDiv.className = 'fullscreen-alert';
+      
+      const base = alert.base;
+      const targetPrice = alert.targetPrice;
+      const condition = alert.condition === 'above' ? t.aboveLabel : t.belowLabel;
+      const now = new Date().toLocaleString(state.currentLang === 'fa' ? 'fa-IR' : 
+                                          state.currentLang === 'ar' ? 'ar-SA' : 
+                                          state.currentLang === 'ru' ? 'ru-RU' : 'en-US');
+      
+      alertDiv.innerHTML = `
+        <div class="fullscreen-alert-content">
+          <h2>🚨 ${t.alertTriggered}</h2>
+          <p><strong>${base}/USDT</strong></p>
+          <div class="alert-price">$${formatNum(currentPrice)}</div>
+          <p><strong>${t.alertTargetPrice}:</strong> $${formatNum(targetPrice)}</p>
+          <p><strong>${t.alertCondition}:</strong> ${condition}</p>
+          <p class="alert-time">${now}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      // پخش صدای هشدار
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 1);
+      } catch (e) {
+        console.log("صدا پشتیبانی نمی‌شود");
+      }
+      
+      // حذف هشدار بعد از 10 ثانیه
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.style.animation = 'fadeIn 0.3s ease reverse';
+          setTimeout(() => alertDiv.remove(), 300);
+        }
+      }, 10000);
     }
 
     function showVpnWarning(show = true) {
@@ -1734,7 +1903,8 @@
         'clearAlerts': t.clearAlerts,
         'activeAlertsTitle': t.activeAlertsTitle,
         'noAlertsText': t.noAlertsText,
-        'alertsInfo': t.alertsInfo
+        'alertsInfo': t.alertsInfo,
+        'alertsPageRequirement': t.alertsPageRequirement
       };
       
       Object.keys(elements).forEach(id => {
@@ -2214,6 +2384,7 @@
         }
       });
       
+      // درخواست مجوز نوتیفیکیشن
       if ('Notification' in window && Notification.permission === 'default') {
         setTimeout(() => {
           Notification.requestPermission();
@@ -2332,16 +2503,20 @@
       
       triggeredAlerts.forEach(alert => {
         const t = translations[state.currentLang];
-        const message = `🚨 ${t.alertTriggered} $${formatNum(alert.triggeredPrice)} (${t.alertPriceLabel}: $${formatNum(alert.targetPrice)})`;
         
+        // نمایش هشدار تمام صفحه
+        showFullScreenAlert(alert, alert.triggeredPrice);
+        
+        // نمایش نوتیفیکیشن مرورگر (اگر مجوز داده شده باشد)
         if (Notification.permission === 'granted') {
           new Notification(`${t.alertTitle} ${alert.base}`, {
-            body: `${t.priceLabel} $${formatNum(alert.triggeredPrice)}!`,
+            body: `${t.alertCurrentPrice} $${formatNum(alert.triggeredPrice)}!`,
             icon: iconUrl(alert.base)
           });
         }
         
-        showNotification(message, 'success');
+        // نمایش نوتیفیکیشن کوچک
+        showNotification(`🚨 ${t.alertTriggered} ${alert.base}/USDT - ${t.alertCurrentPrice} $${formatNum(alert.triggeredPrice)}`, 'success');
       });
       
       if (triggeredAlerts.length > 0) {
@@ -2390,8 +2565,10 @@
       
       await loadBinance();
       
-      setInterval(loadBinance, 60000);
+      // بررسی هشدارها هر 30 ثانیه
       setInterval(checkAlerts, 30000);
+      // بارگیری اطلاعات هر 1 دقیقه
+      setInterval(loadBinance, 60000);
     });
 
     window.toggleAlert = toggleAlert;
